@@ -7,7 +7,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InstantMultiplayer", "Insta
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InstantMultiplayerTestClient", "InstantMultiplayerTestClient\InstantMultiplayerTestClient.csproj", "{C27CE6A2-9FE8-40AF-91CA-FFECFD21318C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnityIntegration", "UnityIntegration\UnityIntegration.csproj", "{AC8FA735-CFF2-4349-951A-C2BD509E3CB6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnityIntegration", "UnityIntegration\UnityIntegration.csproj", "{AC8FA735-CFF2-4349-951A-C2BD509E3CB6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharedMessages", "SharedMessages\SharedMessages.csproj", "{AD0C7591-1F10-4E28-B945-E9591DBF729F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{AC8FA735-CFF2-4349-951A-C2BD509E3CB6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AC8FA735-CFF2-4349-951A-C2BD509E3CB6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AC8FA735-CFF2-4349-951A-C2BD509E3CB6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AD0C7591-1F10-4E28-B945-E9591DBF729F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AD0C7591-1F10-4E28-B945-E9591DBF729F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AD0C7591-1F10-4E28-B945-E9591DBF729F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AD0C7591-1F10-4E28-B945-E9591DBF729F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

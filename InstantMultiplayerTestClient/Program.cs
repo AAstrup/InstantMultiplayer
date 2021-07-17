@@ -1,5 +1,9 @@
-﻿using System;
+﻿using SharedMessages;
+using System;
+using System.IO;
 using System.Net.Sockets;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 
 namespace InstantMultiplayerTestClient
@@ -12,16 +16,23 @@ namespace InstantMultiplayerTestClient
             var host = "localhost";
             //var host = "127.0.0.1";
             TcpClient tcpClient = new TcpClient(host, 61001);
+            var stream = tcpClient.GetStream();
+            var writer = new BinaryWriter(stream);
+            var reader = new BinaryReader(stream);
+            IFormatter formatter = new BinaryFormatter();
             while (true) {
-                Console.WriteLine("Press any key to send to server");
-                Console.ReadKey();
-                var textToSend = "Hi from client";
-                NetworkStream nwStream = tcpClient.GetStream();
-                byte[] bytesToSend = ASCIIEncoding.ASCII.GetBytes(textToSend);
+                Console.WriteLine("Write line and press enter send that message to server");
+                var msg = Console.ReadLine();
 
-                //---send the text---
-                Console.WriteLine("Sending : " + textToSend);
-                nwStream.Write(bytesToSend, 0, bytesToSend.Length);
+                var objectToSend = new TestMessage() { Message = msg };
+                byte[] bytes;
+                using (MemoryStream memory = new MemoryStream())
+                {
+                    formatter.Serialize(memory, objectToSend);
+                    bytes = memory.ToArray();
+                }
+
+                writer.Write(bytes);
             }
         }
     }
