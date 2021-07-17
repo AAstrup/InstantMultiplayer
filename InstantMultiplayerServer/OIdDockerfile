@@ -8,11 +8,14 @@ USER appuser
 
 FROM mcr.microsoft.com/dotnet/sdk:3.1-focal AS build
 WORKDIR /src
-COPY ["InstantMultiplayer.csproj", "./"]
-RUN dotnet restore "InstantMultiplayer.csproj"
+COPY ["SharedMessages.csproj", "SharedMessages/"]
+RUN dotnet restore "SharedMessages/SharedMessages.csproj"
+COPY ["InstantMultiplayer.csproj", "InstantMultiplayer/"]
+RUN dotnet restore "InstantMultiplayer/InstantMultiplayer.csproj"
 COPY . .
-WORKDIR "/src/."
-RUN dotnet build "InstantMultiplayer.csproj" -c Release -o /app/build
+# WORKDIR "/src/InstantMultiplayer"
+RUN dotnet build "/src/SharedMessages/SharedMessages.csproj" -c Release -o /app/build
+RUN dotnet build "/src/InstantMultiplayer/InstantMultiplayer.csproj" -c Release -o /app/build
 
 FROM build AS publish
 RUN dotnet publish "InstantMultiplayer.csproj" -c Release -o /app/publish
