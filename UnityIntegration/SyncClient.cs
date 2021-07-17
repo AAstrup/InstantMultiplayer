@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace UnityIntegration
 {
+    [AddComponentMenu(EditorConstants.ComponentMenuName + "/" + nameof(SyncClient))]
     public class SyncClient: MonoBehaviour
     {
     }
