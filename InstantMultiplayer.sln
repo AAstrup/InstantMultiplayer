@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30804.86
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InstantMultiplayer", "InstantMultiplayer\InstantMultiplayer.csproj", "{EE6492A3-EF63-4D72-B2BE-70D439B74293}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InstantMultiplayerTestClient", "InstantMultiplayerTestClient\InstantMultiplayerTestClient.csproj", "{C27CE6A2-9FE8-40AF-91CA-FFECFD21318C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EE6492A3-EF63-4D72-B2BE-70D439B74293}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EE6492A3-EF63-4D72-B2BE-70D439B74293}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EE6492A3-EF63-4D72-B2BE-70D439B74293}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EE6492A3-EF63-4D72-B2BE-70D439B74293}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C27CE6A2-9FE8-40AF-91CA-FFECFD21318C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C27CE6A2-9FE8-40AF-91CA-FFECFD21318C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C27CE6A2-9FE8-40AF-91CA-FFECFD21318C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C27CE6A2-9FE8-40AF-91CA-FFECFD21318C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {ED118F59-A686-482D-9E2A-0C485150843E}
+	EndGlobalSection
+EndGlobal

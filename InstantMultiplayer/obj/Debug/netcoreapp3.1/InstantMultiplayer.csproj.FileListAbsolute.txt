@@ -1,0 +1,13 @@
+C:\Users\alexa\source\repos\InstantMultiplayer\InstantMultiplayer\obj\Debug\netcoreapp3.1\InstantMultiplayer.csprojAssemblyReference.cache
+C:\Users\alexa\source\repos\InstantMultiplayer\InstantMultiplayer\obj\Debug\netcoreapp3.1\InstantMultiplayer.AssemblyInfoInputs.cache
+C:\Users\alexa\source\repos\InstantMultiplayer\InstantMultiplayer\obj\Debug\netcoreapp3.1\InstantMultiplayer.AssemblyInfo.cs
+C:\Users\alexa\source\repos\InstantMultiplayer\InstantMultiplayer\obj\Debug\netcoreapp3.1\InstantMultiplayer.csproj.CoreCompileInputs.cache
+C:\Users\alexa\source\repos\InstantMultiplayer\InstantMultiplayer\bin\Debug\netcoreapp3.1\InstantMultiplayer.exe
+C:\Users\alexa\source\repos\InstantMultiplayer\InstantMultiplayer\bin\Debug\netcoreapp3.1\InstantMultiplayer.deps.json
+C:\Users\alexa\source\repos\InstantMultiplayer\InstantMultiplayer\bin\Debug\netcoreapp3.1\InstantMultiplayer.runtimeconfig.json
+C:\Users\alexa\source\repos\InstantMultiplayer\InstantMultiplayer\bin\Debug\netcoreapp3.1\InstantMultiplayer.runtimeconfig.dev.json
+C:\Users\alexa\source\repos\InstantMultiplayer\InstantMultiplayer\bin\Debug\netcoreapp3.1\InstantMultiplayer.dll
+C:\Users\alexa\source\repos\InstantMultiplayer\InstantMultiplayer\bin\Debug\netcoreapp3.1\InstantMultiplayer.pdb
+C:\Users\alexa\source\repos\InstantMultiplayer\InstantMultiplayer\obj\Debug\netcoreapp3.1\InstantMultiplayer.dll
+C:\Users\alexa\source\repos\InstantMultiplayer\InstantMultiplayer\obj\Debug\netcoreapp3.1\InstantMultiplayer.pdb
+C:\Users\alexa\source\repos\InstantMultiplayer\InstantMultiplayer\obj\Debug\netcoreapp3.1\InstantMultiplayer.genruntimeconfig.cache
