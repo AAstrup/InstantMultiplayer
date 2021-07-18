@@ -17,7 +17,7 @@ namespace TestClient
 
                 Console.WriteLine("Hello Client World!");
                 var host = "localhost";
-                //var host = "20.76.194.30"; -- Container instance
+                //var host = "20.93.59.201";// -- Container instance
                 TcpClient tcpClient = new TcpClient(host, 61001);
                 var stream = tcpClient.GetStream();
                 var writer = new BinaryWriter(stream);

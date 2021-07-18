@@ -25,7 +25,10 @@ namespace InstantMultiplayer
 
         public static async Task ListenForNewClients(string[] args)
         {
-            listener = new TcpListener(IPAddress.Any, port);
+            IPAddress address;
+            //IPAddress.TryParse("127.0.0.1", out address);
+            IPAddress.TryParse("20.93.59.201", out address);
+            listener = new TcpListener(address, port);
             listener.Start();
             Console.WriteLine($"Server listener started");
 
