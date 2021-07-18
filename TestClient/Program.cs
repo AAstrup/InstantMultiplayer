@@ -23,7 +23,8 @@ namespace TestClient
                 var writer = new BinaryWriter(stream);
                 var reader = new BinaryReader(stream);
                 IFormatter formatter = new BinaryFormatter();
-                while (true) {
+                while (true)
+                {
                     Console.WriteLine("Write line and press enter send that message to server");
                     var msg = Console.ReadLine();
 
@@ -36,6 +37,24 @@ namespace TestClient
                     }
 
                     writer.Write(bytes);
+
+                    while (true)
+                    {
+                        if (tcpClient.Available == 0) continue;
+                        NetworkStream networkStream = tcpClient.GetStream();
+
+                        if (networkStream.DataAvailable)
+                        {
+                            var data = formatter.Deserialize(networkStream);
+
+                            var test = data as TestMessage;
+                            if (test != null)
+                            {
+                                Console.WriteLine("Client service: {0}", test.Message);
+                                break;
+                            }
+                        }
+                    }
                 }
             }
             catch(Exception e)
