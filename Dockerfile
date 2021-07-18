@@ -9,8 +9,8 @@ FROM mcr.microsoft.com/dotnet/sdk:3.1-focal AS build
 WORKDIR /src
 COPY InstantMultiplayer.sln ./
 COPY SharedMessages/*.csproj ./SharedMessages/
-COPY InstantMultiplayerServer/*.csproj ./InstantMultiplayerServer/
-COPY InstantMultiplayerTestClient/*.csproj ./InstantMultiplayerTestClient/
+COPY Server/*.csproj ./Server/
+COPY TestClient/*.csproj ./TestClient/
 COPY UnityIntegration/*.csproj ./UnityIntegration/
 
 RUN dotnet restore
@@ -18,10 +18,10 @@ COPY . .
 WORKDIR /src/SharedMessages
 RUN dotnet build -c Release -o /app
 
-WORKDIR /src/InstantMultiplayerServer
+WORKDIR /src/Server
 RUN dotnet build -c Release -o /app
 
-WORKDIR /src/InstantMultiplayerTestClient
+WORKDIR /src/TestClient
 RUN dotnet build -c Release -o /app
 
 WORKDIR /src/UnityIntegration
@@ -33,4 +33,4 @@ RUN dotnet publish -c Release -o /app
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app .
-ENTRYPOINT ["dotnet", "InstantMultiplayerServer.dll"]
+ENTRYPOINT ["dotnet", "Server.dll"]
