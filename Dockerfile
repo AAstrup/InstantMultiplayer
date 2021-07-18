@@ -12,6 +12,8 @@ COPY SharedMessages/*.csproj ./SharedMessages/
 COPY Server/*.csproj ./Server/
 COPY TestClient/*.csproj ./TestClient/
 COPY UnityIntegration/*.csproj ./UnityIntegration/
+COPY Synchronization/*.csproj ./Synchronization/
+COPY Communication/*.csproj ./Communication/
 
 RUN dotnet restore
 COPY . .
