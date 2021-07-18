@@ -27,6 +27,12 @@ RUN dotnet build -c Release -o /app
 WORKDIR /src/UnityIntegration
 RUN dotnet build -c Release -o /app
 
+WORKDIR /src/Synchronization
+RUN dotnet build -c Release -o /app
+
+WORKDIR /src/Communication
+RUN dotnet build -c Release -o /app
+
 FROM build AS publish
 RUN dotnet publish -c Release -o /app
 
