@@ -1,32 +1,34 @@
 ﻿using UnityEditor;
-using UnityIntegration;
 
-[CustomEditor(typeof(SyncClientFilter), true)]
-public class SyncClientFilterEditor : Editor
+namespace InstantMultiplayer.UnityIntegration
 {
-    public override void OnInspectorGUI()
+    [CustomEditor(typeof(SyncClientFilter), true)]
+    public class SyncClientFilterEditor : Editor
     {
-        var comp = (SyncClientFilter)target;
-
-        for (int i = 0; i < 32; i++)
+        public override void OnInspectorGUI()
         {
-            var bitRepr = 1 << i;
-            var enabled = (comp.ClientFilter & bitRepr) != 0;
-            var toggle = EditorGUILayout.Toggle("Client" + i.ToString(), enabled);
-            if (toggle && !enabled)
+            var comp = (SyncClientFilter)target;
+
+            for (int i = 0; i < 32; i++)
             {
-                comp.ClientFilter |= bitRepr;
+                var bitRepr = 1 << i;
+                var enabled = (comp.ClientFilter & bitRepr) != 0;
+                var toggle = EditorGUILayout.Toggle("Client" + i.ToString(), enabled);
+                if (toggle && !enabled)
+                {
+                    comp.ClientFilter |= bitRepr;
+                }
+                else if (!toggle && enabled)
+                {
+                    comp.ClientFilter &= ~bitRepr;
+                }
             }
-            else if (!toggle && enabled)
-            {
-                comp.ClientFilter &= ~bitRepr;
-            }
+
+            var newFilterValue = EditorGUILayout.IntField("Filter value:", comp.ClientFilter);
+            if (newFilterValue != comp.ClientFilter)
+                comp.ClientFilter = newFilterValue;
+
+            serializedObject.ApplyModifiedProperties();
         }
-
-        var newFilterValue = EditorGUILayout.IntField("Filter value:", comp.ClientFilter);
-        if (newFilterValue != comp.ClientFilter)
-            comp.ClientFilter = newFilterValue;
-
-        serializedObject.ApplyModifiedProperties();
     }
 }

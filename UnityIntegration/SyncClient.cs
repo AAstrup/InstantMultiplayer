@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace UnityIntegration
+namespace InstantMultiplayer.UnityIntegration
 {
     [AddComponentMenu(EditorConstants.ComponentMenuName + "/" + nameof(SyncClient))]
     public class SyncClient: MonoBehaviour

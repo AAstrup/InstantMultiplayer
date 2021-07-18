@@ -1,25 +1,28 @@
 ﻿using UnityEditor;
 using UnityIntegration;
 
-[CustomEditor(typeof(Synchronizer), true)]
-public class SynchronizerEditor : Editor
+namespace InstantMultiplayer.UnityIntegration
 {
-    private SerializedProperty _clientFilter;
-    private SerializedProperty _behaviours;
-
-    void OnEnable()
+    [CustomEditor(typeof(Synchronizer), true)]
+    public class SynchronizerEditor : Editor
     {
-        _clientFilter = serializedObject.FindProperty(nameof(Synchronizer.ClientFilter));
-        _behaviours = serializedObject.FindProperty(nameof(Synchronizer.Behaviours));
-    }
+        private SerializedProperty _clientFilter;
+        private SerializedProperty _behaviours;
 
-    public override void OnInspectorGUI()
-    {
-        serializedObject.Update();
+        void OnEnable()
+        {
+            _clientFilter = serializedObject.FindProperty(nameof(Synchronizer.ClientFilter));
+            _behaviours = serializedObject.FindProperty(nameof(Synchronizer.Behaviours));
+        }
 
-        EditorGUILayout.PropertyField(_clientFilter);
-        EditorGUILayout.PropertyField(_behaviours);
+        public override void OnInspectorGUI()
+        {
+            serializedObject.Update();
 
-        serializedObject.ApplyModifiedProperties();
+            EditorGUILayout.PropertyField(_clientFilter);
+            EditorGUILayout.PropertyField(_behaviours);
+
+            serializedObject.ApplyModifiedProperties();
+        }
     }
 }

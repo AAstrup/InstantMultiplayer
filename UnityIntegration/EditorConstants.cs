@@ -1,4 +1,4 @@
-﻿namespace UnityIntegration
+﻿namespace InstantMultiplayer.UnityIntegration
 {
     public static class EditorConstants
     {
