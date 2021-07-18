@@ -25,10 +25,11 @@ namespace InstantMultiplayer
 
         public static async Task ListenForNewClients(string[] args)
         {
-            IPAddress address;
+            //IPAddress address;
             //IPAddress.TryParse("127.0.0.1", out address);
-            IPAddress.TryParse("20.93.59.201", out address);
-            listener = new TcpListener(address, port);
+            ////IPAddress.TryParse("20.93.59.201", out address);
+            //Console.WriteLine($"Attempt to create listener on IP " + address.ToString());
+            listener = new TcpListener(IPAddress.Any, port);
             listener.Start();
             Console.WriteLine($"Server listener started");
 
@@ -42,11 +43,13 @@ namespace InstantMultiplayer
 
         private static async Task ListenToConnectedClient(TcpClient client)
         {
+            Console.WriteLine("ListenToConnectedClient: {0}", client.Client.RemoteEndPoint);
             try
             {
                 while (true)
                 {
                     if (client.Available == 0) continue;
+                    Console.WriteLine("Data recieved from: {0}", client.Client.RemoteEndPoint);
                     NetworkStream networkStream = client.GetStream();
 
                     if (networkStream.DataAvailable)
