@@ -29,15 +29,29 @@ namespace InstantMultiplayer
             //IPAddress.TryParse("127.0.0.1", out address);
             ////IPAddress.TryParse("20.93.59.201", out address);
             //Console.WriteLine($"Attempt to create listener on IP " + address.ToString());
-            listener = new TcpListener(IPAddress.Any, port);
-            listener.Start();
-            Console.WriteLine($"Server listener started");
-
-            while (true)
+            try
             {
-                var client = await listener.AcceptTcpClientAsync();
-                if (client.Connected)
-                    await ListenToConnectedClient(client);
+                listener = new TcpListener(IPAddress.Any, port);
+                Console.WriteLine($"Server new TcpListener");
+                listener.Start();
+                Console.WriteLine($"Server listener started");
+
+                while (true)
+                {
+                    Console.WriteLine($"Awaits new client");
+                    var client = await listener.AcceptTcpClientAsync();
+                    Console.WriteLine($"listener.AcceptTcpClientAsync");
+                    if (client.Connected)
+                    {
+                        Console.WriteLine($"client.Connected");
+                        await ListenToConnectedClient(client);
+                        Console.WriteLine($"ListenToConnectedClient");
+                    }
+                }
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine($"ERROR " + e.Message);
             }
         }
 

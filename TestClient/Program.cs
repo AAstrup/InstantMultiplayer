@@ -16,13 +16,18 @@ namespace TestClient
             {
 
                 Console.WriteLine("Hello Client World!");
-                var host = "localhost";
-                //var host = "20.93.59.201";// -- Container instance
+                //var host = "localhost";
+                var host = "20.54.45.46";// -- Container instance
                 TcpClient tcpClient = new TcpClient(host, 61001);
+                Console.WriteLine("tcpClient started");
                 var stream = tcpClient.GetStream();
+                Console.WriteLine("tcpClient.GetStream");
                 var writer = new BinaryWriter(stream);
+                Console.WriteLine("BinaryWriter");
                 var reader = new BinaryReader(stream);
+                Console.WriteLine("BinaryReader");
                 IFormatter formatter = new BinaryFormatter();
+                Console.WriteLine("new BinaryFormatter");
                 while (true)
                 {
                     Console.WriteLine("Write line and press enter send that message to server");
