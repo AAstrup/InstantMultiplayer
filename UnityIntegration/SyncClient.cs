@@ -3,7 +3,7 @@
 namespace InstantMultiplayer.UnityIntegration
 {
     [AddComponentMenu(EditorConstants.ComponentMenuName + "/" + nameof(SyncClient))]
-    public class SyncClient: MonoBehaviour
+    public sealed class SyncClient: MonoBehaviour
     {
     }
 }

@@ -1,9 +1,11 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityIntegration;
 
 public class Test : MonoBehaviour
 {
-    public bool Value;
+    [SerializeField]
+    private bool _value;
     private bool _printToggle;
 
     void Update()
