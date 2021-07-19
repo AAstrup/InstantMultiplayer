@@ -44,7 +44,7 @@ namespace InstantMultiplayer
                     if (client.Connected)
                     {
                         Console.WriteLine($"client.Connected");
-                        await ListenToConnectedClient(client);
+                        Task.Run(() => ListenToConnectedClient(client));
                         Console.WriteLine($"ListenToConnectedClient");
                     }
                 }

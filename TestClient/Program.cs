@@ -16,8 +16,8 @@ namespace TestClient
             {
 
                 Console.WriteLine("Hello Client World!");
-                //var host = "localhost";
-                var host = "20.54.45.46";// -- Container instance
+                var host = "localhost";
+                //var host = "20.54.45.46";// -- Container instance
                 TcpClient tcpClient = new TcpClient(host, 61001);
                 Console.WriteLine("tcpClient started");
                 var stream = tcpClient.GetStream();
