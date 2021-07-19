@@ -5,4 +5,10 @@
     <RootNamespace>InstantMultiplayer.Synchronization</RootNamespace>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Reference Include="UnityEngine.CoreModule">
+      <HintPath>..\Common\UnityEngine.CoreModule.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>

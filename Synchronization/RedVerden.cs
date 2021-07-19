@@ -4,7 +4,8 @@ using System.Text;
 
 namespace InstantMultiplayer.Synchronization
 {
-    class Class1
+    public static class RedVerden
     {
+        public static string OH = "Manky";
     }
 }
