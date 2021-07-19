@@ -12,6 +12,8 @@ COPY SharedMessages/*.csproj ./SharedMessages/
 COPY Server/*.csproj ./Server/
 COPY TestClient/*.csproj ./TestClient/
 COPY UnityIntegration/*.csproj ./UnityIntegration/
+COPY Synchronization/*.csproj ./Synchronization/
+COPY Communication/*.csproj ./Communication/
 
 RUN dotnet restore
 COPY . .
@@ -25,6 +27,12 @@ WORKDIR /src/TestClient
 RUN dotnet build -c Release -o /app
 
 WORKDIR /src/UnityIntegration
+RUN dotnet build -c Release -o /app
+
+WORKDIR /src/Synchronization
+RUN dotnet build -c Release -o /app
+
+WORKDIR /src/Communication
 RUN dotnet build -c Release -o /app
 
 FROM build AS publish

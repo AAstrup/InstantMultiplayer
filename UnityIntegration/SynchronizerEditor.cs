@@ -1,5 +1,4 @@
 ﻿using UnityEditor;
-using UnityIntegration;
 
 namespace InstantMultiplayer.UnityIntegration
 {

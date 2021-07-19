@@ -25,25 +25,45 @@ namespace InstantMultiplayer
 
         public static async Task ListenForNewClients(string[] args)
         {
-            listener = new TcpListener(IPAddress.Any, port);
-            listener.Start();
-            Console.WriteLine($"Server listener started");
-
-            while (true)
+            //IPAddress address;
+            //IPAddress.TryParse("127.0.0.1", out address);
+            ////IPAddress.TryParse("20.93.59.201", out address);
+            //Console.WriteLine($"Attempt to create listener on IP " + address.ToString());
+            try
             {
-                var client = await listener.AcceptTcpClientAsync();
-                if (client.Connected)
-                    await ListenToConnectedClient(client);
+                listener = new TcpListener(IPAddress.Any, port);
+                Console.WriteLine($"Server new TcpListener");
+                listener.Start();
+                Console.WriteLine($"Server listener started");
+
+                while (true)
+                {
+                    Console.WriteLine($"Awaits new client");
+                    var client = await listener.AcceptTcpClientAsync();
+                    Console.WriteLine($"listener.AcceptTcpClientAsync");
+                    if (client.Connected)
+                    {
+                        Console.WriteLine($"client.Connected");
+                        Task.Run(() => ListenToConnectedClient(client));
+                        Console.WriteLine($"ListenToConnectedClient");
+                    }
+                }
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine($"ERROR " + e.Message);
             }
         }
 
         private static async Task ListenToConnectedClient(TcpClient client)
         {
+            Console.WriteLine("ListenToConnectedClient: {0}", client.Client.RemoteEndPoint);
             try
             {
                 while (true)
                 {
                     if (client.Available == 0) continue;
+                    Console.WriteLine("Data recieved from: {0}", client.Client.RemoteEndPoint);
                     NetworkStream networkStream = client.GetStream();
 
                     if (networkStream.DataAvailable)
