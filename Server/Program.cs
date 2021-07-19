@@ -55,6 +55,19 @@ namespace InstantMultiplayer
                         if (test != null)
                         {
                             Console.WriteLine("[server] received TEST: {0}", test.Message);
+
+                            // SEND REPLY TEST
+                            var writer = new BinaryWriter(networkStream);
+                            var objectToSend = new TestMessage() { Message = "REPLY:" + test.Message };
+                            byte[] bytes;
+                            using (MemoryStream memory = new MemoryStream())
+                            {
+                                formatter.Serialize(memory, objectToSend);
+                                bytes = memory.ToArray();
+                            }
+
+                            writer.Write(bytes);
+                            // TEST END
                         }
                     }
 
