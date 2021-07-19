@@ -15,12 +15,17 @@ namespace InstantMultiplayer.Synchronization.Monitored
             _providers = new Dictionary<Type, IMonitorProvider>();
         }
 
-        public MonitoredComponent CreateComponentMonitor(Component componentInstance)
+        public static MonitoredComponent CreateComponentMonitor(Component componentInstance)
+        {
+            return Instance.InternalCreateComponentMonitor(componentInstance);
+        }
+
+        private MonitoredComponent InternalCreateComponentMonitor(Component componentInstance)
         {
             var fields = _providers.TryGetValue(componentInstance.GetType(), out var provider) ?
                 provider.MonitoredMembers(componentInstance).ToArray() :
                 GenericMembers(componentInstance);
-            return new MonitoredComponent(componentInstance.name, fields);
+            return new MonitoredComponent(componentInstance.name.GetHashCode(), fields);
         }
 
         public void RegisterProvider(IMonitorProvider monitorProvider)
@@ -48,11 +53,11 @@ namespace InstantMultiplayer.Synchronization.Monitored
             var type = componentInstance.GetType();
             var fields = type.GetRuntimeFields().Where(FieldIncluded);
             members.AddRange(fields.Select(f =>
-                new MonitoredMember(f.Name, () => f.GetValue(componentInstance), (v) => f.SetValue(componentInstance, v))
+                new MonitoredMember(() => f.GetValue(componentInstance), (v) => f.SetValue(componentInstance, v))
             ));
             var props = type.GetRuntimeProperties().Where(PropertyIncluded);
             members.AddRange(props.Select(p =>
-                new MonitoredMember(p.Name, () => p.GetValue(componentInstance), (v) => p.SetValue(componentInstance, v))
+                new MonitoredMember(() => p.GetValue(componentInstance), (v) => p.SetValue(componentInstance, v))
             ));
             return members.ToArray();
         }

@@ -4,13 +4,13 @@ namespace InstantMultiplayer.Synchronization.Monitored
 {
     public class MonitoredComponent
     {
-        public readonly string Id;
-        public readonly MonitoredMember[] Fields;
+        public readonly int Id;
+        public readonly MonitoredMember[] Members;
 
-        public MonitoredComponent(string id, MonitoredMember[] fields)
+        public MonitoredComponent(int id, MonitoredMember[] fields)
         {
-            Id = id ?? throw new ArgumentNullException(nameof(id));
-            Fields = fields ?? throw new ArgumentNullException(nameof(fields));
+            Id = id;
+            Members = fields ?? throw new ArgumentNullException(nameof(fields));
         }
     }
 }

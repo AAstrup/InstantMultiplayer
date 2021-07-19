@@ -6,6 +6,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Synchronization\Synchronization.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Reference Include="UnityEditor">
       <HintPath>..\Common\UnityEditor.dll</HintPath>
     </Reference>

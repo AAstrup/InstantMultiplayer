@@ -12,7 +12,7 @@ namespace InstantMultiplayer.UnityIntegration
         void OnEnable()
         {
             _clientFilter = serializedObject.FindProperty(nameof(Synchronizer.ClientFilter));
-            _behaviours = serializedObject.FindProperty(nameof(Synchronizer.Behaviours));
+            _behaviours = serializedObject.FindProperty(nameof(Synchronizer.Components));
         }
 
         public override void OnInspectorGUI()

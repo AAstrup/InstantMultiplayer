@@ -17,9 +17,9 @@ namespace InstantMultiplayer.Synchronization.Monitored.Implementation
             var transform = (Transform)componentInstance;
             return new MonitoredMember[]
             {
-                new MonitoredMember(nameof(Transform.localPosition), () => transform.localPosition, (val) => transform.localPosition = (Vector3)val),
-                new MonitoredMember(nameof(Transform.localRotation), () => transform.localRotation, (val) => transform.localRotation = (Quaternion)val),
-                new MonitoredMember(nameof(Transform.localScale), () => transform.localScale, (val) => transform.localScale = (Vector3)val)
+                new MonitoredMember(() => transform.localPosition, (val) => transform.localPosition = (Vector3)val),
+                new MonitoredMember(() => transform.localRotation, (val) => transform.localRotation = (Quaternion)val),
+                new MonitoredMember(() => transform.localScale, (val) => transform.localScale = (Vector3)val)
             };
         }
     }
