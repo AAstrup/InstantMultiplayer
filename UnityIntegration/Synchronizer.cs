@@ -16,25 +16,23 @@ namespace InstantMultiplayer.UnityIntegration
         [NonSerialized]
         public int SynchronizerId;
 
-        private DeltaProvider _deltaProvider;
-        private MonitoredComponent[] _monitoredComponents;
+        internal Dictionary<int, MonitoredComponent> _monitoredComponents;
 
         private void Start()
         {
             _monitoredComponents = Components
-                .Select(c => MonitorFactory.CreateComponentMonitor(c))
-                .ToArray();
-            //Register!
+                .ToDictionary(c => c.name.GetHashCode(), c => MonitorFactory.CreateComponentMonitor(c));
+            SyncClient.Instance.Register(this);
         }
 
         private void OnDestroy()
         {
-            //Deregister!
+            SyncClient.Instance.Unregister(this);
         }
 
-        public bool TryGetDeltaContainer(out DeltaContainer deltaContainer)
+        public bool TryGetDeltaContainer(DeltaProvider deltaProvider, out DeltaContainer deltaContainer)
         {
-            var deltaComps = GetDeltaComponents().ToArray();
+            var deltaComps = GetDeltaComponents(deltaProvider).ToArray();
             if (deltaComps.Length == 0)
             {
                 deltaContainer = null;
@@ -48,11 +46,11 @@ namespace InstantMultiplayer.UnityIntegration
             return true;
         }
 
-        private IEnumerable<DeltaComponent> GetDeltaComponents()
+        private IEnumerable<DeltaComponent> GetDeltaComponents(DeltaProvider deltaProvider)
         {
             var timeStamp = 0; //Demo for now
-            foreach(var monitorComp in _monitoredComponents)
-                if(_deltaProvider.TryGetDeltaComponent(monitorComp, timeStamp, out var deltaComponent))
+            foreach(var monitorComp in _monitoredComponents.Values)
+                if(deltaProvider.TryGetDeltaComponent(monitorComp, timeStamp, out var deltaComponent))
                     yield return deltaComponent;
         }
     }

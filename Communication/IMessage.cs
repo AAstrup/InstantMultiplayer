@@ -4,7 +4,7 @@ using System.Text;
 
 namespace InstantMultiplayer.Communication
 {
-    class Class1
+    public interface IMessage
     {
     }
 }

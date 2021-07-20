@@ -24,8 +24,9 @@ namespace InstantMultiplayer.Synchronization.Delta
 
         public IEnumerable<DeltaMember> GetDeltaMembers(MonitoredComponent monitoredComponent, int timeStamp)
         {
-            foreach(var member in monitoredComponent.Members)
+            for(int i=0; i<monitoredComponent.Members.Length; i++)
             {
+                var member = monitoredComponent.Members[i];
                 var val = member.GetValue();
                 if (member.LastValue.Equals(val))
                     continue;
@@ -33,6 +34,7 @@ namespace InstantMultiplayer.Synchronization.Delta
                 member.LastUpdateTimestamp = timeStamp;
                 yield return new DeltaMember
                 {
+                    Index = i,
                     Value = val,
                     TimeStamp = timeStamp
                 };
