@@ -1,5 +1,6 @@
 ﻿using SharedMessages;
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Net.Sockets;
 using System.Runtime.Serialization;
@@ -15,9 +16,12 @@ namespace TestClient
             try
             {
 
-                Console.WriteLine("Hello Client World!");
-                var host = "localhost";
-                //var host = "20.54.45.46";// -- Container instance
+                
+                //var host = "localhost";
+                var host = "instantmultiplayercontainer.northeurope.azurecontainer.io";// Container instance
+                Console.WriteLine("Hello Client World! Host is:" + host);
+
+
                 TcpClient tcpClient = new TcpClient(host, 61001);
                 Console.WriteLine("tcpClient started");
                 var stream = tcpClient.GetStream();
@@ -32,6 +36,8 @@ namespace TestClient
                 {
                     Console.WriteLine("Write line and press enter send that message to server");
                     var msg = Console.ReadLine();
+                    var timer = new Stopwatch();
+                    timer.Start();
 
                     var objectToSend = new TestMessage() { Message = msg };
                     byte[] bytes;
@@ -60,6 +66,9 @@ namespace TestClient
                             }
                         }
                     }
+
+                    timer.Stop();
+                    Console.WriteLine("Roundtrip ms: {0}", timer.ElapsedMilliseconds);
                 }
             }
             catch(Exception e)

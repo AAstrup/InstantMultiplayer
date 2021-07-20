@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace SharedMessages
+namespace InstantMultiplayer.Communication.Match
 {
     [Serializable]
     public class TestMessage
