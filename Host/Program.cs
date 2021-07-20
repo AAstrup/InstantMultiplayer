@@ -1,4 +1,4 @@
-﻿using SharedMessages;
+﻿using InstantMultiplayer.Communication.Match;
 using System;
 using System.IO;
 using System.Net;
