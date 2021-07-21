@@ -1,17 +1,15 @@
-﻿using UnityEditor;
-using UnityEngine;
-using UnityEngine.Rendering;
+﻿using UnityEngine;
 
 namespace Assets
 {
     public class IdTest: MonoBehaviour
     {
-        public Object Object;
+        public MeshRenderer MeshRenderer;
 
         private void Start()
         {
-            Debug.Log(Object.GetInstanceID());
-            Debug.Log(UnityObjectHelper.FindObjectFromInstanceID(Object.GetInstanceID()).name);
+            var material = (Material)UnityObjectHelper.FindObjectFromInstanceID(13198);
+            MeshRenderer.material = material;
         }
     }
 }

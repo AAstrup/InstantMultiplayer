@@ -1,6 +1,7 @@
-﻿using UnityEditor;
+﻿using InstantMultiplayer.UnityIntegration;
+using UnityEditor;
 
-namespace InstantMultiplayer.UnityIntegration
+namespace InstantMultiplayer.UnityIntegrationEditor
 {
     [CustomEditor(typeof(Synchronizer), true)]
     public class SynchronizerEditor : Editor

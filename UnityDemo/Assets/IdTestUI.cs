@@ -1,14 +1,18 @@
-﻿using UnityEditor;
+﻿#if UNITY_EDITOR
+using UnityEditor;
+#endif
 using UnityEngine;
-using UnityEngine.Rendering;
 using UnityEngine.UI;
+using System.Reflection;  
 
 namespace Assets
 {
     public class IdTestUI: MonoBehaviour
     {
+        FieldInfo fieldInfo;
         public InputField InputField;
         public Text Text;
+        public MeshRenderer MeshRenderer;
 
         private void Update()
         {
@@ -22,9 +26,15 @@ namespace Assets
                     else
                     {
                         Text.text = $"{obj.name} [{obj.GetType()}]";
+#if UNITY_EDITOR
                         if (obj is TextureImporter textureImporter)
                             Text.text += textureImporter.assetPath;
-                    }
+#endif
+                        if (obj is Material material)
+                            MeshRenderer.material = material;
+                        if (obj is Texture texture)
+                            MeshRenderer.material.mainTexture = texture;
+                    }  
                 }
             }
         }
