@@ -1,16 +1,18 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <RootNamespace>InstantMultiplayer.UnityIntegration</RootNamespace>
+    <RootNamespace>InstantMultiplayer.UnityIntegrationEditor</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Communication\Communication.csproj" />
-    <ProjectReference Include="..\Synchronization\Synchronization.csproj" />
+    <ProjectReference Include="..\UnityIntegration\UnityIntegration.csproj" />
   </ItemGroup>
 
   <ItemGroup>
+    <Reference Include="UnityEditor">
+      <HintPath>..\Common\UnityEditor.dll</HintPath>
+    </Reference>
     <Reference Include="UnityEngine.CoreModule">
       <HintPath>..\Common\UnityEngine.CoreModule.dll</HintPath>
     </Reference>

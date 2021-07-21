@@ -1,0 +1,4 @@
+﻿Til filer udenfor Resources:
+AssetBundles
+
+Resources.GetBuiltinResource<Mesh>("Cube.fbx");

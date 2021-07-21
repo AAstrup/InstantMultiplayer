@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace InstantMultiplayer.Synchronization.Monitored.Implementation
+namespace SynchronizationFR
 {
     public sealed class SyncedTransform : IMonitorProvider
     {
