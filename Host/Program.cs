@@ -1,4 +1,5 @@
-﻿using InstantMultiplayer.Communication.Match;
+﻿using Autofac;
+using InstantMultiplayer.Communication.Match;
 using System;
 using System.IO;
 using System.Net;
@@ -14,11 +15,23 @@ namespace InstantMultiplayer
         private static TcpListener listener;
         private static int port = 61001;
         private static int listenPing = 100;
+        private static IContainer container;
 
         static void Main(string[] args)
         {
+            RegisterDependencies();
+
             //Blocks forever
             ListenForNewClients(args).Wait();
+        }
+
+        private static void RegisterDependencies()
+        {
+            var builder = new ContainerBuilder();
+
+            builder.RegisterType<PlayerConnections>().SingleInstance();
+
+            container = builder.Build();
         }
 
         public static async Task ListenForNewClients(string[] args)
@@ -56,6 +69,7 @@ namespace InstantMultiplayer
         private static async Task ListenToConnectedClient(TcpClient client)
         {
             Console.WriteLine("ListenToConnectedClient: {0}", client.Client.RemoteEndPoint);
+            var playerConnections = container.Resolve<PlayerConnections>();
             try
             {
                 while (true)
@@ -69,23 +83,18 @@ namespace InstantMultiplayer
                         BinaryFormatter formatter = new BinaryFormatter();
                         var data = formatter.Deserialize(networkStream);
 
-                        var test = data as TestMessage;
-                        if (test != null)
+                        var loginMessage = data as MatchLoginRequest;
+                        if (loginMessage != null)
                         {
-                            Console.WriteLine("[server] received TEST: {0}", test.Message);
-
-                            // SEND REPLY TEST
-                            var writer = new BinaryWriter(networkStream);
-                            var objectToSend = new TestMessage() { Message = "REPLY:" + test.Message };
-                            byte[] bytes;
-                            using (MemoryStream memory = new MemoryStream())
+                            playerConnections.AddPlayer(playerConnections.TEMPGetNextId(), client);
+                        }
+                        var testMsg = data as TestMessage;
+                        if (testMsg != null)
+                        {
+                            foreach (var connection in playerConnections.TEMPGetAllPlayers())
                             {
-                                formatter.Serialize(memory, objectToSend);
-                                bytes = memory.ToArray();
+                                SendToClient(connection.GetStream(), testMsg.Message);
                             }
-
-                            writer.Write(bytes);
-                            // TEST END
                         }
                     }
 
@@ -96,6 +105,22 @@ namespace InstantMultiplayer
             {
                 Console.WriteLine(ex.Message);
             }
+        }
+
+        private static void SendToClient(NetworkStream networkStream, string message)
+        {
+            Console.WriteLine("[server] received TEST: {0}", message);
+            BinaryFormatter formatter = new BinaryFormatter();
+            var writer = new BinaryWriter(networkStream);
+            var objectToSend = new TestMessage() { Message = "REPLY:" + message };
+            byte[] bytes;
+            using (MemoryStream memory = new MemoryStream())
+            {
+                formatter.Serialize(memory, objectToSend);
+                bytes = memory.ToArray();
+            }
+
+            writer.Write(bytes);
         }
     }
 }

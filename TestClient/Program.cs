@@ -10,14 +10,15 @@ namespace TestClient
 {
     class Program
     {
+        private static BinaryWriter writer;
+        private static BinaryReader reader;
+
         static void Main(string[] args)
         {
             try
             {
-
-                
-                //var host = "localhost";
-                var host = "instantmultiplayercontainer.northeurope.azurecontainer.io";// Container instance
+                var host = "localhost";
+                //var host = "instantmultiplayercontainer.northeurope.azurecontainer.io";// Container instance
                 Console.WriteLine("Hello Client World! Host is:" + host);
 
 
@@ -25,30 +26,27 @@ namespace TestClient
                 Console.WriteLine("tcpClient started");
                 var stream = tcpClient.GetStream();
                 Console.WriteLine("tcpClient.GetStream");
-                var writer = new BinaryWriter(stream);
+                writer = new BinaryWriter(stream);
                 Console.WriteLine("BinaryWriter");
-                var reader = new BinaryReader(stream);
+                reader = new BinaryReader(stream);
                 Console.WriteLine("BinaryReader");
                 IFormatter formatter = new BinaryFormatter();
                 Console.WriteLine("new BinaryFormatter");
                 while (true)
                 {
                     Console.WriteLine("Write line and press enter send that message to server");
+                    Console.WriteLine("Or press enter to see new messages.");
                     var msg = Console.ReadLine();
-                    var timer = new Stopwatch();
-                    timer.Start();
 
-                    var objectToSend = new TestMessage() { Message = msg };
-                    byte[] bytes;
-                    using (MemoryStream memory = new MemoryStream())
+                    if (msg.Length != 0)
                     {
-                        formatter.Serialize(memory, objectToSend);
-                        bytes = memory.ToArray();
+                        SendMessage(new MatchLoginRequest() { });
+                        SendMessage(new TestMessage() { Message = msg });
                     }
 
-                    writer.Write(bytes);
-
-                    while (true)
+                    var timer = new Stopwatch();
+                    timer.Start();
+                    while (timer.ElapsedMilliseconds < 1000)
                     {
                         if (tcpClient.Available == 0) continue;
                         NetworkStream networkStream = tcpClient.GetStream();
@@ -67,13 +65,25 @@ namespace TestClient
                     }
 
                     timer.Stop();
-                    Console.WriteLine("Roundtrip ms: {0}", timer.ElapsedMilliseconds);
                 }
             }
             catch(Exception e)
             {
                 Console.WriteLine(e.Message);
             }
+        }
+
+        private static void SendMessage(object objectToSend)
+        {
+            IFormatter formatter = new BinaryFormatter();
+            byte[] bytes;
+            using (MemoryStream memory = new MemoryStream())
+            {
+                formatter.Serialize(memory, objectToSend);
+                bytes = memory.ToArray();
+            }
+
+            writer.Write(bytes);
         }
     }
 }
