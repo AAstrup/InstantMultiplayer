@@ -9,15 +9,30 @@ namespace Assets
 {
     public class IdTestUI: MonoBehaviour
     {
-        FieldInfo fieldInfo;
+        public Object[] Objects;
+        public Text ListText;
         public InputField InputField;
         public Text Text;
         public MeshRenderer MeshRenderer;
+
+        private void Start()
+        {
+            var str = "";
+            foreach (var obj in Objects)
+                str += $"{obj.name} {obj.GetType()} {obj.GetInstanceID()}\n";
+            ListText.text = str;
+
+
+        }
 
         private void Update()
         {
             if(Input.GetKeyDown(KeyCode.Return))
             {
+                var res = Resources.Load<Object>(InputField.text);
+                if (res != null)
+                    InputField.text = res.GetInstanceID().ToString();
+
                 if (int.TryParse(InputField.text, out var iid))
                 {
                     var obj = UnityObjectHelper.FindObjectFromInstanceID(iid);
@@ -34,7 +49,7 @@ namespace Assets
                             MeshRenderer.material = material;
                         if (obj is Texture texture)
                             MeshRenderer.material.mainTexture = texture;
-                    }  
+                    }   
                 }
             }
         }

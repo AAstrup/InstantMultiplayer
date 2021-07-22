@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SynchronizationFR.Monitored.Implementation;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -13,6 +14,7 @@ namespace SynchronizationFR.Monitored
 
         private MonitorFactory() {
             _providers = new Dictionary<Type, IMonitorProvider>();
+            RegisterProvider(new SyncedTransform());
         }
 
         public static MonitoredComponent CreateComponentMonitor(Component componentInstance)
@@ -31,7 +33,8 @@ namespace SynchronizationFR.Monitored
         public void RegisterProvider(IMonitorProvider monitorProvider)
         {
             foreach (var type in monitorProvider.ComponentTypes())
-                _providers.Add(type, monitorProvider);
+                if(!_providers.ContainsKey(type))
+                    _providers.Add(type, monitorProvider);
         }
 
         private Dictionary<Type, IMonitorProvider> _providers;

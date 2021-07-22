@@ -1,4 +1,6 @@
-﻿namespace SynchronizationFR.Delta
+﻿using SynchronizationFR.Monitored;
+
+namespace SynchronizationFR.Delta
 {
     public sealed class DeltaConsumer
     {

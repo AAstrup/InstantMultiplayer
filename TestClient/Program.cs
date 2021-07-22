@@ -63,8 +63,8 @@ namespace TestClient
                                 Console.WriteLine("Client service: {0}", test.Message);
                                 break;
                             }
-                        }
-                    }
+                        } 
+                    } 
 
                     timer.Stop();
                     Console.WriteLine("Roundtrip ms: {0}", timer.ElapsedMilliseconds);

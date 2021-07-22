@@ -44,27 +44,17 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DeltaComponent.cs" />
-    <Compile Include="DeltaConsumer.cs" />
-    <Compile Include="DeltaMember.cs" />
-    <Compile Include="DeltaProvider.cs" />
     <Compile Include="Delta\DeltaComponent.cs" />
     <Compile Include="Delta\DeltaConsumer.cs" />
     <Compile Include="Delta\DeltaMember.cs" />
     <Compile Include="Delta\DeltaProvider.cs" />
-    <Compile Include="IMonitorProvider.cs" />
-    <Compile Include="Implementation\SyncedTransform.cs" />
-    <Compile Include="MonitoredComponent.cs" />
-    <Compile Include="MonitoredMember.cs" />
     <Compile Include="Monitored\IMonitorProvider.cs" />
     <Compile Include="Monitored\Implementation\SyncedTransform.cs" />
     <Compile Include="Monitored\MonitoredComponent.cs" />
     <Compile Include="Monitored\MonitoredMember.cs" />
     <Compile Include="Monitored\MonitorFactory.cs" />
-    <Compile Include="MonitorFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RedVerden.cs" />
-    <Compile Include="SyncedTransform.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Monitored\Notes.txt" />
