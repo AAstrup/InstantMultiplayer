@@ -44,6 +44,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ComponentMapper.cs" />
     <Compile Include="Delta\DeltaComponent.cs" />
     <Compile Include="Delta\DeltaConsumer.cs" />
     <Compile Include="Delta\DeltaMember.cs" />

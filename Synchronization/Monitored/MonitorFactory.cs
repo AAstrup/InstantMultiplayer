@@ -15,7 +15,7 @@ namespace InstantMultiplayer.Synchronization.Monitored
         public static MonitorFactory Instance => _instance ?? (_instance = new MonitorFactory());
 
         private static MonitorFactory _instance;
-        private Dictionary<Type, IComponentMonitorProvider> _componentProviders;
+        private readonly Dictionary<Type, IComponentMonitorProvider> _componentProviders;
         private IMemberMonitorProvider[] _memberProviders;
 
         private MonitorFactory() {
@@ -26,9 +26,9 @@ namespace InstantMultiplayer.Synchronization.Monitored
             InternalMemberRegisterProvider(MonitorDefaults.MemberMonitors());
         }
 
-        public static ComponentMonitor CreateComponentMonitor(Component componentInstance)
+        public static ComponentMonitor CreateComponentMonitor(int id, Component componentInstance)
         {
-            return Instance.InternalCreateComponentMonitor(componentInstance);
+            return Instance.InternalCreateComponentMonitor(id, componentInstance);
         }
 
         public static MemberMonitor CreateMemberMonitor(object memberHolder, MemberInfo memberInfo)
@@ -51,12 +51,12 @@ namespace InstantMultiplayer.Synchronization.Monitored
             Instance.InternalMemberRegisterProvider(memberProvider);
         }
 
-        private ComponentMonitor InternalCreateComponentMonitor(Component componentInstance)
+        private ComponentMonitor InternalCreateComponentMonitor(int id, Component componentInstance)
         {
             var fields = _componentProviders.TryGetValue(componentInstance.GetType(), out var provider) ?
                 provider.MonitoredMembers(componentInstance).ToArray() :
                 GenericMembers(componentInstance);
-            return new ComponentMonitor(componentInstance.name.GetHashCode(), fields);
+            return new ComponentMonitor(id, fields);
         }
 
         private MemberMonitor InternalCreateMemberMonitor(object memberHolder, MemberInfo memberInfo)

@@ -1,4 +1,5 @@
 ﻿using InstantMultiplayer.Communication;
+using InstantMultiplayer.Synchronization;
 using InstantMultiplayer.Synchronization.Delta;
 using System.Collections.Generic;
 using UnityEngine;
@@ -55,9 +56,24 @@ namespace InstantMultiplayer.UnityIntegration
                     if (message is SyncMessage syncMessage)
                         foreach (var delta in syncMessage.Deltas)
                             if (_synchronizers.TryGetValue(delta.SynchronizerId, out var synchronizer))
-                                foreach (var compDelta in delta.Components)
-                                    if (synchronizer._monitoredComponents.TryGetValue(compDelta.Id, out var monitComp))
-                                        _deltaConsumer.ConsumeDelta(compDelta, monitComp);
+                            {
+                                //Update
+                                synchronizer.ConsumeDeltaContainer(_deltaConsumer, delta);
+                            } 
+                            else
+                            {
+                                //Create
+                                var gb = new GameObject();
+                                synchronizer = gb.AddComponent<Synchronizer>();
+                                synchronizer.SynchronizerId = delta.SynchronizerId;
+                                foreach(var comp in delta.Components)
+                                {
+                                    var compType = ComponentMapper.GetTypeFromCID(comp.TypeId);
+                                    gb.AddComponent(compType);
+                                }
+                                synchronizer.Initialize();
+                                synchronizer.ConsumeDeltaContainer(_deltaConsumer, delta);
+                            }
             }
         }
     }

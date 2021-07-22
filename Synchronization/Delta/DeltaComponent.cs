@@ -7,6 +7,7 @@ namespace InstantMultiplayer.Synchronization.Delta
     public sealed class DeltaComponent
     {
         public int Id;
+        public int TypeId;
         public DeltaMember[] Members;
     }
 }

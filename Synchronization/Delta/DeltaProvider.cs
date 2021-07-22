@@ -17,6 +17,7 @@ namespace InstantMultiplayer.Synchronization.Delta
             deltaComponent = new DeltaComponent
             {
                 Id = monitoredComponent.Id,
+                TypeId = ComponentMapper.GetCIDFromType(monitoredComponent.GetType()),
                 Members = members
             };
             return true;

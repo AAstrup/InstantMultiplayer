@@ -14,20 +14,27 @@ namespace InstantMultiplayer.UnityIntegration
         public SyncClientFilter ClientFilter;
         public List<Component> Components;
 
-        [NonSerialized]
-        public int SynchronizerId;
+        public int SynchronizerId { get; internal set; }
 
-        internal Dictionary<int, ComponentMonitor> _monitoredComponents = new Dictionary<int, ComponentMonitor>();
+        private Dictionary<int, ComponentMonitor> _monitoredComponents = new Dictionary<int, ComponentMonitor>();
 
         private void Start()
         {
+            Initialize();
+        }
+
+        internal void Initialize()
+        {
             try
             {
+                var counter = 0;
                 _monitoredComponents = Components
-                    .Select(c => MonitorFactory.CreateComponentMonitor(c))
+                    .Select(c => MonitorFactory.CreateComponentMonitor(counter++, c))
+                    .ToList()
                     .ToDictionary(m => m.Id, m => m);
                 SyncClient.Instance.Register(this);
-            } catch(Exception e)
+            }
+            catch (Exception e)
             {
                 Debug.LogError($"Synchronizer {name} failed to initialize due to: {e}");
             }
@@ -52,6 +59,13 @@ namespace InstantMultiplayer.UnityIntegration
                 Components = deltaComps
             };
             return true;
+        }
+
+        public void ConsumeDeltaContainer(DeltaConsumer deltaConsumer, DeltaContainer deltaContainer)
+        {
+            foreach (var compDelta in deltaContainer.Components)
+                if (_monitoredComponents.TryGetValue(compDelta.Id, out var monitComp))
+                    deltaConsumer.ConsumeDelta(compDelta, monitComp);
         }
 
         private IEnumerable<DeltaComponent> GetDeltaComponents(DeltaProvider deltaProvider)
