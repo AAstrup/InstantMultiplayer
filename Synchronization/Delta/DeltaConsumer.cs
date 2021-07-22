@@ -1,10 +1,10 @@
-﻿using InstantMultiplayer.Synchronization.Monitored;
+﻿using InstantMultiplayer.Synchronization.Monitored.ComponentMonitors;
 
 namespace InstantMultiplayer.Synchronization.Delta
 {
     public sealed class DeltaConsumer
     {
-        public void ConsumeDelta(DeltaComponent deltaComponent, MonitoredComponent monitoredComponent)
+        public void ConsumeDelta(DeltaComponent deltaComponent, ComponentMonitor monitoredComponent)
         {
             for(int i=0; i<monitoredComponent.Members.Length; i++)
             {

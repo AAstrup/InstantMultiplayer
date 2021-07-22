@@ -1,4 +1,4 @@
-﻿using InstantMultiplayer.Synchronization.Monitored;
+﻿using InstantMultiplayer.Synchronization.Monitored.ComponentMonitors;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -6,7 +6,7 @@ namespace InstantMultiplayer.Synchronization.Delta
 {
     public sealed class DeltaProvider
     {
-        public bool TryGetDeltaComponent(MonitoredComponent monitoredComponent, int timeStamp, out DeltaComponent deltaComponent)
+        public bool TryGetDeltaComponent(ComponentMonitor monitoredComponent, int timeStamp, out DeltaComponent deltaComponent)
         {
             var members = GetDeltaMembers(monitoredComponent, timeStamp).ToArray();
             if (members.Length == 0)
@@ -22,7 +22,7 @@ namespace InstantMultiplayer.Synchronization.Delta
             return true;
         }
 
-        public IEnumerable<DeltaMember> GetDeltaMembers(MonitoredComponent monitoredComponent, int timeStamp)
+        public IEnumerable<DeltaMember> GetDeltaMembers(ComponentMonitor monitoredComponent, int timeStamp)
         {
             for(int i=0; i<monitoredComponent.Members.Length; i++)
             {

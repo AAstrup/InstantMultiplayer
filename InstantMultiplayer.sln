@@ -7,15 +7,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnityIntegration", "UnityIn
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestClient", "TestClient\TestClient.csproj", "{233D273B-A146-4B8F-B80A-926BC5C21E90}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Synchronization", "Synchronization\Synchronization.csproj", "{741E76C0-3824-4DAE-9BA3-0873FA3E5B9B}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Communication", "Communication\Communication.csproj", "{031109A7-F747-4069-B4E7-488250C360AD}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnityIntegrationEditor", "UnityIntegrationEditor\UnityIntegrationEditor.csproj", "{3D238D41-3593-4432-91D5-D9FD6114D2B0}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Host", "Host\Host.csproj", "{795F9908-B8FE-4850-9382-B06D3D9092CE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SynchronizationFR", "SynchronizationFR\SynchronizationFR.csproj", "{0E853F20-1FED-4A47-9AB2-69C1C656D6D0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Synchronization", "Synchronization\Synchronization.csproj", "{0E853F20-1FED-4A47-9AB2-69C1C656D6D0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -31,10 +29,6 @@ Global
 		{233D273B-A146-4B8F-B80A-926BC5C21E90}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{233D273B-A146-4B8F-B80A-926BC5C21E90}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{233D273B-A146-4B8F-B80A-926BC5C21E90}.Release|Any CPU.Build.0 = Release|Any CPU
-		{741E76C0-3824-4DAE-9BA3-0873FA3E5B9B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{741E76C0-3824-4DAE-9BA3-0873FA3E5B9B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{741E76C0-3824-4DAE-9BA3-0873FA3E5B9B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{741E76C0-3824-4DAE-9BA3-0873FA3E5B9B}.Release|Any CPU.Build.0 = Release|Any CPU
 		{031109A7-F747-4069-B4E7-488250C360AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{031109A7-F747-4069-B4E7-488250C360AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{031109A7-F747-4069-B4E7-488250C360AD}.Release|Any CPU.ActiveCfg = Release|Any CPU

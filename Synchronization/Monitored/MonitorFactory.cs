@@ -1,4 +1,8 @@
-﻿using System;
+﻿using InstantMultiplayer.Synchronization.Monitored.ComponentMonitors;
+using InstantMultiplayer.Synchronization.Monitored.ComponentMonitors.Providers;
+using InstantMultiplayer.Synchronization.Monitored.MemberMonitors;
+using InstantMultiplayer.Synchronization.Monitored.MemberMonitors.Providers;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -8,33 +12,92 @@ namespace InstantMultiplayer.Synchronization.Monitored
 {
     public class MonitorFactory
     {
+        public static MonitorFactory Instance => _instance ?? (_instance = new MonitorFactory());
+
         private static MonitorFactory _instance;
-        public static MonitorFactory Instance => _instance ??= new MonitorFactory();
+        private Dictionary<Type, IComponentMonitorProvider> _componentProviders;
+        private IMemberMonitorProvider[] _memberProviders;
 
         private MonitorFactory() {
-            _providers = new Dictionary<Type, IMonitorProvider>();
+            _componentProviders = new Dictionary<Type, IComponentMonitorProvider>();
+            foreach(var componentMonitor in MonitorDefaults.ComponentMonitors())
+                RegisterComponentProvider(componentMonitor);
+            InternalMemberRegisterProvider(MonitorDefaults.MemberMonitors());
         }
 
-        public static MonitoredComponent CreateComponentMonitor(Component componentInstance)
+        public static ComponentMonitor CreateComponentMonitor(Component componentInstance)
         {
             return Instance.InternalCreateComponentMonitor(componentInstance);
         }
 
-        private MonitoredComponent InternalCreateComponentMonitor(Component componentInstance)
+        public static MemberMonitor CreateMemberMonitor(object memberHolder, MemberInfo memberInfo)
         {
-            var fields = _providers.TryGetValue(componentInstance.GetType(), out var provider) ?
+            return Instance.InternalCreateMemberMonitor(memberHolder, memberInfo);
+        }
+
+        public static MemberMonitor CreateGenericMemberMonitor(object memberHolder, MemberInfo memberInfo)
+        {
+            return Instance.InternalCreateGenericMemberMonitor(memberHolder, memberInfo);
+        }
+
+        public static void RegisterComponentProvider(IComponentMonitorProvider monitorProvider)
+        {
+            Instance.InternalComponentRegisterProvider(monitorProvider);
+        }
+
+        public static void RegisterMemberProvider(IMemberMonitorProvider memberProvider)
+        {
+            Instance.InternalMemberRegisterProvider(memberProvider);
+        }
+
+        private ComponentMonitor InternalCreateComponentMonitor(Component componentInstance)
+        {
+            var fields = _componentProviders.TryGetValue(componentInstance.GetType(), out var provider) ?
                 provider.MonitoredMembers(componentInstance).ToArray() :
                 GenericMembers(componentInstance);
-            return new MonitoredComponent(componentInstance.name.GetHashCode(), fields);
+            return new ComponentMonitor(componentInstance.name.GetHashCode(), fields);
         }
 
-        public void RegisterProvider(IMonitorProvider monitorProvider)
+        private MemberMonitor InternalCreateMemberMonitor(object memberHolder, MemberInfo memberInfo)
+        {
+            //var value = GetValueFromMemberInfo(memberHolder, memberInfo);
+            foreach (var provider in _memberProviders)
+                if (provider.IsApplicable(memberHolder, memberInfo))
+                    return provider.GetMonitor(memberHolder, memberInfo);
+            return CreateGenericMemberMonitor(memberHolder, memberInfo);
+        }
+
+        private void InternalComponentRegisterProvider(IComponentMonitorProvider monitorProvider)
         {
             foreach (var type in monitorProvider.ComponentTypes())
-                _providers.TryAdd(type, monitorProvider);
+                if(!_componentProviders.ContainsKey(type))
+                    _componentProviders.Add(type, monitorProvider);
         }
 
-        private Dictionary<Type, IMonitorProvider> _providers;
+        private void InternalMemberRegisterProvider(IMemberMonitorProvider memberProvider)
+        {
+            _memberProviders = _memberProviders.Append(memberProvider).OrderBy(p => p.Precedence).ToArray();
+        }
+
+        private void InternalMemberRegisterProvider(IEnumerable<IMemberMonitorProvider> memberProviders)
+        {
+            _memberProviders = _memberProviders.Concat(memberProviders).OrderBy(p => p.Precedence).ToArray();
+        }
+
+        private MemberMonitor InternalCreateGenericMemberMonitor(object memberHolder, MemberInfo memberInfo)
+        {
+            switch (memberInfo.MemberType)
+            {
+                case MemberTypes.Field:
+                    return new MemberMonitor(() => ((FieldInfo)memberInfo).GetValue(memberHolder),
+                        (val) => ((FieldInfo)memberInfo).SetValue(memberHolder, val));
+                case MemberTypes.Property:
+                    return new MemberMonitor(() => ((FieldInfo)memberInfo).GetValue(memberHolder),
+                        (val) => ((FieldInfo)memberInfo).SetValue(memberHolder, val));
+                default:
+                    throw new ArgumentException("Only with members of MemberType Field or Property with exposed read and write can a MemberMonitor be generically created!");
+            }
+        }
 
         private bool FieldIncluded(FieldInfo fieldInfo)
         {
@@ -47,17 +110,17 @@ namespace InstantMultiplayer.Synchronization.Monitored
             return propertyInfo.CanRead && propertyInfo.CanWrite && propertyInfo.GetSetMethod(true).IsPublic;
         }
 
-        private MonitoredMember[] GenericMembers(object componentInstance)
+        private MemberMonitor[] GenericMembers(object componentInstance)
         {
-            var members = new List<MonitoredMember>();
+            var members = new List<MemberMonitor>();
             var type = componentInstance.GetType();
             var fields = type.GetRuntimeFields().Where(FieldIncluded);
             members.AddRange(fields.Select(f =>
-                new MonitoredMember(() => f.GetValue(componentInstance), (v) => f.SetValue(componentInstance, v))
+                CreateMemberMonitor(componentInstance, f)
             ));
             var props = type.GetRuntimeProperties().Where(PropertyIncluded);
             members.AddRange(props.Select(p =>
-                new MonitoredMember(() => p.GetValue(componentInstance), (v) => p.SetValue(componentInstance, v))
+                CreateMemberMonitor(componentInstance, p)
             ));
             return members.ToArray();
         }

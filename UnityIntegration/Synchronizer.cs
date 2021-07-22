@@ -1,5 +1,6 @@
 ﻿using InstantMultiplayer.Synchronization.Delta;
 using InstantMultiplayer.Synchronization.Monitored;
+using InstantMultiplayer.Synchronization.Monitored.ComponentMonitors;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,7 +17,7 @@ namespace InstantMultiplayer.UnityIntegration
         [NonSerialized]
         public int SynchronizerId;
 
-        internal Dictionary<int, MonitoredComponent> _monitoredComponents;
+        internal Dictionary<int, ComponentMonitor> _monitoredComponents;
 
         private void Start()
         {

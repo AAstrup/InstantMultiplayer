@@ -1,6 +1,5 @@
 ﻿using InstantMultiplayer.Synchronization.Delta;
 using System;
-using System.Collections.Generic;
 
 namespace InstantMultiplayer.UnityIntegration
 {
