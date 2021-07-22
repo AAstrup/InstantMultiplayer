@@ -1,7 +1,10 @@
 ﻿using Autofac;
+using Host.Controllers;
 using InstantMultiplayer.Communication.Match;
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Runtime.Serialization.Formatters.Binary;
@@ -16,30 +19,51 @@ namespace InstantMultiplayer
         private static int port = 61001;
         private static int listenPing = 100;
         private static IContainer container;
+        private static Dictionary<Type, KeyValuePair<string, Action<object, TcpClient>>> controllers;
+        
+        //Configurations
+        private static bool debugging = true;
 
         static void Main(string[] args)
         {
             RegisterDependencies();
+            RegisterControllers();
 
             //Blocks forever
-            ListenForNewClients(args).Wait();
+            ListenForNewClients().Wait();
+        }
+
+        private static Dictionary<Type, KeyValuePair<string, Action<object, TcpClient>>> RegisterControllers()
+        {
+            var types = AppDomain.CurrentDomain.GetAssemblies()
+                .SelectMany(s => s.GetTypes())
+                .Where(p => typeof(IMessageController).IsAssignableFrom(p) && !p.IsAbstract);
+
+            controllers = new Dictionary<Type, KeyValuePair<string, Action<object, TcpClient>>>();
+            foreach (var type in types)
+            {
+                // If it fails to resolve the controller were not registered in the dependencies
+                var controller = (IMessageController)container.Resolve(type);
+                controllers.Add(controller.GetHandlerType(), new KeyValuePair<string, Action<object, TcpClient>>(controller.GetType().Name, controller.GetMessageHandler()));
+            }
+
+            return controllers;
         }
 
         private static void RegisterDependencies()
         {
             var builder = new ContainerBuilder();
 
-            builder.RegisterType<PlayerConnections>().SingleInstance();
+            builder.RegisterType<PlayerConnectionsRepository>().SingleInstance();
+            builder.RegisterType<MatchLoginController>().SingleInstance();
+            builder.RegisterType<TextMessageController>().SingleInstance();
 
             container = builder.Build();
         }
 
-        public static async Task ListenForNewClients(string[] args)
+
+        public static async Task ListenForNewClients()
         {
-            //IPAddress address;
-            //IPAddress.TryParse("127.0.0.1", out address);
-            ////IPAddress.TryParse("20.93.59.201", out address);
-            //Console.WriteLine($"Attempt to create listener on IP " + address.ToString());
             try
             {
                 listener = new TcpListener(IPAddress.Any, port);
@@ -69,33 +93,26 @@ namespace InstantMultiplayer
         private static async Task ListenToConnectedClient(TcpClient client)
         {
             Console.WriteLine("ListenToConnectedClient: {0}", client.Client.RemoteEndPoint);
-            var playerConnections = container.Resolve<PlayerConnections>();
+
             try
             {
                 while (true)
                 {
                     if (client.Available == 0) continue;
-                    Console.WriteLine("Data recieved from: {0}", client.Client.RemoteEndPoint);
                     NetworkStream networkStream = client.GetStream();
 
                     if (networkStream.DataAvailable)
                     {
                         BinaryFormatter formatter = new BinaryFormatter();
                         var data = formatter.Deserialize(networkStream);
-
-                        var loginMessage = data as MatchLoginRequest;
-                        if (loginMessage != null)
+                        var type = data.GetType();
+                        if (!controllers.ContainsKey(type))
                         {
-                            playerConnections.AddPlayer(playerConnections.TEMPGetNextId(), client);
+                            throw new Exception("Message of unknown type:" + type.ToString());
                         }
-                        var testMsg = data as TestMessage;
-                        if (testMsg != null)
-                        {
-                            foreach (var connection in playerConnections.TEMPGetAllPlayers())
-                            {
-                                SendToClient(connection.GetStream(), testMsg.Message);
-                            }
-                        }
+                        controllers[type].Value.Invoke(data, client);
+                        if(debugging)
+                            Console.WriteLine(controllers[type].Key.ToString() + " handled request of type " + type.ToString());
                     }
 
                     Thread.Sleep(listenPing);
@@ -105,22 +122,6 @@ namespace InstantMultiplayer
             {
                 Console.WriteLine(ex.Message);
             }
-        }
-
-        private static void SendToClient(NetworkStream networkStream, string message)
-        {
-            Console.WriteLine("[server] received TEST: {0}", message);
-            BinaryFormatter formatter = new BinaryFormatter();
-            var writer = new BinaryWriter(networkStream);
-            var objectToSend = new TestMessage() { Message = "REPLY:" + message };
-            byte[] bytes;
-            using (MemoryStream memory = new MemoryStream())
-            {
-                formatter.Serialize(memory, objectToSend);
-                bytes = memory.ToArray();
-            }
-
-            writer.Write(bytes);
         }
     }
 }
