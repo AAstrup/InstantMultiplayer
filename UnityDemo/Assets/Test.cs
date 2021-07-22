@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using InstantMultiplayer.Synchronization.Monitored;
+using UnityEngine;
 
 public class Test : MonoBehaviour
 {

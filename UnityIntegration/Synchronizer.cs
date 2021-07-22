@@ -17,18 +17,25 @@ namespace InstantMultiplayer.UnityIntegration
         [NonSerialized]
         public int SynchronizerId;
 
-        internal Dictionary<int, ComponentMonitor> _monitoredComponents;
+        internal Dictionary<int, ComponentMonitor> _monitoredComponents = new Dictionary<int, ComponentMonitor>();
 
         private void Start()
         {
-            _monitoredComponents = Components
-                .ToDictionary(c => c.name.GetHashCode(), c => MonitorFactory.CreateComponentMonitor(c));
-            SyncClient.Instance.Register(this);
+            try
+            {
+                _monitoredComponents = Components
+                    .Select(c => MonitorFactory.CreateComponentMonitor(c))
+                    .ToDictionary(m => m.Id, m => m);
+                SyncClient.Instance.Register(this);
+            } catch(Exception e)
+            {
+                Debug.LogError($"Synchronizer {name} failed to initialize due to: {e}");
+            }
         }
 
         private void OnDestroy()
         {
-            SyncClient.Instance.Unregister(this);
+            SyncClient.Instance?.Unregister(this);
         }
 
         public bool TryGetDeltaContainer(DeltaProvider deltaProvider, out DeltaContainer deltaContainer)

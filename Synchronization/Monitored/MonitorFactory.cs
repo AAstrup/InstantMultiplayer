@@ -20,8 +20,9 @@ namespace InstantMultiplayer.Synchronization.Monitored
 
         private MonitorFactory() {
             _componentProviders = new Dictionary<Type, IComponentMonitorProvider>();
-            foreach(var componentMonitor in MonitorDefaults.ComponentMonitors())
-                RegisterComponentProvider(componentMonitor);
+            _memberProviders = new IMemberMonitorProvider[0];
+            foreach (var componentMonitor in MonitorDefaults.ComponentMonitors())
+                InternalComponentRegisterProvider(componentMonitor);
             InternalMemberRegisterProvider(MonitorDefaults.MemberMonitors());
         }
 
