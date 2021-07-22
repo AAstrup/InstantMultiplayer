@@ -9,7 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: -960679451, guid: ea0510b07601f1b409aa83194989dcc9, type: 3}
-  m_Name: Me
+  m_Script: {fileID: -1989326671, guid: 02a9362be3d867c41b9521fbd273aed4, type: 3}
+  m_Name: Everyone
   m_EditorClassIdentifier: 
   ClientFilter: 0

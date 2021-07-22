@@ -12,7 +12,7 @@ namespace InstantMultiplayer.UnityIntegration
     public sealed class Synchronizer: MonoBehaviour
     {
         public SyncClientFilter ClientFilter;
-        public List<MonoBehaviour> Components;
+        public List<Component> Components;
 
         [NonSerialized]
         public int SynchronizerId;
