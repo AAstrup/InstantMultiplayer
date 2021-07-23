@@ -1,6 +1,5 @@
 ﻿using InstantMultiplayer;
 using InstantMultiplayer.Communication;
-using InstantMultiplayer.Communication.Match;
 using InstantMultiplayer.Synchronization;
 using InstantMultiplayer.Synchronization.Delta;
 using System;

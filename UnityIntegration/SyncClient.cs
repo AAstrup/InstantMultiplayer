@@ -28,12 +28,14 @@ namespace InstantMultiplayer.UnityIntegration
 
         private void Start()
         {
+            _controllers = new Dictionary<Type, IMessageController>();
             _controllers.Add(SyncMessageController.Instance.GetMessageType(), SyncMessageController.Instance);
             _controllers.Add(TextMessageController.Instance.GetMessageType(), TextMessageController.Instance);
         }
 
         private void Update()
         {
+            Debug.Log("_client.connected" + _client.connected);
             if (_client.connected)
             {
                 foreach (KeyValuePair<Type, IMessageController> controller in _controllers)

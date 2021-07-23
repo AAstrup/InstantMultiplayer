@@ -5,15 +5,15 @@ using UnityEngine;
 
 namespace InstantMultiplayer.UnityIntegration
 {
-    public class SynchronizeStore : MonoBehaviour
+    public class SynchronizeStore
     {
-        public static SynchronizeStore Instance;
+        public static SynchronizeStore Instance => _instance ?? (_instance = new SynchronizeStore());
+        private static SynchronizeStore _instance;
         public Dictionary<int, Synchronizer> synchronizers;
         private int idCounter;
-
-        private void Awake()
+        public SynchronizeStore()
         {
-            Instance = this;
+            synchronizers = new Dictionary<int, Synchronizer>();
         }
 
         internal void Register(Synchronizer synchronizer)
