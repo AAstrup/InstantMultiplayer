@@ -5,6 +5,7 @@ using System.IO;
 using System.Net.Sockets;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.Threading;
 
 namespace TestClient
 {
@@ -20,7 +21,7 @@ namespace TestClient
                 var host = "localhost";
                 //var host = "instantmultiplayercontainer.northeurope.azurecontainer.io";// Container instance
                 Console.WriteLine("Hello Client World! Host is:" + host);
-
+                Thread.Sleep(1000);
 
                 TcpClient tcpClient = new TcpClient(host, 61001);
                 Console.WriteLine("tcpClient started");
@@ -32,6 +33,7 @@ namespace TestClient
                 Console.WriteLine("BinaryReader");
                 IFormatter formatter = new BinaryFormatter();
                 Console.WriteLine("new BinaryFormatter");
+                SendMessage(new MessageMatchLogin() { });
                 while (true)
                 {
                     Console.WriteLine("Write line and press enter send that message to server");
@@ -40,10 +42,9 @@ namespace TestClient
 
                     if (msg.Length != 0)
                     {
-                        SendMessage(new MatchLoginRequest() { });
-                        SendMessage(new TestMessage() { Message = msg });
+                        SendMessage(new MessageText() { Message = msg });
                     }
-
+                    
                     var timer = new Stopwatch();
                     timer.Start();
                     while (timer.ElapsedMilliseconds < 1000)
@@ -55,15 +56,15 @@ namespace TestClient
                         {
                             var data = formatter.Deserialize(networkStream);
 
-                            var test = data as TestMessage;
+                            var test = data as MessageText;
                             if (test != null)
                             {
                                 Console.WriteLine("Client service: {0}", test.Message);
-                                break;
+                                timer.Restart();
                             }
-                        } 
-                    } 
-
+                        }
+                    }
+                    
                     timer.Stop();
                 }
             }
