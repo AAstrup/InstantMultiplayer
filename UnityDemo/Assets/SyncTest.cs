@@ -1,10 +1,7 @@
 ﻿using InstantMultiplayer.Synchronization;
 using InstantMultiplayer.Synchronization.Delta;
 using InstantMultiplayer.UnityIntegration;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using UnityEditor.Compilation;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -17,13 +14,15 @@ public class SyncTest : MonoBehaviour
 
     private void Start()
     {
+        var ts = ComponentMapper.Instance.IncludedTypes().ToList();
+
         Text.text = ComponentMapper.GetCIDFromType(typeof(Transform)).ToString();
     }
-
+     
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.S))
-            _delta = Synchronizer.TryGetDeltaContainer(new DeltaProvider(), out var delta) ? delta : null;
+            _delta = Synchronizer.TryGetDeltaContainer(new DeltaProvider(), out var delta) ? delta : _delta;
         if (Input.GetKeyDown(KeyCode.L))
             Synchronizer.ConsumeDeltaContainer(new DeltaConsumer(), _delta);
     }

@@ -17,7 +17,7 @@ namespace InstantMultiplayer.Synchronization
 
         private UnityObjectHelper()
         {
-            _findObjectFromIIDMethod = typeof(object)
+            _findObjectFromIIDMethod = typeof(UnityEngine.Object)
                 .GetMethod("FindObjectFromInstanceID", BindingFlags.NonPublic | BindingFlags.Static);
         }
     }

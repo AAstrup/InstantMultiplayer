@@ -10,7 +10,7 @@ namespace InstantMultiplayer.Synchronization.Monitored.ComponentMonitors.Provide
     {
         public IEnumerable<Type> ComponentTypes()
         {
-            yield return typeof(MeshFilter);
+            return new Type[] { typeof(MeshFilter) };
         }
 
         public IEnumerable<MemberMonitor> MonitoredMembers(Component componentInstance)

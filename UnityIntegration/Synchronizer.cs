@@ -47,8 +47,13 @@ namespace InstantMultiplayer.UnityIntegration
 
         public bool TryGetDeltaContainer(DeltaProvider deltaProvider, out DeltaContainer deltaContainer)
         {
-            var deltaComps = GetDeltaComponents(deltaProvider).ToArray();
-            if (deltaComps.Length == 0)
+            if (deltaProvider == null)
+            {
+                deltaContainer = null;
+                return false;
+            }
+            var deltaComps = GetDeltaComponents(deltaProvider)?.ToArray();
+            if (deltaComps == null || deltaComps.Length == 0)
             {
                 deltaContainer = null;
                 return false;
@@ -63,6 +68,7 @@ namespace InstantMultiplayer.UnityIntegration
 
         public void ConsumeDeltaContainer(DeltaConsumer deltaConsumer, DeltaContainer deltaContainer)
         {
+            if (deltaContainer == null) return;
             foreach (var compDelta in deltaContainer.Components)
                 if (_monitoredComponents.TryGetValue(compDelta.Id, out var monitComp))
                     deltaConsumer.ConsumeDelta(compDelta, monitComp);
@@ -70,10 +76,15 @@ namespace InstantMultiplayer.UnityIntegration
 
         private IEnumerable<DeltaComponent> GetDeltaComponents(DeltaProvider deltaProvider)
         {
+            if (deltaProvider == null) return null;
             var timeStamp = 0; //Demo for now
-            foreach(var monitorComp in _monitoredComponents.Values)
-                if(deltaProvider.TryGetDeltaComponent(monitorComp, timeStamp, out var deltaComponent))
-                    yield return deltaComponent;
+            var deltaComps = new List<DeltaComponent>();
+            foreach (var monitorComp in _monitoredComponents.Values)
+            {
+                if (deltaProvider.TryGetDeltaComponent(monitorComp, timeStamp, out var deltaComponent))
+                    deltaComps.Add(deltaComponent);
+            }
+            return deltaComps;
         }
     }
 }

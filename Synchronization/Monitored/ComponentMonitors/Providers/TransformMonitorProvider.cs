@@ -9,7 +9,7 @@ namespace InstantMultiplayer.Synchronization.Monitored.ComponentMonitors.Provide
     {
         public IEnumerable<Type> ComponentTypes()
         {
-            yield return typeof(TransformMonitorProvider);
+            return new Type[] { typeof(Transform) };
         }
 
         public IEnumerable<MemberMonitor> MonitoredMembers(Component componentInstance)

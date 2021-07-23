@@ -6,13 +6,19 @@ namespace InstantMultiplayer.Synchronization.Delta
     {
         public void ConsumeDelta(DeltaComponent deltaComponent, ComponentMonitor monitoredComponent)
         {
-            for(int i=0; i<monitoredComponent.Members.Length; i++)
+            var e = 0;
+            for(int i=0; i < monitoredComponent.Members.Length && i < deltaComponent.Members.Length; i++)
             {
-                if (monitoredComponent.Members[i].LastUpdateTimestamp > deltaComponent.Members[i].TimeStamp)
+                var monitoredMember = monitoredComponent.Members[i];
+                var deltaMember = deltaComponent.Members[e];
+                if (deltaMember.Index != i)
                     continue;
-                monitoredComponent.Members[i].SetValue(deltaComponent.Members[i]);
-                monitoredComponent.Members[i].LastValue = deltaComponent.Members[i];
-                monitoredComponent.Members[i].LastUpdateTimestamp = deltaComponent.Members[i].TimeStamp;
+                e++;
+                if (monitoredMember.LastUpdateTimestamp > deltaMember.TimeStamp)
+                    continue;
+                monitoredMember.SetValue(deltaMember.Value);
+                monitoredMember.LastValue = deltaMember;
+                monitoredMember.LastUpdateTimestamp = deltaMember.TimeStamp;
             }
         }
     }

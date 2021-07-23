@@ -15,5 +15,9 @@ namespace InstantMultiplayer.Synchronization.Monitored.MemberMonitors
             SetValue = setValue ?? throw new ArgumentNullException(nameof(setValue));
         }
 
+        public override string ToString()
+        {
+            return "Monitored: " + LastValue.ToString();
+        }
     }
 }
