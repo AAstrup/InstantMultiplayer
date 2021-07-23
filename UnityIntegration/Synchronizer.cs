@@ -33,7 +33,7 @@ namespace InstantMultiplayer.UnityIntegration
                     .Select(c => MonitorFactory.CreateComponentMonitor(counter++, c))
                     .ToList()
                     .ToDictionary(m => m.Id, m => m);
-                SyncClient.Instance.Register(this);
+                SynchronizeStore.Instance.Register(this);
             }
             catch (Exception e)
             {
@@ -43,7 +43,8 @@ namespace InstantMultiplayer.UnityIntegration
 
         private void OnDestroy()
         {
-            SyncClient.Instance?.Unregister(this);
+            SynchronizeStore.Instance?.Unregister(this);
+            //GameObjectDestroyMessageController.senddestroy TODO: Delete GameObject Controller
         }
 
         public bool TryGetDeltaContainer(DeltaProvider deltaProvider, out DeltaContainer deltaContainer)

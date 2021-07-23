@@ -1,6 +1,8 @@
 ﻿using InstantMultiplayer.Communication;
 using InstantMultiplayer.Synchronization;
 using InstantMultiplayer.Synchronization.Delta;
+using InstantMultiplayer.UnityIntegration.Controllers;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -9,78 +11,43 @@ namespace InstantMultiplayer.UnityIntegration
     [AddComponentMenu(EditorConstants.ComponentMenuName + "/" + nameof(SyncClient))]
     public sealed class SyncClient: MonoBehaviour
     {
-        public static SyncClient Instance;
-
-        public IClient _client;
-        private DeltaConsumer _deltaConsumer;
-        private DeltaProvider _deltaProvider;
-        private int idCounter;
-        private bool _connected;
-        private Dictionary<int, Synchronizer> _synchronizers;
-
-        public void Connect()
-        {
-            _connected = true;
-        }
-
-        internal void Register(Synchronizer synchronizer) {
-            synchronizer.SynchronizerId = idCounter++;
-            _synchronizers.Add(synchronizer.SynchronizerId, synchronizer); 
-        }
-        internal void Unregister(Synchronizer synchronizer) { _synchronizers.Remove(synchronizer.SynchronizerId); }
+        private Client _client;
+        private static Dictionary<Type, IMessageController> _controllers;
+        public bool useAzureServer = false;
+        private string azureIp = "instantmultiplayercontainer.northeurope.azurecontainer.io";
+        private int azurePort = 61001;
+        public string ip = "localhost";
+        public int port = 61001;
 
         private void Awake()
         {
-            Instance = this;
-            _client = new Client();
-            _synchronizers = new Dictionary<int, Synchronizer>();
-            _deltaConsumer = new DeltaConsumer();
-            _deltaProvider = new DeltaProvider();
+            var usedIp = useAzureServer ? azureIp : ip;
+            var usedPort = useAzureServer ? azurePort : azurePort;
+            _client = new Client(usedIp, usedPort);
+        }
+
+        private void Start()
+        {
+            _controllers = new Dictionary<Type, IMessageController>();
+            _controllers.Add(SyncMessageController.Instance.GetMessageType(), SyncMessageController.Instance);
+            _controllers.Add(TextMessageController.Instance.GetMessageType(), TextMessageController.Instance);
         }
 
         private void Update()
         {
-            if (_connected)
+            Debug.Log("_client.connected" + _client.connected);
+            if (_client.connected)
             {
-                var deltas = new List<DeltaContainer>();
-                foreach(var synchronizer in _synchronizers.Values)
-                    if (synchronizer.TryGetDeltaContainer(_deltaProvider, out var delta))
-                        deltas.Add(delta);
-                if (deltas.Count > 0)
-                    _client.SendMessage(new SyncMessage
-                    {
-                        Deltas = deltas
-                    });
-
-                while (_client.TryRecieveMessage(out var message))
-                    if (message is SyncMessage syncMessage)
-                        foreach (var delta in syncMessage.Deltas)
-                            if (_synchronizers.TryGetValue(delta.SynchronizerId, out var synchronizer))
-                            {
-                                //Update
-                                synchronizer.ConsumeDeltaContainer(_deltaConsumer, delta);
-                            } 
-                            else
-                            {
-                                //Create
-                                var gb = new GameObject();
-                                synchronizer = gb.AddComponent<Synchronizer>();
-                                synchronizer.SynchronizerId = delta.SynchronizerId;
-                                synchronizer.ClientFilter = ScriptableObject.CreateInstance<SyncClientFilter>();
-                                synchronizer.ClientFilter.ClientFilter = delta.ClientFilter;
-                                foreach (var deltaComp in delta.Components)
-                                {
-                                    var compType = ComponentMapper.GetTypeFromCID(deltaComp.TypeId);
-                                    var comp = compType == typeof(Transform) ?
-                                        gb.GetComponent<Transform>() :
-                                        gb.AddComponent(compType);
-                                    if (synchronizer.Components == null)
-                                        synchronizer.Components = new List<Component>();
-                                    synchronizer.Components.Add(comp);
-                                }
-                                synchronizer.Initialize();
-                                synchronizer.ConsumeDeltaContainer(_deltaConsumer, delta);
-                            }
+                foreach (KeyValuePair<Type, IMessageController> controller in _controllers)
+                {
+                    if (controller.Value.TryGetMessage(out var msg))
+                        _client.SendMessage(msg);
+                }
+                _client.Poll();
+                while (_client.incomingMessageQueue.TryDequeue(out var message))
+                {
+                    _controllers[message.GetType()].HandleMessage(message);
+                }
             }
         }
     }

@@ -15,8 +15,8 @@ namespace Assets
         private void Start()
         {
             _comClient = new TestCommunicationClient();
-            SyncClient._client = _comClient;
-            SyncClient.Connect();
+            //SyncClient._cl = _comClient;
+            //SyncClient.Connect();
         }
      
         void Update()

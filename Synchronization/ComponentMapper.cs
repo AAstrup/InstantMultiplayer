@@ -46,13 +46,20 @@ namespace InstantMultiplayer.Synchronization
             var comp = typeof(Component);
             foreach (var asm in AppDomain.CurrentDomain.GetAssemblies().Where(a => a.CustomAttributes.All(att => !att.AttributeType.Equals(typeof(AssemblyIsEditorAssembly)))))
             {
-                foreach (var type in asm.GetTypes().Distinct().OrderBy(t => t.Name))
-                    if (comp.IsAssignableFrom(type) && !type.IsAbstract)
-                    {
-                        var id = type.FullName.GetHashCode();
-                        _cidToType.Add(id, type);
-                        _typeToCID.Add(type, id);
-                    }
+                try
+                {
+                    foreach (var type in asm.GetTypes().Distinct().OrderBy(t => t.Name))
+                        if (comp.IsAssignableFrom(type) && !type.IsAbstract)
+                        {
+                            var id = type.FullName.GetHashCode();
+                            _cidToType.Add(id, type);
+                            _typeToCID.Add(type, id);
+                        }
+                }
+                catch(Exception e)
+                {
+                    Debug.LogError(e);
+                }
             }
         }
     }
