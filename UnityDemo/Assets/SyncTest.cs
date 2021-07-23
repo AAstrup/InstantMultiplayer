@@ -5,6 +5,8 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
+namespace Assets
+{
 public class SyncTest : MonoBehaviour
 {
     public Text Text;
@@ -26,4 +28,5 @@ public class SyncTest : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.L))
             Synchronizer.ConsumeDeltaContainer(new DeltaConsumer(), _delta);
     }
+}
 }

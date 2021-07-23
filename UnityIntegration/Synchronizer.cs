@@ -28,7 +28,8 @@ namespace InstantMultiplayer.UnityIntegration
             try
             {
                 var counter = 0;
-                _monitoredComponents = Components
+                _monitoredComponents = Components == null ? null :
+                    Components
                     .Select(c => MonitorFactory.CreateComponentMonitor(counter++, c))
                     .ToList()
                     .ToDictionary(m => m.Id, m => m);
@@ -61,6 +62,7 @@ namespace InstantMultiplayer.UnityIntegration
             deltaContainer = new DeltaContainer
             {
                 SynchronizerId = SynchronizerId,
+                ClientFilter = ClientFilter.ClientFilter,
                 Components = deltaComps
             };
             return true;

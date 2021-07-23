@@ -11,7 +11,7 @@ namespace InstantMultiplayer.UnityIntegration
     {
         public static SyncClient Instance;
 
-        private Client _client;
+        public IClient _client;
         private DeltaConsumer _deltaConsumer;
         private DeltaProvider _deltaProvider;
         private int idCounter;
@@ -52,7 +52,7 @@ namespace InstantMultiplayer.UnityIntegration
                         Deltas = deltas
                     });
 
-                while (_client.IncomingMessageQueue.TryDequeue(out var message))
+                while (_client.TryRecieveMessage(out var message))
                     if (message is SyncMessage syncMessage)
                         foreach (var delta in syncMessage.Deltas)
                             if (_synchronizers.TryGetValue(delta.SynchronizerId, out var synchronizer))
@@ -66,10 +66,17 @@ namespace InstantMultiplayer.UnityIntegration
                                 var gb = new GameObject();
                                 synchronizer = gb.AddComponent<Synchronizer>();
                                 synchronizer.SynchronizerId = delta.SynchronizerId;
-                                foreach(var comp in delta.Components)
+                                synchronizer.ClientFilter = ScriptableObject.CreateInstance<SyncClientFilter>();
+                                synchronizer.ClientFilter.ClientFilter = delta.ClientFilter;
+                                foreach (var deltaComp in delta.Components)
                                 {
-                                    var compType = ComponentMapper.GetTypeFromCID(comp.TypeId);
-                                    gb.AddComponent(compType);
+                                    var compType = ComponentMapper.GetTypeFromCID(deltaComp.TypeId);
+                                    var comp = compType == typeof(Transform) ?
+                                        gb.GetComponent<Transform>() :
+                                        gb.AddComponent(compType);
+                                    if (synchronizer.Components == null)
+                                        synchronizer.Components = new List<Component>();
+                                    synchronizer.Components.Add(comp);
                                 }
                                 synchronizer.Initialize();
                                 synchronizer.ConsumeDeltaContainer(_deltaConsumer, delta);
