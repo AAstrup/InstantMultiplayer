@@ -19,7 +19,6 @@ namespace InstantMultiplayer.UnityIntegration
         public string ip = "localhost";
         public int port = 61001;
 
-
         private void Awake()
         {
             var usedIp = useAzureServer ? azureIp : ip;
@@ -42,9 +41,8 @@ namespace InstantMultiplayer.UnityIntegration
                     if (controller.Value.TryGetMessage(out var msg))
                         _client.SendMessage(msg);
                 }
-
                 _client.Poll();
-                while (_client.IncomingMessageQueue.TryDequeue(out var message))
+                while (_client.incomingMessageQueue.TryDequeue(out var message))
                 {
                     _controllers[message.GetType()].HandleMessage(message);
                 }

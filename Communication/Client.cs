@@ -15,14 +15,14 @@ namespace InstantMultiplayer.Communication
         private TcpClient tcpClient;
         // For Denbugging
         public bool connected;
+        public Queue<IMessage> incomingMessageQueue;
 
         public Client(string ip, int port)
         {
-            IncomingMessageQueue = new Queue<IMessage>();
+            incomingMessageQueue = new Queue<IMessage>();
             Connect(ip, port);
         }
 
-        public Queue<IMessage> IncomingMessageQueue;
         public void SendMessage(IMessage message)
         {
             if (!connected) throw new Exception("You are not connected!");
@@ -59,7 +59,7 @@ namespace InstantMultiplayer.Communication
                 if (networkStream.DataAvailable)
                 {
                     var data = formatter.Deserialize(networkStream);
-                    IncomingMessageQueue.Equals(data);
+                    incomingMessageQueue.Enqueue((IMessage)data);
                 }
             }
         }
