@@ -35,7 +35,6 @@ namespace InstantMultiplayer.UnityIntegration
 
         private void Update()
         {
-            Debug.Log("_client.connected" + _client.connected);
             if (_client.connected)
             {
                 foreach (KeyValuePair<Type, IMessageController> controller in _controllers)
@@ -46,9 +45,15 @@ namespace InstantMultiplayer.UnityIntegration
                 _client.Poll();
                 while (_client.incomingMessageQueue.TryDequeue(out var message))
                 {
-                    _controllers[message.GetType()].HandleMessage(message);
+                    if(_controllers.TryGetValue(message.GetType(), out var controller))
+                        controller.HandleMessage(message);
                 }
             }
+        }
+
+        public void SendMessage(IMessage message)
+        {
+            _client.SendMessage(message);
         }
     }
 }

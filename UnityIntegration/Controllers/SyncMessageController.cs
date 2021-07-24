@@ -23,8 +23,14 @@ namespace InstantMultiplayer.UnityIntegration.Controllers
         }
 
         private static SyncMessageController _instance;
-        private DeltaConsumer _deltaConsumer;
-        private DeltaProvider _deltaProvider;
+        private readonly DeltaConsumer _deltaConsumer;
+        private readonly DeltaProvider _deltaProvider;
+
+        public SyncMessageController()
+        {
+            _deltaConsumer = new DeltaConsumer();
+            _deltaProvider = new DeltaProvider();
+        }
 
         public override void HandleMessage(SyncMessage syncMessage)
         {
@@ -54,6 +60,7 @@ namespace InstantMultiplayer.UnityIntegration.Controllers
 
         public override bool TryGetMessage(out IMessage message)
         {
+            Debug.Log(SynchronizeStore.Instance.synchronizers.Count.ToString());
             var deltas = new List<DeltaContainer>();
             var synchronizers = SynchronizeStore.Instance.synchronizers;
             foreach (var synchronizer in synchronizers.Values)

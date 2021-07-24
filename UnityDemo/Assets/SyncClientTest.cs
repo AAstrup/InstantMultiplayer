@@ -1,6 +1,6 @@
-﻿using Assets;
-using InstantMultiplayer.Synchronization.Delta;
+﻿using InstantMultiplayer.Communication;
 using InstantMultiplayer.UnityIntegration;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Assets
@@ -9,12 +9,12 @@ namespace Assets
     {
         public SyncClient SyncClient;
 
-        private DeltaContainer _delta;
-        private TestCommunicationClient _comClient;
+        //private DeltaContainer _delta;
+        //private TestCommunicationClient _comClient;
 
         private void Start()
         {
-            _comClient = new TestCommunicationClient();
+            //_comClient = new TestCommunicationClient();
             //SyncClient._cl = _comClient;
             //SyncClient.Connect();
         }
@@ -23,8 +23,12 @@ namespace Assets
         {
             if(Input.GetKeyDown(KeyCode.Return))
             {
-                var count = _comClient.Flush();
-                Debug.Log("Flushed " + count);
+                SyncClient.SendMessage(new SyncMessage
+                {
+                    Deltas = new List<DeltaContainer>()
+                });  
+                //var count = _comClient.Flush();
+               // Debug.Log("Flushed " + count);
             }
         }
     }
