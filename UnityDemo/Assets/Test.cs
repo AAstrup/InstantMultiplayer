@@ -11,12 +11,14 @@ namespace Assets
     public class Test : MonoBehaviour
     {
         public Text Text;
-        public List<UnityEngine.Object> Objects;
+        public List<Object> Objects;
 
         private void Start()
         {
+            Objects.Add(Resources.GetBuiltinResource<Mesh>("Cube.fbx"));
+            Text.text = "";
             foreach (var obj in Objects)
-                Text.text += obj.GetInstanceID() + "\n";
+                Text.text += obj.name + " " + obj.GetType() + " " + obj.GetInstanceID() + "\n";
         }
      
         void Update()

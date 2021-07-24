@@ -16,6 +16,7 @@ namespace InstantMultiplayer.UnityIntegration
 
         public int SynchronizerId { get; internal set; }
 
+        internal bool _foreign;
         private Dictionary<int, ComponentMonitor> _monitoredComponents = new Dictionary<int, ComponentMonitor>();
 
         private void Start()
@@ -33,7 +34,7 @@ namespace InstantMultiplayer.UnityIntegration
                     .Select(c => MonitorFactory.CreateComponentMonitor(counter++, c))
                     .ToList()
                     .ToDictionary(m => m.Id, m => m);
-                SynchronizeStore.Instance.Register(this);
+                SynchronizeStore.Instance.Register(this, _foreign);
             }
             catch (Exception e)
             {

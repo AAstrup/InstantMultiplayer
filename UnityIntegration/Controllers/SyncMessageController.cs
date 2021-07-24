@@ -60,6 +60,7 @@ namespace InstantMultiplayer.UnityIntegration.Controllers
                             synchronizer.Components = new List<Component>();
                         synchronizer.Components.Add(comp);
                     }
+                    synchronizer._foreign = true;
                     synchronizer.Initialize();
                     synchronizer.ConsumeDeltaContainer(_deltaConsumer, delta);
                 }

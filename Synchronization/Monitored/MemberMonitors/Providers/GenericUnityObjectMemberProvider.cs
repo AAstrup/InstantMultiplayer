@@ -1,5 +1,8 @@
 ﻿using InstantMultiplayer.Synchronization.Extensions;
+using System;
+using System.Collections.Generic;
 using System.Reflection;
+using UnityEngine;
 
 namespace InstantMultiplayer.Synchronization.Monitored.MemberMonitors.Providers
 {
@@ -17,18 +20,29 @@ namespace InstantMultiplayer.Synchronization.Monitored.MemberMonitors.Providers
 
         public bool IsApplicable(object memberHolder, MemberInfo memberInfo)
         {
-            return memberInfo.DeclaringType.IsAssignableFrom(typeof(UnityEngine.Object));
+            return _applicableTypes.Contains(memberInfo.DeclaringType);
         }
+
+        private static readonly List<Type> _applicableTypes = new List<Type>()
+        {
+            typeof(Texture2D),
+            typeof(Texture)
+        };
 
         private int GetIIDFromInfo(object memberHolder, MemberInfo memberInfo)
         {
-            return ((UnityEngine.Object)memberInfo.GetValueFromMemberInfo(memberHolder)).GetInstanceID();
+            /*var obj = (Object)memberInfo.GetValueFromMemberInfo(memberHolder);
+            var iid = obj.GetInstanceID();
+            Debug.Log("Got iid " + iid + " from " + obj.name);
+            return iid;*/
+            return 0;
         }
 
         private void SetObjectFromIID(object memberHolder, MemberInfo memberInfo, int iid)
         {
-            var obj = UnityObjectHelper.FindObjectFromInstanceID(iid);
-            memberInfo.SetValueFromMemberInfo(memberHolder, obj);
+            /*var obj = (Object)UnityObjectHelper.FindObjectFromInstanceID(iid);
+            Debug.Log("Got obj " + obj.name + " from " + iid);
+            memberInfo.SetValueFromMemberInfo(memberHolder, obj);*/
         }
     }
 }
