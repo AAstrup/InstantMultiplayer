@@ -29,7 +29,11 @@ namespace InstantMultiplayer.Communication.Serialization
 
         public object Deserialize(byte[] bytes)
         {
-            Stream stream = new MemoryStream(bytes);
+            return Deserialize(new MemoryStream(bytes));
+        }
+
+        public object Deserialize(Stream stream)
+        {
             return _formatter.Deserialize(stream);
         }
 

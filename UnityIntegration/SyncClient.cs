@@ -19,11 +19,15 @@ namespace InstantMultiplayer.UnityIntegration
         public string ip = "localhost";
         public int port = 61001;
 
+        private float _sendInterval;
+        private float _lastSendTimestamp;
+
         private void Awake()
         {
             var usedIp = useAzureServer ? azureIp : ip;
             var usedPort = useAzureServer ? azurePort : azurePort;
             _client = new Client(usedIp, usedPort);
+            _sendInterval = 1 / 30f;
         }
 
         private void Start()
@@ -31,22 +35,37 @@ namespace InstantMultiplayer.UnityIntegration
             _controllers = new Dictionary<Type, IMessageController>();
             _controllers.Add(SyncMessageController.Instance.GetMessageType(), SyncMessageController.Instance);
             _controllers.Add(TextMessageController.Instance.GetMessageType(), TextMessageController.Instance);
+            _client.OnIdentified += (e, v) =>
+            {
+                Debug.Log("Recieved local id " + v.LocalId);
+                SynchronizeStore.Instance.DigestLocalId(v.LocalId);
+            };
         }
 
         private void Update()
         {
             if (_client.connected)
             {
-                foreach (KeyValuePair<Type, IMessageController> controller in _controllers)
-                {
-                    if (controller.Value.TryGetMessage(out var msg))
-                        _client.SendMessage(msg);
-                }
                 _client.Poll();
-                while (_client.incomingMessageQueue.TryDequeue(out var message))
+                if (_client.identified)
                 {
-                    if(_controllers.TryGetValue(message.GetType(), out var controller))
-                        controller.HandleMessage(message);
+                    if (Time.time - _lastSendTimestamp > _sendInterval)
+                    {
+                        foreach (KeyValuePair<Type, IMessageController> controller in _controllers)
+                        {
+                            if (controller.Value.TryGetMessage(out var msg))
+                            {
+                                Debug.Log("Sending msg of type " + controller.Key.ToString());
+                                _client.SendMessage(msg);
+                            }
+                        }
+                        _lastSendTimestamp = Time.time;
+                    }
+                    while (_client.incomingMessageQueue.TryDequeue(out var message))
+                    {
+                        if (_controllers.TryGetValue(message.GetType(), out var controller))
+                            controller.HandleMessage(message);
+                    }
                 }
             }
         }

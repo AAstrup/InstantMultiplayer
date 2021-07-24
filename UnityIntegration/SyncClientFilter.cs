@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace InstantMultiplayer.UnityIntegration
 {
+    [Serializable]
     [CreateAssetMenu(fileName = nameof(SyncClientFilter), menuName = EditorConstants.AssetMenuName + "/" + nameof(SyncClientFilter), order = 1)]
     public sealed class SyncClientFilter: ScriptableObject
     {

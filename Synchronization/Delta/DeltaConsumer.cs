@@ -17,7 +17,7 @@ namespace InstantMultiplayer.Synchronization.Delta
                 if (monitoredMember.LastUpdateTimestamp > deltaMember.TimeStamp)
                     continue;
                 monitoredMember.SetValue(deltaMember.Value);
-                monitoredMember.LastValue = deltaMember;
+                monitoredMember.LastValue = deltaMember.Value;
                 monitoredMember.LastUpdateTimestamp = deltaMember.TimeStamp;
             }
         }

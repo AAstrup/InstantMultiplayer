@@ -1,5 +1,6 @@
 ﻿using InstantMultiplayer.UnityIntegration;
 using UnityEditor;
+using UnityEngine;
 
 namespace InstantMultiplayer.UnityIntegrationEditor
 {
@@ -9,7 +10,7 @@ namespace InstantMultiplayer.UnityIntegrationEditor
         public override void OnInspectorGUI()
         {
             var comp = (SyncClientFilter)target;
-
+            var oldFilterValue = comp.ClientFilter;
             for (int i = 0; i < 32; i++)
             {
                 var bitRepr = 1 << i;
@@ -27,9 +28,15 @@ namespace InstantMultiplayer.UnityIntegrationEditor
 
             var newFilterValue = EditorGUILayout.IntField("Filter value:", comp.ClientFilter);
             if (newFilterValue != comp.ClientFilter)
+            {
                 comp.ClientFilter = newFilterValue;
+            }
 
             serializedObject.ApplyModifiedProperties();
+            if (comp.ClientFilter != oldFilterValue)
+            {
+                EditorUtility.SetDirty(serializedObject.targetObject);
+            }
         }
     }
 }

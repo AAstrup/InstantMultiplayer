@@ -21,15 +21,7 @@ namespace Assets
      
         void Update()
         {
-            if(Input.GetKeyDown(KeyCode.Return))
-            {
-                SyncClient.SendMessage(new SyncMessage
-                {
-                    Deltas = new List<DeltaContainer>()
-                });  
-                //var count = _comClient.Flush();
-               // Debug.Log("Flushed " + count);
-            }
+            
         }
     }
 }

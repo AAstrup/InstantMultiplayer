@@ -1,6 +1,7 @@
 ﻿using Autofac;
 using Host.Controllers;
 using InstantMultiplayer.Communication.Match;
+using InstantMultiplayer.Communication.Serialization;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -57,6 +58,7 @@ namespace InstantMultiplayer
             builder.RegisterType<PlayerConnectionsRepository>().SingleInstance();
             builder.RegisterType<MatchLoginController>().SingleInstance();
             builder.RegisterType<TextMessageController>().SingleInstance();
+            builder.RegisterType<SyncMessageController>().SingleInstance();
 
             container = builder.Build();
         }
@@ -64,6 +66,7 @@ namespace InstantMultiplayer
 
         public static async Task ListenForNewClients()
         {
+            var connectionRepo = container.Resolve<PlayerConnectionsRepository>();
             try
             {
                 listener = new TcpListener(IPAddress.Any, port);
@@ -78,6 +81,7 @@ namespace InstantMultiplayer
                     Console.WriteLine($"listener.AcceptTcpClientAsync");
                     if (client.Connected)
                     {
+                        connectionRepo.AddPlayer(0, client);
                         Console.WriteLine($"client.Connected");
                         Task.Run(() => ListenToConnectedClient(client));
                         Console.WriteLine($"ListenToConnectedClient");
@@ -103,8 +107,7 @@ namespace InstantMultiplayer
 
                     if (networkStream.DataAvailable)
                     {
-                        BinaryFormatter formatter = new BinaryFormatter();
-                        var data = formatter.Deserialize(networkStream);
+                        var data = new BinarySerializer().Deserialize(networkStream);
                         var type = data.GetType();
                         if (!controllers.ContainsKey(type))
                         {

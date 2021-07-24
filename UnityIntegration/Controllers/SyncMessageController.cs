@@ -48,10 +48,17 @@ namespace InstantMultiplayer.UnityIntegration.Controllers
                     var gb = new GameObject();
                     synchronizer = gb.AddComponent<Synchronizer>();
                     synchronizer.SynchronizerId = delta.SynchronizerId;
-                    foreach (var comp in delta.Components)
+                    synchronizer.ClientFilter = ScriptableObject.CreateInstance<SyncClientFilter>();
+                    synchronizer.ClientFilter.ClientFilter = delta.ClientFilter;
+                    foreach (var deltaComp in delta.Components)
                     {
-                        var compType = ComponentMapper.GetTypeFromCID(comp.TypeId);
-                        gb.AddComponent(compType);
+                        var compType = ComponentMapper.GetTypeFromCID(deltaComp.TypeId);
+                        var comp = compType == typeof(Transform) ?
+                            gb.GetComponent<Transform>() :
+                            gb.AddComponent(compType);
+                        if (synchronizer.Components == null)
+                            synchronizer.Components = new List<Component>();
+                        synchronizer.Components.Add(comp);
                     }
                     synchronizer.Initialize();
                     synchronizer.ConsumeDeltaContainer(_deltaConsumer, delta);
@@ -60,7 +67,6 @@ namespace InstantMultiplayer.UnityIntegration.Controllers
 
         public override bool TryGetMessage(out IMessage message)
         {
-            Debug.Log(SynchronizeStore.Instance.synchronizers.Count.ToString());
             var deltas = new List<DeltaContainer>();
             var synchronizers = SynchronizeStore.Instance.synchronizers;
             foreach (var synchronizer in synchronizers.Values)

@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: -1989326671, guid: 02a9362be3d867c41b9521fbd273aed4, type: 3}
   m_Name: Everyone
   m_EditorClassIdentifier: 
-  ClientFilter: 0
+  ClientFilter: -1
