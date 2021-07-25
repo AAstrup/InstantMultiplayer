@@ -20,7 +20,8 @@ namespace InstantMultiplayer.Synchronization.Monitored
         {
             return new IMemberMonitorProvider[]
             {
-                new GenericUnityObjectMemberProvider()
+                new UnityObjectMemberProvider(),
+                new IIDReferableUnityObjectMemberProvider()
             };
         }
     }

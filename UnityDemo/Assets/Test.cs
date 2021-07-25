@@ -1,8 +1,11 @@
 ﻿using InstantMultiplayer.Synchronization;
 using InstantMultiplayer.Synchronization.Delta;
 using InstantMultiplayer.UnityIntegration;
+using Synchronization.Objects;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -12,17 +15,24 @@ namespace Assets
     {
         public Text Text;
         public List<Object> Objects;
+        public Synchronizer Synchronizer;
 
         private void Start()
         {
             Objects.Add(Resources.GetBuiltinResource<Mesh>("Cube.fbx"));
-            Text.text = "";
+            Text.text = Application.dataPath + "\n";
             foreach (var obj in Objects)
                 Text.text += obj.name + " " + obj.GetType() + " " + obj.GetInstanceID() + "\n";
         }
      
         void Update()
         {
+            if (SynchronizeStore.Instance.LocalId != 0)
+            {
+                Text.text = "ClientId: " + SynchronizeStore.Instance.LocalId.ToString() + "\n"
+                    + "SynchronizerId: " + Synchronizer.SynchronizerId;
+                
+            }
         }
     }
 }

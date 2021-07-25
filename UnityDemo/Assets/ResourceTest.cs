@@ -1,4 +1,7 @@
-﻿using UnityEngine;
+﻿using Synchronization.Extensions;
+using Synchronization.Objects;
+using System.Linq;
+using UnityEngine;
 using UnityEngine.UI;
 
 namespace Assets
@@ -10,9 +13,12 @@ namespace Assets
         public Text Text;
         private void Start()
         {
-            //var t = MeshRenderer.material.GetInstanceID();
-            //Text.text = MeshRenderer.ToString();
-
+            Text.text = "";
+            var name = MeshFilter.mesh.NonInstanceName();
+            if (ReferenceRepository.Instance.TryGetObject(name, typeof(Mesh), out var obj))
+                Text.text += obj.GetInstanceID().ToString() + "\n";
+            if (ResourceRepository.Instance.TryGetObject(MeshRenderer.material.NonInstanceName(), typeof(Material), out obj))
+                Text.text += obj.GetInstanceID().ToString() + "\n";
         }
     }
 }

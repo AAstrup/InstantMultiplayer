@@ -2,6 +2,8 @@
 using InstantMultiplayer.Synchronization;
 using InstantMultiplayer.Synchronization.Delta;
 using InstantMultiplayer.UnityIntegration.Controllers;
+using Synchronization.Objects;
+using Synchronization.Objects.Resources;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -24,10 +26,28 @@ namespace InstantMultiplayer.UnityIntegration
 
         private void Awake()
         {
-            var usedIp = useAzureServer ? azureIp : ip;
-            var usedPort = useAzureServer ? azurePort : azurePort;
-            _client = new Client(usedIp, usedPort);
-            _sendInterval = 1 / 30f;
+            var resourceOutline = Resources.Load<ResourceOutline>(ResourceOutline.ResourcePath);
+            if (resourceOutline != null)
+            {
+                ResourceRepository.Instance.Commit(resourceOutline.Entries, resourceOutline.GetInstanceID());
+            }
+
+            try
+            {
+                var usedIp = useAzureServer ? azureIp : ip;
+                var usedPort = useAzureServer ? azurePort : azurePort;
+                _client = new Client(usedIp, usedPort);
+                _client.OnIdentified += (e, v) =>
+                {
+                    Debug.Log("Recieved local id " + v.LocalId);
+                    SynchronizeStore.Instance.DigestLocalId(v.LocalId);
+                };
+                _sendInterval = 1 / 30f;
+            }
+            catch(Exception e)
+            {
+                Debug.LogError("SyncClient failed to connect: " + e.ToString());
+            }
         }
 
         private void Start()
@@ -35,16 +55,11 @@ namespace InstantMultiplayer.UnityIntegration
             _controllers = new Dictionary<Type, IMessageController>();
             _controllers.Add(SyncMessageController.Instance.GetMessageType(), SyncMessageController.Instance);
             _controllers.Add(TextMessageController.Instance.GetMessageType(), TextMessageController.Instance);
-            _client.OnIdentified += (e, v) =>
-            {
-                Debug.Log("Recieved local id " + v.LocalId);
-                SynchronizeStore.Instance.DigestLocalId(v.LocalId);
-            };
         }
 
         private void Update()
         {
-            if (_client.connected)
+            if (_client?.connected ?? false)
             {
                 _client.Poll();
                 if (_client.identified)

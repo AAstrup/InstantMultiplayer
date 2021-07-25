@@ -6,9 +6,9 @@ using UnityEngine;
 
 namespace InstantMultiplayer.Synchronization.Monitored.MemberMonitors.Providers
 {
-    public class GenericUnityObjectMemberProvider : IMemberMonitorProvider
+    public class IIDReferableUnityObjectMemberProvider : IMemberMonitorProvider
     {
-        public int Precedence => int.MaxValue;
+        public int Precedence => int.MaxValue - 1;
 
         public MemberMonitor GetMonitor(object memberHolder, MemberInfo memberInfo)
         {
@@ -31,18 +31,16 @@ namespace InstantMultiplayer.Synchronization.Monitored.MemberMonitors.Providers
 
         private int GetIIDFromInfo(object memberHolder, MemberInfo memberInfo)
         {
-            /*var obj = (Object)memberInfo.GetValueFromMemberInfo(memberHolder);
+            var obj = (UnityEngine.Object)memberInfo.GetValueFromMemberInfo(memberHolder);
             var iid = obj.GetInstanceID();
-            Debug.Log("Got iid " + iid + " from " + obj.name);
-            return iid;*/
-            return 0;
+            return iid;
         }
 
         private void SetObjectFromIID(object memberHolder, MemberInfo memberInfo, int iid)
         {
-            /*var obj = (Object)UnityObjectHelper.FindObjectFromInstanceID(iid);
+            var obj = (UnityEngine.Object)UnityObjectHelper.FindObjectFromInstanceID(iid);
             Debug.Log("Got obj " + obj.name + " from " + iid);
-            memberInfo.SetValueFromMemberInfo(memberHolder, obj);*/
+            memberInfo.SetValueFromMemberInfo(memberHolder, obj);
         }
     }
 }
