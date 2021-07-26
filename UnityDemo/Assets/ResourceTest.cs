@@ -8,17 +8,19 @@ namespace Assets
 {
     public class ResourceTest: MonoBehaviour
     {
-        public MeshFilter MeshFilter;
-        public MeshRenderer MeshRenderer;
         public Text Text;
         private void Start()
         {
             Text.text = "";
-            var name = MeshFilter.mesh.NonInstanceName();
-            if (ReferenceRepository.Instance.TryGetObject(name, typeof(Mesh), out var obj))
-                Text.text += obj.GetInstanceID().ToString() + "\n";
-            if (ResourceRepository.Instance.TryGetObject(MeshRenderer.material.NonInstanceName(), typeof(Material), out obj))
-                Text.text += obj.GetInstanceID().ToString() + "\n";
+            Text.text += nameof(ReferenceRepository) + "\n";
+            foreach (var p in ReferenceRepository.Instance.MapCopy())
+                foreach (var pp in p.Value)
+                    Text.text += $"[{p.Key}] {pp.Key}: {pp.Value.name} \n";
+            Text.text += "\n";
+            Text.text += nameof(ResourceRepository) + "\n";
+            foreach (var p in ResourceRepository.Instance.MapCopy())
+                foreach (var pp in p.Value)
+                    Text.text += $"[{p.Key}] {pp.Key}: {pp.Value} \n";
         }
     }
 }

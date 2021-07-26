@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace Synchronization.Objects
@@ -45,11 +46,14 @@ namespace Synchronization.Objects
             }
         }
 
+        public Dictionary<string, Dictionary<string, string>> MapCopy()
+        {
+            return _map.ToDictionary(p => p.Key, p => p.Value.ToDictionary(pp => pp.Key, pp => pp.Value));
+        }
+
         public bool TryGetObject(string name, Type type, out UnityEngine.Object obj)
         {
             obj = null;
-            foreach (var key in _map.Keys)
-                Debug.Log(key);
             if (_map.TryGetValue(type.FullName, out var map))
             {
                 Debug.Log("Resource load with " + name + " of " + type.FullName);

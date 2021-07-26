@@ -12,7 +12,7 @@ namespace Synchronization.Objects
 
         private Dictionary<string, Dictionary<string, UnityEngine.Object>> _map;
 
-        public ReferenceRepository()
+        internal ReferenceRepository()
         {
             _map = new Dictionary<string, Dictionary<string, UnityEngine.Object>>();
             Commit(GetDefaultObjects());
@@ -49,6 +49,11 @@ namespace Synchronization.Objects
         private IEnumerable<UnityEngine.Object> GetDefaultObjects()
         {
             return PrimitiveMeshPaths.Select(p => Resources.GetBuiltinResource<Mesh>(p));
+        }
+
+        public Dictionary<string, Dictionary<string, UnityEngine.Object>> MapCopy()
+        {
+            return _map.ToDictionary(p => p.Key, p => p.Value.ToDictionary(pp => pp.Key, pp => pp.Value));
         }
 
         private static string[] PrimitiveMeshPaths = new string[]

@@ -28,6 +28,3 @@ MonoBehaviour:
   - Name: Grass-1
     TypeName: UnityEngine.Texture2D
     Path: Textures\Grass-1
-  - Name: Grass-3
-    TypeName: UnityEngine.Texture2D
-    Path: Textures\Grass-3

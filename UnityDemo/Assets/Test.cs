@@ -1,6 +1,7 @@
 ﻿using InstantMultiplayer.Synchronization;
 using InstantMultiplayer.Synchronization.Delta;
 using InstantMultiplayer.UnityIntegration;
+using Synchronization.Extensions;
 using Synchronization.Objects;
 using System.Collections.Generic;
 using System.IO;
@@ -16,6 +17,7 @@ namespace Assets
         public Text Text;
         public List<Object> Objects;
         public Synchronizer Synchronizer;
+        public MeshFilter MeshFilter;
 
         private void Start()
         {
@@ -30,8 +32,9 @@ namespace Assets
             if (SynchronizeStore.Instance.LocalId != 0)
             {
                 Text.text = "ClientId: " + SynchronizeStore.Instance.LocalId.ToString() + "\n"
-                    + "SynchronizerId: " + Synchronizer.SynchronizerId;
-                
+                    + "SynchronizerId: " + Synchronizer.SynchronizerId + "\n" +
+                    MeshFilter.sharedMesh.name + "\n" +
+                    UnityObjectHelper.FindObjectFromInstanceID(MeshFilter.sharedMesh.GetInstanceID()).name;
             }
         }
     }

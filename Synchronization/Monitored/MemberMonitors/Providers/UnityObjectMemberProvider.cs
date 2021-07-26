@@ -37,6 +37,9 @@ namespace InstantMultiplayer.Synchronization.Monitored.MemberMonitors.Providers
                 memberInfo.SetValueFromMemberInfo(memberHolder, obj);
             else
                 memberInfo.SetValueFromMemberInfo(memberHolder, null);
+
+            if (memberInfo.GetValueFromMemberInfo(memberHolder) is UnityEngine.Object o && o != null)
+                Debug.Log(o.name);
         }
     }
 }

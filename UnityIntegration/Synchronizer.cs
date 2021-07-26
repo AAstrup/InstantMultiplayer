@@ -21,6 +21,8 @@ namespace InstantMultiplayer.UnityIntegration
 
         private void Start()
         {
+            if (_foreign)
+                return;
             Initialize();
         }
 
@@ -80,6 +82,7 @@ namespace InstantMultiplayer.UnityIntegration
 
         private IEnumerable<DeltaComponent> GetDeltaComponents(DeltaProvider deltaProvider)
         {
+            if (_foreign) return null; //For now...
             if (deltaProvider == null) return null;
             var timeStamp = 0; //Demo for now
             var deltaComps = new List<DeltaComponent>();

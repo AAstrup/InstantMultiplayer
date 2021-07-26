@@ -50,6 +50,7 @@ namespace InstantMultiplayer.UnityIntegration.Controllers
                     synchronizer.SynchronizerId = delta.SynchronizerId;
                     synchronizer.ClientFilter = ScriptableObject.CreateInstance<SyncClientFilter>();
                     synchronizer.ClientFilter.ClientFilter = delta.ClientFilter;
+                    Debug.Log("Creating GB for foreign synchronizer id: " + synchronizer.SynchronizerId);
                     foreach (var deltaComp in delta.Components)
                     {
                         var compType = ComponentMapper.GetTypeFromCID(deltaComp.TypeId);
