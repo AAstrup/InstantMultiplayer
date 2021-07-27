@@ -6,12 +6,13 @@ namespace Synchronization.Objects
     public class ResourceEntry
     {
         public string Name;
+        public int Id;
         public string TypeName;
         public string Path;
 
         public override string ToString()
         {
-            return $"{Name} of {TypeName} at {Path}";
+            return $"{Name} with id {Id} of {TypeName} at {Path}";
         }
     }
 }

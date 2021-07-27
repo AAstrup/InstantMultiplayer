@@ -1,21 +1,21 @@
-﻿using System;
+﻿using Synchronization.HashCodes;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
 namespace Synchronization.Objects
 {
-    public class ResourceRepository
+    public class ResourceRepository: ABaseRepository<string>
     {
         public static ResourceRepository Instance => _instance ?? (_instance = new ResourceRepository());
         private static ResourceRepository _instance;
 
-        private Dictionary<string, Dictionary<string, string>> _map;
         private List<int> _committedIds;
 
         public ResourceRepository()
         {
-            _map = new Dictionary<string, Dictionary<string, string>>();
+            _map = new Dictionary<string, Dictionary<int, string>>();
             _committedIds = new List<int>();
         }
 
@@ -32,32 +32,27 @@ namespace Synchronization.Objects
             {
                 if (_map.TryGetValue(entry.TypeName, out var map))
                 {
-                    if (_map.ContainsKey(entry.Name))
+                    if (map.ContainsKey(entry.Id))
                         throw new Exception("Duplicate objects of same type and name: " + entry);
                     else
-                        map.Add(entry.Name, entry.Path);
+                        map.Add(entry.Id, entry.Path);
                 }
                 else
                 {
-                    var newMap = new Dictionary<string, string>();
-                    newMap.Add(entry.Name, entry.Path);
+                    var newMap = new Dictionary<int, string>();
+                    newMap.Add(entry.Id, entry.Path);
                     _map.Add(entry.TypeName, newMap);
                 }
             }
         }
 
-        public Dictionary<string, Dictionary<string, string>> MapCopy()
-        {
-            return _map.ToDictionary(p => p.Key, p => p.Value.ToDictionary(pp => pp.Key, pp => pp.Value));
-        }
-
-        public bool TryGetObject(string name, Type type, out UnityEngine.Object obj)
+        public override bool TryGetObject(int id, Type type, out UnityEngine.Object obj)
         {
             obj = null;
             if (_map.TryGetValue(type.FullName, out var map))
             {
-                Debug.Log("Resource load with " + name + " of " + type.FullName);
-                if (map.TryGetValue(name, out var path))
+                Debug.Log("Resource load with id " + id + " of type " + type.FullName);
+                if (map.TryGetValue(id, out var path))
                 {
                     obj = Resources.Load(path, type);
                     Debug.Log((obj == null));
