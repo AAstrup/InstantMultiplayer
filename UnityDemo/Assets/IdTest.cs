@@ -8,7 +8,7 @@ namespace Assets
 
         private void Start()
         {
-            var material = MeshRenderer;
+            //var material = MeshRenderer;
             //MeshRenderer.material = material;
         }
     }
