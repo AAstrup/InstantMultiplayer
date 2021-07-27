@@ -20,7 +20,7 @@ MonoBehaviour:
     TypeName: UnityEngine.Material
     Path: Materials\Floor
   - Name: box
-    TypeName: UnityEngine.GameObject
+    TypeName: UnityEditor.DefaultAsset
     Path: Models\box
   - Name: dummy
     TypeName: UnityEngine.Texture2D
