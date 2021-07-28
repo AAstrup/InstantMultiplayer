@@ -41,6 +41,7 @@ namespace InstantMultiplayer.Communication
 
             var stream = tcpClient.GetStream();
             writer = new BinaryWriter(stream);
+            SendMessage(new MessageMatchLogin());
         }
 
         public int Poll()
@@ -50,7 +51,6 @@ namespace InstantMultiplayer.Communication
             {
                 count++;
                 var networkStream = tcpClient.GetStream();
-                SendMessage(new MessageMatchLogin());
 
                 if (networkStream.DataAvailable)
                 {
