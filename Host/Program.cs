@@ -118,7 +118,7 @@ namespace InstantMultiplayer
                             Console.WriteLine(controllers[type].Key.ToString() + " handled request of type " + type.ToString());
                     }
 
-                    Thread.Sleep(listenPing);
+                    //Thread.Sleep(listenPing);
                 }
             }
             catch (Exception ex)

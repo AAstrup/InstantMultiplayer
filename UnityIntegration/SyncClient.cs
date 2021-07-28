@@ -20,8 +20,9 @@ namespace InstantMultiplayer.UnityIntegration
         private int azurePort = 61001;
         public string ip = "localhost";
         public int port = 61001;
+        public int SyncFrequency = 30;
 
-        private float _sendInterval;
+        private float _sendInterval => 1f / SyncFrequency;
         private float _lastSendTimestamp;
 
         private void Start()
@@ -42,7 +43,6 @@ namespace InstantMultiplayer.UnityIntegration
                     Debug.Log("Recieved local id " + v.LocalId);
                     SynchronizeStore.Instance.DigestLocalId(v.LocalId);
                 };
-                _sendInterval = 1 / 30f;
             }
             catch(Exception e)
             {

@@ -691,9 +691,10 @@ MonoBehaviour:
   m_Script: {fileID: 2124930896, guid: 02a9362be3d867c41b9521fbd273aed4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  useAzureServer: 0
+  useAzureServer: 1
   ip: localhost
   port: 61001
+  SyncFrequency: 30
 --- !u!4 &1317269587
 Transform:
   m_ObjectHideFlags: 0
@@ -720,6 +721,7 @@ MonoBehaviour:
   m_Script: {fileID: 1489789769, guid: f2df1153ed884af45802b41daa382473, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  meshes: []
 --- !u!1 &1324486806
 GameObject:
   m_ObjectHideFlags: 0
@@ -831,6 +833,7 @@ GameObject:
   - component: {fileID: 1904079965}
   - component: {fileID: 1904079969}
   - component: {fileID: 1904079970}
+  - component: {fileID: 1904079971}
   m_Layer: 0
   m_Name: Synchronizer
   m_TagString: Untagged
@@ -944,6 +947,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Text: {fileID: 1904848620}
+--- !u!114 &1904079971
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1904079964}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd11534b0470b6d4bb7922651780f267, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Component: {fileID: 0}
 --- !u!1 &1904848618
 GameObject:
   m_ObjectHideFlags: 0

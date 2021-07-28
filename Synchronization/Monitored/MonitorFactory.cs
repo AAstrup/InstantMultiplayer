@@ -125,5 +125,27 @@ namespace InstantMultiplayer.Synchronization.Monitored
             ));
             return members.ToArray();
         }
+
+        public IEnumerable<FieldInfo> MonitorableFieldInfos(object componentInstance)
+        {
+            var type = componentInstance.GetType();
+            var fields = type.GetRuntimeFields().Where(FieldIncluded);
+            return fields;
+        }
+
+        public IEnumerable<PropertyInfo> MonitorablePropertyInfos(object componentInstance)
+        {
+            var type = componentInstance.GetType();
+            var properties = type.GetRuntimeProperties().Where(PropertyIncluded);
+            return properties;
+        }
+
+        public IEnumerable<MemberInfo> MonitorableMemberInfos(object componentInstance)
+        {
+            var type = componentInstance.GetType();
+            var fields = type.GetRuntimeFields().Where(FieldIncluded);
+            var properties = type.GetRuntimeProperties().Where(PropertyIncluded);
+            return (fields as IEnumerable<MemberInfo>)?.Concat(properties) ?? Enumerable.Empty<MemberInfo>();
+        }
     }
 }
