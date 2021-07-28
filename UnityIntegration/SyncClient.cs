@@ -24,6 +24,11 @@ namespace InstantMultiplayer.UnityIntegration
         private float _sendInterval;
         private float _lastSendTimestamp;
 
+        void Awake()
+        {
+            Application.runInBackground = true;
+        }
+
         private void Start()
         {
             var resourceOutline = Resources.Load<ResourceOutline>(ResourceOutline.ResourcePath);

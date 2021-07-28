@@ -24,7 +24,7 @@ namespace Host.Controllers
 
             //For now we do this instead
             foreach (var delta in message.Deltas)
-                foreach(var client in _playerConnectionsRepository.GetClients())
+                foreach (var client in _playerConnectionsRepository.GetClients())
                     if (client != tcpClient)
                         _playerConnectionsRepository.SendToClient(client, message);
         }
