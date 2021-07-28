@@ -1,20 +1,19 @@
-﻿using System;
+﻿using Synchronization.HashCodes;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
 namespace Synchronization.Objects
 {
-    public class ReferenceRepository
+    public class ReferenceRepository: ABaseRepository<UnityEngine.Object>
     {
         public static ReferenceRepository Instance => _instance ?? (_instance = new ReferenceRepository());
         private static ReferenceRepository _instance;
 
-        private Dictionary<string, Dictionary<string, UnityEngine.Object>> _map;
-
         internal ReferenceRepository()
         {
-            _map = new Dictionary<string, Dictionary<string, UnityEngine.Object>>();
+            _map = new Dictionary<string, Dictionary<int, UnityEngine.Object>>();
             Commit(GetDefaultObjects());
         }
 
@@ -24,24 +23,29 @@ namespace Synchronization.Objects
             {
                 if (_map.TryGetValue(obj.GetType().FullName, out var map))
                 {
-                    if (_map.ContainsKey(obj.name))
-                        throw new Exception($"Duplicate objects of same type and name: {obj.name} of {obj.GetType().FullName}");
+                    var id = IdFactory.Instance.GetId(obj);
+                    if (map.ContainsKey(id))
+                        throw new Exception($"Duplicate objects of same type and id: {id} of {obj.GetType().FullName}");
                     else
-                        map.Add(obj.name, obj);
+                    {
+                        map.Add(id, obj);
+                        //map.Names.Add(obj.name, obj);
+                    }
                 }
                 else
                 {
-                    var newMap = new Dictionary<string, UnityEngine.Object>();
-                    newMap.Add(obj.name, obj);
+                    var newMap = new Dictionary<int, UnityEngine.Object>();
+                    newMap.Add(IdFactory.Instance.GetId(obj), obj);
+                    //newMap.Add(obj.name, obj);
                     _map.Add(obj.GetType().FullName, newMap);
                 }
             }
         }
 
-        public bool TryGetObject(string name, Type type, out UnityEngine.Object obj)
+        public override bool TryGetObject(int id, Type type, out UnityEngine.Object obj)
         {
             if (_map.TryGetValue(type.FullName, out var map))
-                return map.TryGetValue(name, out obj);
+                return map.TryGetValue(id, out obj);
             obj = null;
             return false;
         }
@@ -51,10 +55,6 @@ namespace Synchronization.Objects
             return PrimitiveMeshPaths.Select(p => Resources.GetBuiltinResource<Mesh>(p));
         }
 
-        public Dictionary<string, Dictionary<string, UnityEngine.Object>> MapCopy()
-        {
-            return _map.ToDictionary(p => p.Key, p => p.Value.ToDictionary(pp => pp.Key, pp => pp.Value));
-        }
 
         private static string[] PrimitiveMeshPaths = new string[]
         {

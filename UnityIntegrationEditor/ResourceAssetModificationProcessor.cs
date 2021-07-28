@@ -1,4 +1,5 @@
-﻿using Synchronization.Objects;
+﻿using Synchronization.HashCodes;
+using Synchronization.Objects;
 using Synchronization.Objects.Resources;
 using System;
 using System.Collections.Generic;
@@ -79,18 +80,20 @@ namespace InstantMultiplayer.UnityIntegrationEditor
                         continue;
                     var index = f.IndexOf("Assets");
                     var assetPath = f.Substring(index);
-                    var asset = AssetDatabase.LoadMainAssetAtPath(assetPath);
-                    if (asset == null)
+                    var assetObject = AssetDatabase.LoadMainAssetAtPath(assetPath);
+                    if (assetObject == null)
                         continue;
+                    var id = IdFactory.Instance.GetId(assetObject);
                     var resourcePath = f.Substring(index + assetResourcesIndexOffset);
                     var finalSegment = resourcePath.Split('/', '\\').Last();
                     var suffixLength = finalSegment.Contains(".") ? finalSegment.Split('.', '.').Last().Length + 1 : 0;
                     resourcePath = resourcePath.Substring(0, resourcePath.Length - suffixLength);
                     entries.Add(new ResourceEntry
                     {
+                        Name = assetObject.name,
+                        Id = id,
+                        TypeName = assetObject.GetType().FullName,
                         Path = resourcePath,
-                        Name = asset.name,
-                        TypeName = asset.GetType().FullName
                     });
                 }
             }

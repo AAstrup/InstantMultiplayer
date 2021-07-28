@@ -4,11 +4,11 @@ namespace Assets
 {
     public class IdTest: MonoBehaviour
     {
-        //public MeshRenderer MeshRenderer;
+        public MeshRenderer MeshRenderer;
 
         private void Start()
         {
-            //var material = (Material)UnityObjectHelper.FindObjectFromInstanceID(13198);
+            //var material = MeshRenderer;
             //MeshRenderer.material = material;
         }
     }

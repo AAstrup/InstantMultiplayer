@@ -14,17 +14,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Entries:
   - Name: dummy
+    Id: 17952
     TypeName: UnityEngine.Material
     Path: Materials\dummy
   - Name: Floor
+    Id: 17954
     TypeName: UnityEngine.Material
     Path: Materials\Floor
   - Name: box
-    TypeName: UnityEditor.DefaultAsset
+    Id: 18028
+    TypeName: UnityEngine.GameObject
     Path: Models\box
   - Name: dummy
+    Id: 17950
     TypeName: UnityEngine.Texture2D
     Path: Textures\dummy
   - Name: Grass-1
+    Id: 18026
     TypeName: UnityEngine.Texture2D
     Path: Textures\Grass-1

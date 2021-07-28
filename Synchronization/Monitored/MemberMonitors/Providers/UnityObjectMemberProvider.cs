@@ -1,5 +1,5 @@
 ﻿using InstantMultiplayer.Synchronization.Extensions;
-using Synchronization.Extensions;
+using Synchronization.HashCodes;
 using Synchronization.Objects;
 using System.Reflection;
 using UnityEngine;
@@ -13,8 +13,8 @@ namespace InstantMultiplayer.Synchronization.Monitored.MemberMonitors.Providers
         public MemberMonitor GetMonitor(object memberHolder, MemberInfo memberInfo)
         {
             return new MemberMonitor(
-                () => GetNameFromObject(memberHolder, memberInfo),
-                (name) => SetObjectFromName(memberHolder, memberInfo, (string)name)
+                () => GetIdFromObject(memberHolder, memberInfo),
+                (id) => SetObjectFromId(memberHolder, memberInfo, (int)id)
             );
         }
 
@@ -23,17 +23,18 @@ namespace InstantMultiplayer.Synchronization.Monitored.MemberMonitors.Providers
             return memberInfo.DeclaringType.IsAssignableFrom(typeof(UnityEngine.Object));
         }
 
-        private string GetNameFromObject(object memberHolder, MemberInfo memberInfo)
+        private int GetIdFromObject(object memberHolder, MemberInfo memberInfo)
         {
             var obj = (Object)memberInfo.GetValueFromMemberInfo(memberHolder);
-            return obj.NonInstanceName();
+            var id = IdFactory.Instance.GetId(obj);
+            return id;
         }
 
-        private void SetObjectFromName(object memberHolder, MemberInfo memberInfo, string name)
+        private void SetObjectFromId(object memberHolder, MemberInfo memberInfo, int id)
         {
-            if(ResourceRepository.Instance.TryGetObject(name, memberInfo.DeclaringType, out var obj))
+            if(ResourceRepository.Instance.TryGetObject(id, memberInfo.DeclaringType, out var obj))
                 memberInfo.SetValueFromMemberInfo(memberHolder, obj);
-            else if (ReferenceRepository.Instance.TryGetObject(name, memberInfo.DeclaringType, out obj))
+            else if (ReferenceRepository.Instance.TryGetObject(id, memberInfo.DeclaringType, out obj))
                 memberInfo.SetValueFromMemberInfo(memberHolder, obj);
             else
                 memberInfo.SetValueFromMemberInfo(memberHolder, null);
