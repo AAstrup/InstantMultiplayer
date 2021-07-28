@@ -13,6 +13,7 @@ COPY TestClient/*.csproj ./TestClient/
 COPY UnityIntegration/*.csproj ./UnityIntegration/
 COPY Synchronization/*.csproj ./Synchronization/
 COPY Communication/*.csproj ./Communication/
+COPY UnityIntegrationEditor/*.csproj ./UnityIntegrationEditor/
 
 RUN dotnet restore
 COPY . .
@@ -30,6 +31,9 @@ WORKDIR /src/Synchronization
 RUN dotnet build -c Release -o /app
 
 WORKDIR /src/Communication
+RUN dotnet build -c Release -o /app
+
+WORKDIR /src/UnityIntegrationEditor
 RUN dotnet build -c Release -o /app
 
 FROM build AS publish
