@@ -1,6 +1,8 @@
-﻿using Synchronization.HashCodes;
+﻿using Synchronization.Extensions;
+using Synchronization.HashCodes;
 using System;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 namespace Synchronization.Identification.Implementations
 {
@@ -10,31 +12,23 @@ namespace Synchronization.Identification.Implementations
 
         public int GetHashCode(object obj)
         {
-            throw new NotImplementedException();
-            /*var material = (Material)obj;
-            var shader = material.shader;
-            for (int i = 0; i < shader.GetPropertyCount(); i++)
+            var material = (Material)obj;
+            unchecked
             {
-                var type = shader.GetPropertyType(i);
-                var name = shader.GetPropertyName(i);
-                Debug.Log(shader.GetPropertyName(i));
-                switch (type)
+                var vals = material.GetShaderPropertyObjects();
+                var code = 0;
+                foreach (var v in vals)
                 {
-                    case ShaderPropertyType.Color:
-                        material.SetColor(name, Material.GetColor(name));
-                        break;
-                    case ShaderPropertyType.Vector:
-                        material.SetVector(name, Material.GetVector(name));
-                        break;
-                    case ShaderPropertyType.Range:
-                    case ShaderPropertyType.Float:
-                        material.SetFloat(name, Material.GetFloat(name));
-                        break;
-                    case ShaderPropertyType.Texture:
-                        material.SetTexture(name, Material.GetTexture(name));
-                        break;
+                    if (v == null)
+                        continue;
+                    var type = v.GetType();
+                    if(IdFactory.Instance.RegisteredType(type))
+                        code += 23 * IdFactory.Instance.GetId(v, type);
+                    else
+                        code += 23 * v.GetHashCode();
                 }
-            }*/
+                return code;
+            }
         }
     }
 }

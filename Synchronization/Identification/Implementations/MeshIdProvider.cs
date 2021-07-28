@@ -1,7 +1,8 @@
-﻿using System;
+﻿using Synchronization.HashCodes;
+using System;
 using UnityEngine;
 
-namespace Synchronization.HashCodes.Implementations
+namespace Synchronization.Identification.Implementations
 {
     public class MeshIdProvider : IIdProvider
     {

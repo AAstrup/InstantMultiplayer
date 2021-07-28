@@ -26,6 +26,7 @@ namespace Synchronization.Repositories
 
         public static int GetMeshHashCode(Mesh mesh)
         {
+            //Du må ikke bruge navnet når Unity objektet kan instantieres!
             var hashCode = mesh.name.GetHashCode() + mesh.vertexCount;
             return hashCode;
         }

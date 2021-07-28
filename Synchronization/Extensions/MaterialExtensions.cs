@@ -1,24 +1,17 @@
-﻿using Synchronization.HashCodes;
-using Synchronization.Identification.Implementations;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Text;
 using UnityEngine;
 using UnityEngine.Rendering;
-using UnityEngine.UI;
 
-namespace Assets
+namespace Synchronization.Extensions
 {
-    public class HashCodeTest: MonoBehaviour
+    public static class MaterialExtensions
     {
-        public MeshFilter MeshFilter;
-        public MeshRenderer MeshRenderer;
-        public Text Text;
-
-        public void Start()
+        public static List<object> GetShaderPropertyObjects(this Material material)
         {
-            /*var vals = new List<System.Object>();
-            var shader = MeshRenderer.material.shader;
-            var material = MeshRenderer.material;
+            var vals = new List<object>();
+            var shader = material.shader;
             for (int i = 0; i < shader.GetPropertyCount(); i++)
             {
                 var type = shader.GetPropertyType(i);
@@ -40,20 +33,7 @@ namespace Assets
                         break;
                 }
             }
-
-            unchecked
-            {
-                var code = 0;
-                foreach (var v in vals)
-                    code += 23 * (v == null ? 0 : v is Texture tex ? new TextureIdProvider().GetHashCode(tex) : v.GetHashCode());
-                Debug.Log(code);
-            }*/
-
-            //var strs = string.Join(",", vals);
-            //Renderer.material = material;
-            var id = IdFactory.Instance.GetId(MeshRenderer.material);
-            Text.text = id.ToString();
-            Debug.Log(id);
+            return vals;
         }
     }
 }

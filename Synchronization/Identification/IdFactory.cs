@@ -1,6 +1,7 @@
-﻿using Synchronization.HashCodes.Implementations;
+﻿using Synchronization.Identification.Implementations;
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace Synchronization.HashCodes
 {
@@ -15,6 +16,10 @@ namespace Synchronization.HashCodes
         {
             _providers = new Dictionary<Type, IIdProvider>();
             Register(new MeshIdProvider());
+            Register(new ArrayIdProvider());
+            Register(new MaterialIdProvider());
+            Register(new Texture2DIdProvider());
+            Register(new TextureIdProvider());
         }
 
         public void Register(IIdProvider hashCodeProvider)
@@ -35,11 +40,22 @@ namespace Synchronization.HashCodes
 
         public int GetId(object obj)
         {
-            if (_providers.TryGetValue(obj.GetType(), out var prov))
+            return GetId(obj, obj.GetType());
+        }
+
+        public int GetId(object obj, Type type)
+        {
+            if (_providers.TryGetValue(type, out var prov))
             {
                 return prov.GetHashCode(obj);
             }
+            Debug.LogWarning("Failed to get id specific for " + type);
             return obj.GetHashCode();
+        }
+
+        public bool RegisteredType(Type type)
+        {
+            return _providers.ContainsKey(type);
         }
 
     }

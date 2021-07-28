@@ -1,8 +1,9 @@
-﻿using System;
+﻿using Synchronization.HashCodes;
+using System;
 
-namespace Synchronization.HashCodes.Implementations
+namespace Synchronization.Identification.Implementations
 {
-    public class ArrayIdProvider
+    public class ArrayIdProvider: IIdProvider
     {
         public Type Type => typeof(Array);
 
