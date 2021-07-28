@@ -24,7 +24,7 @@ namespace InstantMultiplayer.UnityIntegration
         private float _sendInterval;
         private float _lastSendTimestamp;
 
-        private void Awake()
+        private void Start()
         {
             var resourceOutline = Resources.Load<ResourceOutline>(ResourceOutline.ResourcePath);
             if (resourceOutline != null)
@@ -48,10 +48,6 @@ namespace InstantMultiplayer.UnityIntegration
             {
                 Debug.LogError("SyncClient failed to connect: " + e.ToString());
             }
-        }
-
-        private void Start()
-        {
             _controllers = new Dictionary<Type, IMessageController>();
             _controllers.Add(SyncMessageController.Instance.GetMessageType(), SyncMessageController.Instance);
             _controllers.Add(TextMessageController.Instance.GetMessageType(), TextMessageController.Instance);
