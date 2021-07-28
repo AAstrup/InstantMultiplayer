@@ -58,5 +58,18 @@ namespace InstantMultiplayer.Synchronization.Extensions
                     throw new ArgumentException();
             }
         }
+
+        public static Type GetValueTypeFromMemberInfo(this MemberInfo memberInfo)
+        {
+            switch (memberInfo.MemberType)
+            {
+                case MemberTypes.Field:
+                    return ((FieldInfo)memberInfo).FieldType;
+                case MemberTypes.Property:
+                    return ((PropertyInfo)memberInfo).PropertyType;
+                default:
+                    throw new ArgumentException();
+            }
+        }
     }
 }

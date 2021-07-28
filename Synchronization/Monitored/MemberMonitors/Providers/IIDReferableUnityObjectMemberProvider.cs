@@ -20,7 +20,7 @@ namespace InstantMultiplayer.Synchronization.Monitored.MemberMonitors.Providers
 
         public bool IsApplicable(object memberHolder, MemberInfo memberInfo)
         {
-            return _applicableTypes.Contains(memberInfo.DeclaringType);
+            return _applicableTypes.Contains(memberInfo.GetValueTypeFromMemberInfo());
         }
 
         private static readonly List<Type> _applicableTypes = new List<Type>()

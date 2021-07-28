@@ -19,8 +19,8 @@ namespace InstantMultiplayer.Synchronization.Monitored.ComponentMonitors.Provide
             var meshRenderer = (MeshRenderer)componentInstance;
             return new MemberMonitor[]
             {
-                new MemberMonitor(() => MaterialRepository.GetMaterialId(meshRenderer.sharedMaterial), (id) => meshRenderer.material = MaterialRepository.GetMaterialFromId((int)id))
-                //new UnityObjectMemberProvider().GetMonitor(meshRenderer, typeof(MeshRenderer).GetProperty(nameof(MeshRenderer.material)))
+                //new MemberMonitor(() => MaterialRepository.GetMaterialId(meshRenderer.sharedMaterial), (id) => meshRenderer.material = MaterialRepository.GetMaterialFromId((int)id))
+                new UnityObjectMemberProvider().GetMonitor(meshRenderer, typeof(MeshRenderer).GetProperty(nameof(MeshRenderer.material)))
             };
         }
     }

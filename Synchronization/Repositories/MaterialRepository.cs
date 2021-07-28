@@ -26,6 +26,7 @@ namespace Synchronization.Repositories
 
         public static int GetMaterialId(Material material)
         {
+            //Du må ikke bruge navnet når Unity objektet kan instantieres! ingen garantier
             var hashCode = material.name.GetHashCode();
             if (material.mainTexture != null)
                 hashCode += material.mainTexture.width + material.mainTexture.height + material.mainTexture.name.GetHashCode();
