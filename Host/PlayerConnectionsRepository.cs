@@ -1,5 +1,6 @@
 ﻿using Communication;
 using InstantMultiplayer.Communication.Serialization;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -22,6 +23,7 @@ namespace InstantMultiplayer
         {
             // PlayerId's er not used - always treat login as new players
             var tempId = TEMPGetNextId();
+            Console.WriteLine($"New ID {tempId} gotten for client at IP " + client.Client.RemoteEndPoint);
             if (_playeridToConnection.ContainsKey(tempId))
                 _playeridToConnection[tempId] = client;
             else
