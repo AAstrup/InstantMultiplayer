@@ -15,7 +15,6 @@ namespace Host.Controllers
 
         public override void HandleMessage(SyncMessage message, TcpClient tcpClient)
         {
-            //Welp, players don't ids right now... so this will not work yet
             //foreach (var delta in message.Deltas)
             //    for (int i = 0; i < 32; i++)
             //        if ((delta.ClientFilter & (1 << i)) > 0)
