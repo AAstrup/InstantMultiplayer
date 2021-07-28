@@ -8,7 +8,6 @@ EXPOSE 61001
 FROM mcr.microsoft.com/dotnet/sdk:3.1-focal AS build
 WORKDIR /src
 COPY InstantMultiplayer.sln ./
-COPY SharedMessages/*.csproj ./SharedMessages/
 COPY Host/*.csproj ./Host/
 COPY TestClient/*.csproj ./TestClient/
 COPY UnityIntegration/*.csproj ./UnityIntegration/
