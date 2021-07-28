@@ -82,51 +82,11 @@ namespace InstantMultiplayer
                     Console.WriteLine($"Awaits new client");
                     var client = await listener.AcceptTcpClientAsync();
                     Console.WriteLine($"listener.AcceptTcpClientAsync");
-                    if (client.Connected)
-                    {
-                        connectionRepo.AddPlayer(0, client);
-                        Console.WriteLine($"client.Connected");
-                        Task.Run(() => ListenToConnectedClient(client));
-                        Console.WriteLine($"ListenToConnectedClient");
-                    }
                 }
             }
             catch(Exception e)
             {
                 Console.WriteLine($"ERROR " + e.Message);
-            }
-        }
-
-        private static async Task ListenToConnectedClient(TcpClient client)
-        {
-            Console.WriteLine("ListenToConnectedClient: {0}", client.Client.RemoteEndPoint);
-            var events = container.Resolve<Events>();
-
-            try
-            {
-                while (true)
-                {
-                    if (client.Available == 0) continue;
-                    NetworkStream networkStream = client.GetStream();
-
-                    if (networkStream.DataAvailable)
-                    {
-                        var data = new BinarySerializer().Deserialize(networkStream);
-                        var type = data.GetType();
-                        if (!controllers.ContainsKey(type))
-                        {
-                            throw new Exception("Message of unknown type:" + type.ToString());
-                        }
-                        controllers[type].Value.Invoke(data, client);
-                        events.messageClientIdRecieved.Invoke(null, new KeyValuePair<IMessage, TcpClient>((IMessage)data, client));
-                        if (debugging)
-                            Console.WriteLine(controllers[type].Key.ToString() + " handled request of type " + type.ToString());
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
             }
         }
     }

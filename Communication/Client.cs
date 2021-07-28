@@ -50,6 +50,7 @@ namespace InstantMultiplayer.Communication
             {
                 count++;
                 var networkStream = tcpClient.GetStream();
+                SendMessage(new MessageMatchLogin());
 
                 if (networkStream.DataAvailable)
                 {

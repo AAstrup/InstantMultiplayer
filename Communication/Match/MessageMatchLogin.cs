@@ -5,7 +5,7 @@ using System.Text;
 namespace InstantMultiplayer.Communication.Match
 {
     [Serializable]
-    public class MessageMatchLogin
+    public class MessageMatchLogin : IMessage
     {
         public int id;
         public string name;
