@@ -12,11 +12,13 @@ namespace InstantMultiplayer
     public class PlayerConnectionsRepository
     {
         private readonly Dictionary<int, TcpClient> _playeridToConnection;
+        private readonly Dictionary<TcpClient, int> _connectionToId;
         private int tempGetNextId;
 
         public PlayerConnectionsRepository()
         {
             _playeridToConnection = new Dictionary<int, TcpClient>();
+            _connectionToId = new Dictionary<TcpClient, int>();
         }
 
         public void AddPlayer(int id, TcpClient client)
@@ -25,9 +27,15 @@ namespace InstantMultiplayer
             var tempId = TEMPGetNextId();
             Console.WriteLine($"New ID {tempId} gotten for client at IP " + client.Client.RemoteEndPoint);
             if (_playeridToConnection.ContainsKey(tempId))
+            {
                 _playeridToConnection[tempId] = client;
+                _connectionToId[client] = tempId;
+            }
             else
+            {
                 _playeridToConnection.Add(tempId, client);
+                _connectionToId.Add(client, tempId);
+            }
             SendToClient(client, new ConnectionMessage { LocalId = tempId });
         }
 
@@ -46,9 +54,23 @@ namespace InstantMultiplayer
 
         public void SendToClient(TcpClient player, object serilizableObjectToSend)
         {
-            var writer = new BinaryWriter(player.GetStream());
-            var bytes = new BinarySerializer().Serialize(serilizableObjectToSend);
-            writer.Write(bytes);
+            try
+            {
+                var writer = new BinaryWriter(player.GetStream());
+                var bytes = new BinarySerializer().Serialize(serilizableObjectToSend);
+                writer.Write(bytes);
+            }
+            catch(Exception e)
+            {
+                RemoveClient(player);
+            }
+        }
+
+        private void RemoveClient(TcpClient player)
+        {
+            var id = _connectionToId[player];
+            _connectionToId.Remove(player);
+            _playeridToConnection.Remove(id);
         }
 
         public bool TryGetClient(int playerId, out TcpClient player)
