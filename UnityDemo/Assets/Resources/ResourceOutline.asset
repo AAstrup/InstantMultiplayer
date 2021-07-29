@@ -22,8 +22,8 @@ MonoBehaviour:
     TypeName: UnityEngine.Material
     Path: Materials\Floor
   - Name: box
-    Id: 19330
-    TypeName: UnityEditor.DefaultAsset
+    Id: 18046
+    TypeName: UnityEngine.GameObject
     Path: Models\box
   - Name: base
     Id: 2009431679
