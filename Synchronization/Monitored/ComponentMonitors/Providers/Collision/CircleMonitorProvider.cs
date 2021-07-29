@@ -17,9 +17,9 @@ namespace InstantMultiplayer.Synchronization.Monitored.ComponentMonitors.Provide
             var transform = (Transform)componentInstance;
             return new MemberMonitor[]
             {
-                new MemberMonitor(() => transform.localPosition, (val) => transform.localPosition = (Vector3)val),
-                new MemberMonitor(() => transform.localRotation, (val) => transform.localRotation = (Quaternion)val),
-                new MemberMonitor(() => transform.localScale, (val) => transform.localScale = (Vector3)val)
+                new MemberMonitor(nameof(Transform.localPosition), () => transform.localPosition, (val) => transform.localPosition = (Vector3)val),
+                new MemberMonitor(nameof(Transform.localRotation), () => transform.localRotation, (val) => transform.localRotation = (Quaternion)val),
+                new MemberMonitor(nameof(Transform.localScale), () => transform.localScale, (val) => transform.localScale = (Vector3)val)
             };
         }
     }

@@ -90,10 +90,10 @@ namespace InstantMultiplayer.Synchronization.Monitored
             switch (memberInfo.MemberType)
             {
                 case MemberTypes.Field:
-                    return new MemberMonitor(() => ((FieldInfo)memberInfo).GetValue(memberHolder),
+                    return new MemberMonitor(memberInfo.Name, () => ((FieldInfo)memberInfo).GetValue(memberHolder),
                         (val) => ((FieldInfo)memberInfo).SetValue(memberHolder, val));
                 case MemberTypes.Property:
-                    return new MemberMonitor(() => ((PropertyInfo)memberInfo).GetValue(memberHolder),
+                    return new MemberMonitor(memberInfo.Name, () => ((PropertyInfo)memberInfo).GetValue(memberHolder),
                         (val) => ((PropertyInfo)memberInfo).SetValue(memberHolder, val));
                 default:
                     throw new ArgumentException("Only with members of MemberType Field or Property with exposed read and write can a MemberMonitor be generically created!");

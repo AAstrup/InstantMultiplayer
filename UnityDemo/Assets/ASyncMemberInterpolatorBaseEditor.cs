@@ -27,8 +27,10 @@ namespace Assets
                 /*var interpolator = (ASyncMemberInterpolatorBase)target;
                 var generic = interpolator.GenericType;
                 var comp = MonitorFactory.CreateComponentMonitor(0, interpolator.Component);
-                //  .Where(m => m.GetValueTypeFromMemberInfo().IsAssignableFrom(generic));
-                var memberNames = comp.Members.Select(m => m.).ToArray();
+                var memberNames = comp.Members
+                    .Where(m => m..GetValueTypeFromMemberInfo().IsAssignableFrom(generic))
+                    .Select(m => m.Name)
+                    .ToArray();
                 interpolator.SelectedIndex = EditorGUILayout.Popup("Member", interpolator.SelectedIndex, memberNames);*/
             }
 

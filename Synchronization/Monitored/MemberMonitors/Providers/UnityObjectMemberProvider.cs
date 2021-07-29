@@ -13,6 +13,7 @@ namespace InstantMultiplayer.Synchronization.Monitored.MemberMonitors.Providers
         public MemberMonitor GetMonitor(object memberHolder, MemberInfo memberInfo)
         {
             return new MemberMonitor(
+                memberInfo.Name,
                 () => GetIdFromObject(memberHolder, memberInfo),
                 (id) => SetObjectFromId(memberHolder, memberInfo, (int)id)
             );
