@@ -1,5 +1,6 @@
 ﻿using Communication;
 using GuerrillaNtp;
+using InstantMultiplayer.Communication.Match;
 using InstantMultiplayer.Communication.Serialization;
 using System;
 using System.Collections.Generic;
@@ -47,6 +48,7 @@ namespace InstantMultiplayer.Communication
 
             var stream = tcpClient.GetStream();
             writer = new BinaryWriter(stream);
+            SendMessage(new MessageMatchLogin());
         }
 
         public int Poll()
@@ -64,6 +66,7 @@ namespace InstantMultiplayer.Communication
                     {
                         localId = connectionMessage.LocalId;
                         identified = true;
+                        SendMessage(new GetHistoryMessage());
                         OnIdentified.Invoke(this, connectionMessage);
                         continue;
                     }

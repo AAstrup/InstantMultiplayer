@@ -1,5 +1,6 @@
 ﻿using Autofac;
 using Host.Controllers;
+using InstantMultiplayer.Communication;
 using InstantMultiplayer.Communication.Serialization;
 using System;
 using System.Collections.Generic;
@@ -24,13 +25,13 @@ namespace InstantMultiplayer
         static void Main(string[] args)
         {
             RegisterDependencies();
-            RegisterControllers();
+            CreateControllers();
 
             //Blocks forever
             ListenForNewClients().Wait();
         }
 
-        private static Dictionary<Type, KeyValuePair<string, Action<object, TcpClient>>> RegisterControllers()
+        private static Dictionary<Type, KeyValuePair<string, Action<object, TcpClient>>> CreateControllers()
         {
             var types = AppDomain.CurrentDomain.GetAssemblies()
                 .SelectMany(s => s.GetTypes())
@@ -52,9 +53,11 @@ namespace InstantMultiplayer
             var builder = new ContainerBuilder();
 
             builder.RegisterType<PlayerConnectionsRepository>().SingleInstance();
+            builder.RegisterType<Events>().SingleInstance();
             builder.RegisterType<MatchLoginController>().SingleInstance();
             builder.RegisterType<TextMessageController>().SingleInstance();
             builder.RegisterType<SyncMessageController>().SingleInstance();
+            builder.RegisterType<HistoryController>().SingleInstance();
 
             container = builder.Build();
         }
@@ -77,8 +80,6 @@ namespace InstantMultiplayer
                     Console.WriteLine($"listener.AcceptTcpClientAsync");
                     if (client.Connected)
                     {
-                        connectionRepo.AddPlayer(0, client);
-                        Console.WriteLine($"client.Connected");
                         Task.Run(() => ListenToConnectedClient(client));
                         Console.WriteLine($"ListenToConnectedClient");
                     }
@@ -93,6 +94,7 @@ namespace InstantMultiplayer
         private static async Task ListenToConnectedClient(TcpClient client)
         {
             Console.WriteLine("ListenToConnectedClient: {0}", client.Client.RemoteEndPoint);
+            var events = container.Resolve<Events>();
 
             try
             {
@@ -110,11 +112,10 @@ namespace InstantMultiplayer
                             throw new Exception("Message of unknown type:" + type.ToString());
                         }
                         controllers[type].Value.Invoke(data, client);
-                        if(debugging)
+                        events.messageClientIdRecieved.Invoke(null, new KeyValuePair<IMessage, TcpClient>((IMessage)data, client));
+                        if (debugging)
                             Console.WriteLine(controllers[type].Key.ToString() + " handled request of type " + type.ToString());
                     }
-
-                    //Thread.Sleep(listenPing);
                 }
             }
             catch (Exception ex)

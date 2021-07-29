@@ -8,19 +8,17 @@ EXPOSE 61001
 FROM mcr.microsoft.com/dotnet/sdk:3.1-focal AS build
 WORKDIR /src
 COPY InstantMultiplayer.sln ./
-COPY SharedMessages/*.csproj ./SharedMessages/
-COPY Server/*.csproj ./Server/
+COPY Host/*.csproj ./Host/
 COPY TestClient/*.csproj ./TestClient/
 COPY UnityIntegration/*.csproj ./UnityIntegration/
 COPY Synchronization/*.csproj ./Synchronization/
 COPY Communication/*.csproj ./Communication/
+COPY UnityIntegrationEditor/*.csproj ./UnityIntegrationEditor/
 
 RUN dotnet restore
 COPY . .
-WORKDIR /src/SharedMessages
-RUN dotnet build -c Release -o /app
 
-WORKDIR /src/Server
+WORKDIR /src/Host
 RUN dotnet build -c Release -o /app
 
 WORKDIR /src/TestClient
@@ -35,10 +33,13 @@ RUN dotnet build -c Release -o /app
 WORKDIR /src/Communication
 RUN dotnet build -c Release -o /app
 
+WORKDIR /src/UnityIntegrationEditor
+RUN dotnet build -c Release -o /app
+
 FROM build AS publish
 RUN dotnet publish -c Release -o /app
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app .
-ENTRYPOINT ["dotnet", "Server.dll"]
+ENTRYPOINT ["dotnet", "Host.dll"]
