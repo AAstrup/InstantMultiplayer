@@ -1,10 +1,9 @@
-﻿using InstantMultiplayer.Synchronization.Extensions;
-using InstantMultiplayer.Synchronization.Monitored;
+﻿using InstantMultiplayer.Synchronization.Monitored;
+using InstantMultiplayer.UnityIntegration.Interpolation;
 using System.Linq;
 using UnityEditor;
-using UnityEngine;
 
-namespace Assets
+namespace InstantMultiplayer.UnityIntegrationEditor
 {
     [CustomEditor(typeof(ASyncMemberInterpolatorBase), true)]
     public class Vector3InterpolatorEditor : Editor
@@ -38,6 +37,6 @@ namespace Assets
             }
 
             serializedObject.ApplyModifiedProperties();
-        } 
+        }
     }
 }

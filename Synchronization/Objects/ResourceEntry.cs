@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Synchronization.Objects
+namespace InstantMultiplayer.Synchronization.Objects
 {
     [Serializable]
     public class ResourceEntry

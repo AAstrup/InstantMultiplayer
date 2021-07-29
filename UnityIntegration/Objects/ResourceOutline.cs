@@ -1,4 +1,5 @@
-﻿using System;
+﻿using InstantMultiplayer.Synchronization.Objects;
+using System;
 using System.IO;
 using UnityEngine;
 

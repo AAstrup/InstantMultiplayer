@@ -7,10 +7,10 @@ namespace InstantMultiplayer.Synchronization.Monitored.ComponentMonitors
     public sealed class ComponentMonitor
     {
         public readonly int Id;
-        public readonly MemberMonitor[] Members;
+        public readonly AMemberMonitorBase[] Members;
         public readonly Component MonitoredInstance;
 
-        internal ComponentMonitor(int id, Component instance, MemberMonitor[] fields)
+        internal ComponentMonitor(int id, Component instance, AMemberMonitorBase[] fields)
         {
             Id = id;
             MonitoredInstance = instance;

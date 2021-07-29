@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Synchronization.Objects
+namespace InstantMultiplayer.Synchronization.Objects
 {
     public class Dictionaries<T>
     {

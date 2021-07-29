@@ -1,6 +1,4 @@
-﻿using Synchronization.Extensions;
-using Synchronization.Objects;
-using System.Linq;
+﻿using InstantMultiplayer.Synchronization.Objects;
 using UnityEngine;
 using UnityEngine.UI;
 

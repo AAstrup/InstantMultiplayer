@@ -1,6 +1,7 @@
 ﻿using InstantMultiplayer.Synchronization.Delta;
 using InstantMultiplayer.Synchronization.Monitored;
 using InstantMultiplayer.Synchronization.Monitored.ComponentMonitors;
+using InstantMultiplayer.UnityIntegration.Interpolation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,11 +38,28 @@ namespace InstantMultiplayer.UnityIntegration
                     .ToList()
                     .ToDictionary(m => m.Id, m => m);
                 SynchronizeStore.Instance.Register(this, _foreign);
+
+                foreach (var comp in Components)
+                    if (comp is ASyncMemberInterpolatorBase interpolatorBase)
+                        interpolatorBase.enabled = false;
             }
             catch (Exception e)
             {
                 Debug.LogError($"Synchronizer {name} failed to initialize due to: {e}");
             }
+        }
+
+        internal void ForeignOnlyInitialize()
+        {
+            foreach (var compMonitor in _monitoredComponents.Values)
+                if (compMonitor.MonitoredInstance is ASyncMemberInterpolatorBase interpolatorBase)
+                {
+                    var selectedMemberMonitor = compMonitor.Members[interpolatorBase.SelectedIndex];
+                    selectedMemberMonitor.OnDeltaConsumed += (s, v) =>
+                    {
+                        
+                    };
+                }
         }
 
         private void OnDestroy()

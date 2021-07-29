@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Synchronization.HashCodes
+namespace InstantMultiplayer.Synchronization.Identification
 {
     public interface IIdProvider
     {

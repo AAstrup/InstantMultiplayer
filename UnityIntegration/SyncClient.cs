@@ -1,8 +1,6 @@
 ﻿using InstantMultiplayer.Communication;
-using InstantMultiplayer.Synchronization;
-using InstantMultiplayer.Synchronization.Delta;
+using InstantMultiplayer.Synchronization.Objects;
 using InstantMultiplayer.UnityIntegration.Controllers;
-using Synchronization.Objects;
 using Synchronization.Objects.Resources;
 using System;
 using System.Collections.Generic;
@@ -13,14 +11,17 @@ namespace InstantMultiplayer.UnityIntegration
     [AddComponentMenu(EditorConstants.ComponentMenuName + "/" + nameof(SyncClient))]
     public sealed class SyncClient: MonoBehaviour
     {
-        private Client _client;
-        private static Dictionary<Type, IMessageController> _controllers;
-        public bool useAzureServer = false;
-        private string azureIp = "instantmultiplayercontainer.northeurope.azurecontainer.io";
-        private int azurePort = 61001;
         public string ip = "localhost";
         public int port = 61001;
+        public bool useAzureServer = false;
         public int SyncFrequency = 30;
+
+        public float SyncTime => Time.time + (float)_client.NTPOffset.TotalSeconds;
+
+        private Client _client;
+        private static Dictionary<Type, IMessageController> _controllers;
+        private string azureIp = "instantmultiplayercontainer.northeurope.azurecontainer.io";
+        private int azurePort = 61001;
 
         private float _sendInterval => 1f / SyncFrequency;
         private float _lastSendTimestamp;

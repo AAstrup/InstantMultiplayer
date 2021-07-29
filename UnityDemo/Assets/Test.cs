@@ -1,12 +1,5 @@
-﻿using InstantMultiplayer.Synchronization;
-using InstantMultiplayer.Synchronization.Delta;
-using InstantMultiplayer.UnityIntegration;
-using Synchronization.Extensions;
-using Synchronization.Objects;
+﻿using InstantMultiplayer.UnityIntegration;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 

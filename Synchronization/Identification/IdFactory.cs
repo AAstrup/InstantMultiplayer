@@ -1,9 +1,9 @@
-﻿using Synchronization.Identification.Implementations;
+﻿using InstantMultiplayer.Synchronization.Identification.Implementations;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Synchronization.HashCodes
+namespace InstantMultiplayer.Synchronization.Identification
 {
     public class IdFactory
     {

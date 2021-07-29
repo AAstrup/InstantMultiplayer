@@ -8,6 +8,6 @@ namespace InstantMultiplayer.Synchronization.Monitored.ComponentMonitors.Provide
     public interface IComponentMonitorProvider
     {
         IEnumerable<Type> ComponentTypes();
-        IEnumerable<MemberMonitor> MonitoredMembers(Component componentInstance);
+        IEnumerable<AMemberMonitorBase> MonitoredMembers(Component componentInstance);
     }
 }

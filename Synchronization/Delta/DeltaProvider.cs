@@ -1,4 +1,5 @@
 ﻿using InstantMultiplayer.Synchronization.Monitored.ComponentMonitors;
+using InstantMultiplayer.Synchronization.Monitored.MemberMonitors;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -38,9 +39,22 @@ namespace InstantMultiplayer.Synchronization.Delta
             for(int i=0; i<monitoredComponent.Members.Length; i++)
             {
                 var member = monitoredComponent.Members[i];
-                var val = member.GetValue();
-                if ((member.LastValue == null && val == null) || (member.LastValue != null && member.LastValue.Equals(val)))
-                    continue;
+                object val;
+                if (member is ARichMemberMonitorBase richMemberMonitor)
+                {
+                    var localCompareVal = richMemberMonitor.GetLocalCompareValue();
+                    if ((richMemberMonitor.LastLocalCompareValue == null && localCompareVal == null) || 
+                        (richMemberMonitor.LastLocalCompareValue != null && richMemberMonitor.LastLocalCompareValue.Equals(localCompareVal)))
+                        continue;
+                    val = member.GetValue();
+                    richMemberMonitor.LastLocalCompareValue = localCompareVal;
+                }
+                else
+                {
+                    val = member.GetValue();
+                    if ((member.LastValue == null && val == null) || (member.LastValue != null && member.LastValue.Equals(val)))
+                        continue;
+                }
                 member.LastValue = val;
                 member.LastUpdateTimestamp = timeStamp;
                 deltaMembers.Add(new DeltaMember

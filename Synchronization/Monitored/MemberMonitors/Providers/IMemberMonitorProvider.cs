@@ -11,6 +11,6 @@ namespace InstantMultiplayer.Synchronization.Monitored.MemberMonitors.Providers
     {
         bool IsApplicable(object memberHolder, MemberInfo memberInfo);
         int Precedence { get; }
-        MemberMonitor GetMonitor(object memberHolder, MemberInfo memberInfo);
+        AMemberMonitorBase GetMonitor(object memberHolder, MemberInfo memberInfo);
     }
 }

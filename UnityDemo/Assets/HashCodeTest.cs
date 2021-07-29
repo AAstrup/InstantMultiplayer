@@ -1,9 +1,5 @@
-﻿using Synchronization.HashCodes;
-using Synchronization.Identification.Implementations;
-using System.Collections.Generic;
-using System.Linq;
+﻿using InstantMultiplayer.Synchronization.Identification;
 using UnityEngine;
-using UnityEngine.Rendering;
 using UnityEngine.UI;
 
 namespace Assets

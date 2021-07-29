@@ -1,10 +1,8 @@
-﻿using Synchronization.Extensions;
-using Synchronization.HashCodes;
+﻿using InstantMultiplayer.Synchronization.Extensions;
 using System;
 using UnityEngine;
-using UnityEngine.Rendering;
 
-namespace Synchronization.Identification.Implementations
+namespace InstantMultiplayer.Synchronization.Identification.Implementations
 {
     public class MaterialIdProvider : IIdProvider
     {

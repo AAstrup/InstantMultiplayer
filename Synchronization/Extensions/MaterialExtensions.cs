@@ -4,7 +4,7 @@ using System.Text;
 using UnityEngine;
 using UnityEngine.Rendering;
 
-namespace Synchronization.Extensions
+namespace InstantMultiplayer.Synchronization.Extensions
 {
     public static class MaterialExtensions
     {

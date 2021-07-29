@@ -1,10 +1,10 @@
-﻿using Synchronization.HashCodes;
+﻿using InstantMultiplayer.Synchronization.Identification;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-namespace Synchronization.Objects
+namespace InstantMultiplayer.Synchronization.Objects
 {
     public class ReferenceRepository: ABaseRepository<UnityEngine.Object>
     {

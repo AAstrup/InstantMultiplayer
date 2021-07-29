@@ -1,8 +1,10 @@
 ﻿using Communication;
+using GuerrillaNtp;
 using InstantMultiplayer.Communication.Serialization;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Net;
 using System.Net.Sockets;
 
 namespace InstantMultiplayer.Communication
@@ -12,11 +14,13 @@ namespace InstantMultiplayer.Communication
         private readonly BinarySerializer _binarySerializer;
         private BinaryWriter writer;
         private TcpClient tcpClient;
+
         // For Denbugging
         public bool connected;
         public bool identified;
         public int localId;
         public Queue<IMessage> incomingMessageQueue;
+        public TimeSpan NTPOffset;
 
         public EventHandler<ConnectionMessage> OnIdentified;
 
@@ -35,6 +39,9 @@ namespace InstantMultiplayer.Communication
 
         private void Connect(string usedIp, int usedPort)
         {
+            using (var ntp = new NtpClient(Dns.GetHostAddresses("pool.ntp.org")[0]))
+                NTPOffset = ntp.GetCorrectionOffset();
+
             tcpClient = new TcpClient(usedIp, usedPort);
             connected = true;
 

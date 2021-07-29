@@ -1,4 +1,5 @@
-﻿using InstantMultiplayer.Synchronization.Monitored.ComponentMonitors;
+﻿using InstantMultiplayer.Synchronization.Extensions;
+using InstantMultiplayer.Synchronization.Monitored.ComponentMonitors;
 using InstantMultiplayer.Synchronization.Monitored.ComponentMonitors.Providers;
 using InstantMultiplayer.Synchronization.Monitored.MemberMonitors;
 using InstantMultiplayer.Synchronization.Monitored.MemberMonitors.Providers;
@@ -31,12 +32,12 @@ namespace InstantMultiplayer.Synchronization.Monitored
             return Instance.InternalCreateComponentMonitor(id, componentInstance);
         }
 
-        public static MemberMonitor CreateMemberMonitor(object memberHolder, MemberInfo memberInfo)
+        public static AMemberMonitorBase CreateMemberMonitor(object memberHolder, MemberInfo memberInfo)
         {
             return Instance.InternalCreateMemberMonitor(memberHolder, memberInfo);
         }
 
-        public static MemberMonitor CreateGenericMemberMonitor(object memberHolder, MemberInfo memberInfo)
+        public static AMemberMonitorBase CreateGenericMemberMonitor(object memberHolder, MemberInfo memberInfo)
         {
             return Instance.InternalCreateGenericMemberMonitor(memberHolder, memberInfo);
         }
@@ -59,7 +60,7 @@ namespace InstantMultiplayer.Synchronization.Monitored
             return new ComponentMonitor(id, componentInstance, fields);
         }
 
-        private MemberMonitor InternalCreateMemberMonitor(object memberHolder, MemberInfo memberInfo)
+        private AMemberMonitorBase InternalCreateMemberMonitor(object memberHolder, MemberInfo memberInfo)
         {
             //var value = GetValueFromMemberInfo(memberHolder, memberInfo);
             foreach (var provider in _memberProviders)
@@ -85,15 +86,15 @@ namespace InstantMultiplayer.Synchronization.Monitored
             _memberProviders = _memberProviders.Concat(memberProviders).OrderBy(p => p.Precedence).ToArray();
         }
 
-        private MemberMonitor InternalCreateGenericMemberMonitor(object memberHolder, MemberInfo memberInfo)
+        private AMemberMonitorBase InternalCreateGenericMemberMonitor(object memberHolder, MemberInfo memberInfo)
         {
             switch (memberInfo.MemberType)
             {
                 case MemberTypes.Field:
-                    return new MemberMonitor(memberInfo.Name, () => ((FieldInfo)memberInfo).GetValue(memberHolder),
+                    return new GenericMemberMonitor(memberInfo.Name, memberInfo.GetValueTypeFromMemberInfo(), () => ((FieldInfo)memberInfo).GetValue(memberHolder),
                         (val) => ((FieldInfo)memberInfo).SetValue(memberHolder, val));
                 case MemberTypes.Property:
-                    return new MemberMonitor(memberInfo.Name, () => ((PropertyInfo)memberInfo).GetValue(memberHolder),
+                    return new GenericMemberMonitor(memberInfo.Name, memberInfo.GetValueTypeFromMemberInfo(), () => ((PropertyInfo)memberInfo).GetValue(memberHolder),
                         (val) => ((PropertyInfo)memberInfo).SetValue(memberHolder, val));
                 default:
                     throw new ArgumentException("Only with members of MemberType Field or Property with exposed read and write can a MemberMonitor be generically created!");
@@ -111,9 +112,9 @@ namespace InstantMultiplayer.Synchronization.Monitored
             return propertyInfo.CanRead && propertyInfo.CanWrite && propertyInfo.GetSetMethod(true).IsPublic;
         }
 
-        private MemberMonitor[] GenericMembers(object componentInstance)
+        private AMemberMonitorBase[] GenericMembers(object componentInstance)
         {
-            var members = new List<MemberMonitor>();
+            var members = new List<AMemberMonitorBase>();
             var type = componentInstance.GetType();
             var fields = type.GetRuntimeFields().Where(FieldIncluded);
             members.AddRange(fields.Select(f =>

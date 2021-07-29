@@ -12,14 +12,14 @@ namespace InstantMultiplayer.Synchronization.Monitored.ComponentMonitors.Provide
             return new Type[] { typeof(UnityEngine.Transform) };
         }
 
-        public IEnumerable<MemberMonitor> MonitoredMembers(Component componentInstance)
+        public IEnumerable<AMemberMonitorBase> MonitoredMembers(Component componentInstance)
         {
             var transform = (Transform)componentInstance;
-            return new MemberMonitor[]
+            return new AMemberMonitorBase[]
             {
-                new MemberMonitor(nameof(Transform.localPosition), () => transform.localPosition, (val) => transform.localPosition = (Vector3)val),
-                new MemberMonitor(nameof(Transform.localRotation), () => transform.localRotation, (val) => transform.localRotation = (Quaternion)val),
-                new MemberMonitor(nameof(Transform.localScale), () => transform.localScale, (val) => transform.localScale = (Vector3)val)
+                new MemberMonitor<Vector3>(nameof(Transform.localPosition), () => transform.localPosition, (val) => transform.localPosition = (Vector3)val),
+                new MemberMonitor<Quaternion>(nameof(Transform.localRotation), () => transform.localRotation, (val) => transform.localRotation = (Quaternion)val),
+                new MemberMonitor<Vector3>(nameof(Transform.localScale), () => transform.localScale, (val) => transform.localScale = (Vector3)val)
             };
         }
     }

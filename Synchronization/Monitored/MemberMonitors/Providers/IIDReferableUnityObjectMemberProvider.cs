@@ -1,4 +1,5 @@
-﻿using InstantMultiplayer.Synchronization.Extensions;
+﻿using InstantMultiplayer.Synchronization;
+using InstantMultiplayer.Synchronization.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
@@ -10,12 +11,12 @@ namespace InstantMultiplayer.Synchronization.Monitored.MemberMonitors.Providers
     {
         public int Precedence => int.MaxValue - 1;
 
-        public MemberMonitor GetMonitor(object memberHolder, MemberInfo memberInfo)
+        public AMemberMonitorBase GetMonitor(object memberHolder, MemberInfo memberInfo)
         {
-            return new MemberMonitor(
+            return new MemberMonitor<int>(
                 memberInfo.Name,
                 () => GetIIDFromInfo(memberHolder, memberInfo),
-                (iid) => SetObjectFromIID(memberHolder, memberInfo, (int)iid)
+                (int iid) => SetObjectFromIID(memberHolder, memberInfo, iid)
             );
         }
 

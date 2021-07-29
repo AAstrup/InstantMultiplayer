@@ -2,24 +2,30 @@
 
 namespace InstantMultiplayer.Synchronization.Monitored.MemberMonitors
 {
-    public sealed class MemberMonitor
+    public class MemberMonitor<T>: AMemberMonitorBase
     {
-        public readonly string Name;
-        public readonly Func<object> GetValue;
-        public readonly Action<object> SetValue;
-        public object LastValue { get; internal set; }
-        public int LastUpdateTimestamp { get; internal set; }
+        public override object LastValue { get { return TypedLastValue; } set { TypedLastValue = (T)value;  } }
+        public T TypedLastValue { get; private set; }
 
-        public MemberMonitor(string name, Func<object> getValue, Action<object> setValue)
+        public readonly Func<T> GetValueFunc;
+        public readonly Action<T> SetValueFunc;
+
+        public MemberMonitor(string name, Func<T> getValue, Action<T> setValue) : base(name)
         {
-            Name = name ?? throw new ArgumentNullException(nameof(name));
-            GetValue = getValue ?? throw new ArgumentNullException(nameof(getValue));
-            SetValue = setValue ?? throw new ArgumentNullException(nameof(setValue));
+            GetValueFunc = getValue ?? throw new ArgumentNullException(nameof(getValue));
+            SetValueFunc = setValue ?? throw new ArgumentNullException(nameof(setValue));
         }
 
-        public override string ToString()
+        public override Type MemberType => typeof(T);
+
+        public override object GetValue()
         {
-            return "Monitored: " + LastValue.ToString();
+            return GetValueFunc.Invoke();
+        }
+
+        public override void SetValue(object obj)
+        {
+            SetValueFunc.Invoke((T)obj);
         }
     }
 }

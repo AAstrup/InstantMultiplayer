@@ -1,4 +1,5 @@
 ﻿using InstantMultiplayer.Synchronization.Monitored.ComponentMonitors;
+using InstantMultiplayer.Synchronization.Monitored.MemberMonitors;
 
 namespace InstantMultiplayer.Synchronization.Delta
 {
@@ -17,7 +18,12 @@ namespace InstantMultiplayer.Synchronization.Delta
                 if (monitoredMember.LastUpdateTimestamp > deltaMember.TimeStamp)
                     continue;
                 monitoredMember.SetValue(deltaMember.Value);
-                monitoredMember.LastValue = deltaMember.Value;
+                if (monitoredMember.OnDeltaConsumed != null)
+                    monitoredMember.OnDeltaConsumed.Invoke(this, deltaMember);
+                if (monitoredMember is ARichMemberMonitorBase richMemberMonitor)
+                    richMemberMonitor.LastValue = richMemberMonitor.GetLocalCompareValue();
+                else
+                    monitoredMember.LastValue = deltaMember.Value;
                 monitoredMember.LastUpdateTimestamp = deltaMember.TimeStamp;
             }
         }

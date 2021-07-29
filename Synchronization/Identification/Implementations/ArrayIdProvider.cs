@@ -1,7 +1,6 @@
-﻿using Synchronization.HashCodes;
-using System;
+﻿using System;
 
-namespace Synchronization.Identification.Implementations
+namespace InstantMultiplayer.Synchronization.Identification.Implementations
 {
     public class ArrayIdProvider: IIdProvider
     {

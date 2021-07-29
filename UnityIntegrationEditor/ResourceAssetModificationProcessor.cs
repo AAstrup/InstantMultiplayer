@@ -1,5 +1,5 @@
-﻿using Synchronization.HashCodes;
-using Synchronization.Objects;
+﻿using InstantMultiplayer.Synchronization.Identification;
+using InstantMultiplayer.Synchronization.Objects;
 using Synchronization.Objects.Resources;
 using System;
 using System.Collections.Generic;

@@ -1,4 +1,4 @@
-﻿namespace Synchronization.Extensions
+﻿namespace InstantMultiplayer.Synchronization.Extensions
 {
     public static class ObjectExtensions
     {

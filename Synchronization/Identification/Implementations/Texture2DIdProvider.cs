@@ -1,8 +1,7 @@
-﻿using Synchronization.HashCodes;
-using System;
+﻿using System;
 using UnityEngine;
 
-namespace Synchronization.Identification.Implementations
+namespace InstantMultiplayer.Synchronization.Identification.Implementations
 {
     public class Texture2DIdProvider : IIdProvider
     {

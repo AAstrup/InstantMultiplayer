@@ -1,6 +1,6 @@
 ﻿using InstantMultiplayer.Synchronization.Extensions;
-using Synchronization.HashCodes;
-using Synchronization.Objects;
+using InstantMultiplayer.Synchronization.Identification;
+using InstantMultiplayer.Synchronization.Objects;
 using System.Reflection;
 using UnityEngine;
 
@@ -10,12 +10,13 @@ namespace InstantMultiplayer.Synchronization.Monitored.MemberMonitors.Providers
     {
         public int Precedence => int.MaxValue;
 
-        public MemberMonitor GetMonitor(object memberHolder, MemberInfo memberInfo)
+        public AMemberMonitorBase GetMonitor(object memberHolder, MemberInfo memberInfo)
         {
-            return new MemberMonitor(
+            return new RichMemberMonitor<int, UnityEngine.Object>(
                 memberInfo.Name,
                 () => GetIdFromObject(memberHolder, memberInfo),
-                (id) => SetObjectFromId(memberHolder, memberInfo, (int)id)
+                () => (Object)memberInfo.GetValueFromMemberInfo(memberHolder),
+                (id) => SetObjectFromId(memberHolder, memberInfo, id)
             );
         }
 

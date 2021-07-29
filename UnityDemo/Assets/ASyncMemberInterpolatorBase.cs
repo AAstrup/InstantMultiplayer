@@ -1,5 +1,4 @@
 ﻿using System;
-using UnityEditor;
 using UnityEngine;
 
 namespace Assets
@@ -7,8 +6,15 @@ namespace Assets
     public abstract class ASyncMemberInterpolatorBase: MonoBehaviour
     {
         public Component Component;
+        [HideInInspector]
+        public int SelectedIndex;
+
         public int Timestamp { get; set; }
         internal abstract Type GenericType { get; }
-        internal int SelectedIndex;
+
+        private void Start()
+        {
+            Debug.Log("awd");
+        }
     }
 }
