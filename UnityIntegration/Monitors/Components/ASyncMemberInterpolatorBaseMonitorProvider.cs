@@ -4,16 +4,26 @@ using InstantMultiplayer.Synchronization.Monitored.MemberMonitors;
 using InstantMultiplayer.UnityIntegration.Interpolation;
 using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
 using UnityEngine;
 
 namespace InstantMultiplayer.UnityIntegration.Monitors.Components
 {
     public class ASyncMemberInterpolatorBaseMonitorProvider : IComponentMonitorProvider
     {
+        private Type[] _cachedComponentTypes;
+
         public IEnumerable<Type> ComponentTypes()
         {
-            return new Type[] { typeof(ASyncMemberInterpolatorBase) };
+            if(_cachedComponentTypes == null)
+            {
+                var type = typeof(ASyncMemberInterpolatorBase);
+                _cachedComponentTypes =
+                    ComponentMapper.Instance.IncludedTypes()
+                    .Where(t => type.IsAssignableFrom(t))
+                    .ToArray();
+            }
+            return _cachedComponentTypes;
         }
 
         public IEnumerable<AMemberMonitorBase> MonitoredMembers(Component componentInstance)

@@ -46,8 +46,8 @@ namespace InstantMultiplayer.Synchronization.Delta
                     if ((richMemberMonitor.LastLocalCompareValue == null && localCompareVal == null) || 
                         (richMemberMonitor.LastLocalCompareValue != null && richMemberMonitor.LastLocalCompareValue.Equals(localCompareVal)))
                         continue;
-                    val = member.GetValue();
                     richMemberMonitor.LastLocalCompareValue = localCompareVal;
+                    val = member.GetValue();
                 }
                 else
                 {

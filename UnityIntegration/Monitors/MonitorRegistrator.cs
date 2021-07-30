@@ -9,7 +9,6 @@ namespace InstantMultiplayer.UnityIntegration.Monitors
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
         static void OnBeforeSceneLoadRuntimeMethod()
         {
-            Debug.Log("ADWAWD");
             MonitorFactory.RegisterComponentProvider(new ASyncMemberInterpolatorBaseMonitorProvider());
         }
     }
