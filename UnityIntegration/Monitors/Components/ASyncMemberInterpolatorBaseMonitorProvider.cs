@@ -32,7 +32,9 @@ namespace InstantMultiplayer.UnityIntegration.Monitors.Components
             return new AMemberMonitorBase[]
             {
                 new MemberMonitor<int>(nameof(ASyncMemberInterpolatorBase.Component), () => GetComponentId(comp), (cid) => SetComponentFromId(cid, comp)),
-                new MemberMonitor<int>(nameof(ASyncMemberInterpolatorBase.SelectedIndex), () => comp.SelectedIndex, (i) => comp.SelectedIndex = i)
+                new MemberMonitor<int>(nameof(ASyncMemberInterpolatorBase.SelectedIndex), () => comp.SelectedIndex, (i) => comp.SelectedIndex = i),
+                new MemberMonitor<bool>(nameof(ASyncMemberInterpolatorBase.LocalLerping), () => comp.LocalLerping, (i) => comp.LocalLerping = i),
+                new MemberMonitor<float>(nameof(ASyncMemberInterpolatorBase.LocalLerpScale), () => comp.LocalLerpScale, (i) => comp.LocalLerpScale = i)
             };
         }
 

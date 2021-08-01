@@ -1,5 +1,6 @@
 ﻿using InstantMultiplayer;
 using InstantMultiplayer.Communication;
+using InstantMultiplayer.Synchronization.Filtering;
 using System.Net.Sockets;
 
 namespace Host.Controllers
@@ -19,7 +20,7 @@ namespace Host.Controllers
         {
             foreach (var delta in message.Deltas)
                 for (int i = 0; i < 32; i++)
-                    if ((delta.ClientFilter & (1 << i)) > 0)
+                    if (ClientFilterHelper.ClientIncluded(delta.ClientFilter, i))
                         if (_playerConnectionsRepository.TryGetClient(i, out var client))
                             if (client != tcpClient)
                                 _playerConnectionsRepository.SendToClient(client, message);

@@ -1,7 +1,8 @@
 ﻿using InstantMultiplayer.Synchronization.Monitored.ComponentMonitors;
 using InstantMultiplayer.Synchronization.Monitored.MemberMonitors;
+using UnityEngine;
 
-namespace InstantMultiplayer.Synchronization.Delta
+namespace InstantMultiplayer.Synchronization.Delta.Services
 {
     public sealed class DeltaConsumer
     {
@@ -22,6 +23,7 @@ namespace InstantMultiplayer.Synchronization.Delta
                 monitoredMember.LastUpdateTimestamp = deltaMember.TimeStamp;
                 if (monitoredMember is ARichMemberMonitorBase richMemberMonitor)
                     richMemberMonitor.LastLocalCompareValue = richMemberMonitor.GetLocalCompareValue();
+                Debug.Log("HELLO");
                 if (monitoredMember.OnDeltaConsumed != null)
                     monitoredMember.OnDeltaConsumed.Invoke(this, deltaMember);
             }

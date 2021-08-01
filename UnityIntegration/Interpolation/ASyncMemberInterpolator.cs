@@ -1,5 +1,6 @@
 ﻿using InstantMultiplayer.Synchronization.Delta;
 using System;
+using UnityEngine;
 
 namespace InstantMultiplayer.UnityIntegration.Interpolation
 {
@@ -9,14 +10,22 @@ namespace InstantMultiplayer.UnityIntegration.Interpolation
         public TimedValue<T> TimedValue { get; set; }
         public override Type GenericType => typeof(T);
 
-        internal override void DeltaConsumeHandler(DeltaMember deltaMember)
+        public override void HandleDeltaMember(DeltaMember deltaMember)
         {
             LastTimedValue = TimedValue;
             TimedValue = new TimedValue<T>
             {
                 Value = (T)deltaMember.Value,
-                Timestamp = deltaMember.TimeStamp
+                Timestamp = Time.time //deltaMember.TimeStamp
             };
+            Debug.Log("HandleDeltaMember");
         }
+
+        internal void Update()
+        {
+            _memberMonitorBase.SetValue(Interpolate((T)_memberMonitorBase.GetValue()));
+        }
+
+        public abstract T Interpolate(T localValue);
     }
 }

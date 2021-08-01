@@ -3,6 +3,6 @@
     public struct TimedValue<T>
     {
         public T Value;
-        public int Timestamp;
+        public float Timestamp;
     }
 }

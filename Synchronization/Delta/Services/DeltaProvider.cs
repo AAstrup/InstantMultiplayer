@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace InstantMultiplayer.Synchronization.Delta
+namespace InstantMultiplayer.Synchronization.Delta.Services
 {
     public sealed class DeltaProvider
     {

@@ -1,4 +1,6 @@
-﻿using InstantMultiplayer.Synchronization.Delta;
+﻿using InstantMultiplayer.Synchronization;
+using InstantMultiplayer.Synchronization.Delta;
+using InstantMultiplayer.Synchronization.Delta.Services;
 using InstantMultiplayer.Synchronization.Monitored;
 using InstantMultiplayer.Synchronization.Monitored.ComponentMonitors;
 using InstantMultiplayer.UnityIntegration.Interpolation;
@@ -25,6 +27,7 @@ namespace InstantMultiplayer.UnityIntegration
             if (_foreign)
                 return;
             Initialize();
+            LateInitialize();
         }
 
         internal void Initialize()
@@ -32,16 +35,16 @@ namespace InstantMultiplayer.UnityIntegration
             try
             {
                 var counter = 0;
-                _monitoredComponents = Components == null ? null :
-                    Components
-                    .Select(c => MonitorFactory.CreateComponentMonitor(counter++, c))
-                    .ToList()
-                    .ToDictionary(m => m.Id, m => m);
+                foreach(var comp in Components ?? Enumerable.Empty<Component>())
+                {
+                    var compMonitor = MonitorFactory.CreateComponentMonitor(counter++, comp);
+                    if (!_foreign && comp is IForeignComponent && comp is Behaviour behaviour)
+                    {
+                        behaviour.enabled = false;
+                    }
+                    _monitoredComponents.Add(compMonitor.Id, compMonitor);
+                }
                 SynchronizeStore.Instance.Register(this, _foreign);
-
-                foreach (var comp in Components)
-                    if (comp is ASyncMemberInterpolatorBase interpolatorBase)
-                        interpolatorBase.enabled = false;
             }
             catch (Exception e)
             {
@@ -49,17 +52,26 @@ namespace InstantMultiplayer.UnityIntegration
             }
         }
 
-        internal void ForeignOnlyInitialize()
+        internal void LateInitialize()
         {
             foreach (var compMonitor in _monitoredComponents.Values)
-                if (compMonitor.MonitoredInstance is ASyncMemberInterpolatorBase interpolatorBase)
+            {
+                if (compMonitor.MonitoredInstance is IDeltaMemberHandler deltaMemberHandler)
                 {
-                    var selectedMemberMonitor = compMonitor.Members[interpolatorBase.SelectedIndex];
-                    selectedMemberMonitor.OnDeltaConsumed += (s, v) =>
+                    if (deltaMemberHandler.ForeignOnly && !_foreign)
+                        continue;
+
+                    var targetComp = deltaMemberHandler.ComponentMonitorSelect(_monitoredComponents.Values);
+                    var member = targetComp == null ? null : deltaMemberHandler.MemberMonitorSelector(targetComp.Members);
+                    if (member != null)
                     {
-                        
-                    };
+                        member.OnDeltaConsumed += (s, v) =>
+                        {
+                            deltaMemberHandler.HandleDeltaMember(v);
+                        };
+                    }
                 }
+            }
         }
 
         private void OnDestroy()

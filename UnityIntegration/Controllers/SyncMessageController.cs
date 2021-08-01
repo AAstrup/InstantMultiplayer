@@ -1,11 +1,7 @@
-﻿using InstantMultiplayer;
-using InstantMultiplayer.Communication;
+﻿using InstantMultiplayer.Communication;
 using InstantMultiplayer.Synchronization;
-using InstantMultiplayer.Synchronization.Delta;
-using System;
+using InstantMultiplayer.Synchronization.Delta.Services;
 using System.Collections.Generic;
-using System.Net.Sockets;
-using System.Text;
 using UnityEngine;
 
 namespace InstantMultiplayer.UnityIntegration.Controllers
@@ -64,6 +60,7 @@ namespace InstantMultiplayer.UnityIntegration.Controllers
                     synchronizer._foreign = true;
                     synchronizer.Initialize();
                     synchronizer.ConsumeDeltaContainer(_deltaConsumer, delta);
+                    synchronizer.LateInitialize();
                 }
         }
 

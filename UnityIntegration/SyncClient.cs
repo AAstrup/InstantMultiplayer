@@ -11,12 +11,15 @@ namespace InstantMultiplayer.UnityIntegration
     [AddComponentMenu(EditorConstants.ComponentMenuName + "/" + nameof(SyncClient))]
     public sealed class SyncClient: MonoBehaviour
     {
+        public static SyncClient Instance;
+
         public string ip = "localhost";
         public int port = 61001;
         public bool useAzureServer = false;
         public int SyncFrequency = 30;
 
         public float SyncTime => Time.time + (float)_client.NTPOffset.TotalSeconds;
+        public int LocalId => _client.localId;
 
         private Client _client;
         private static Dictionary<Type, IMessageController> _controllers;
@@ -28,6 +31,7 @@ namespace InstantMultiplayer.UnityIntegration
 
         void Awake()
         {
+            Instance = this;
             Application.runInBackground = true;
         }
 
