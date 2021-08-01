@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace InstantMultiplayer.Synchronization.Objects
 {
-    public class ReferenceRepository: ABaseRepository<UnityEngine.Object>
+    public class ReferenceRepository: ARepository<UnityEngine.Object>
     {
         public static ReferenceRepository Instance => _instance ?? (_instance = new ReferenceRepository());
         private static ReferenceRepository _instance;

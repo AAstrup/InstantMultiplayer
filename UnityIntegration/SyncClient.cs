@@ -23,6 +23,7 @@ namespace InstantMultiplayer.UnityIntegration
 
         private Client _client;
         private static Dictionary<Type, IMessageController> _controllers;
+        private static List<Type> _messageTypeOrder;
         private string azureIp = "instantmultiplayercontainer.northeurope.azurecontainer.io";
         private int azurePort = 61001;
 
@@ -61,6 +62,12 @@ namespace InstantMultiplayer.UnityIntegration
             _controllers = new Dictionary<Type, IMessageController>();
             _controllers.Add(SyncMessageController.Instance.GetMessageType(), SyncMessageController.Instance);
             _controllers.Add(TextMessageController.Instance.GetMessageType(), TextMessageController.Instance);
+            _messageTypeOrder = new List<Type>
+            {
+                SyncMessageController.Instance.GetMessageType(),
+                SyncMessageController.Instance.GetMessageType(),
+                TextMessageController.Instance.GetMessageType(),
+            };
         }
 
         private void Update()

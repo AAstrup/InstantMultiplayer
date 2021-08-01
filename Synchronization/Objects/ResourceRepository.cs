@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace InstantMultiplayer.Synchronization.Objects
 {
-    public class ResourceRepository: ABaseRepository<string>
+    public class ResourceRepository: ARepository<string>
     {
         public static ResourceRepository Instance => _instance ?? (_instance = new ResourceRepository());
         private static ResourceRepository _instance;

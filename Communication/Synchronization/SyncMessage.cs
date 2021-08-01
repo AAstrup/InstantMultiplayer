@@ -1,8 +1,8 @@
-﻿using InstantMultiplayer.UnityIntegration;
+﻿using InstantMultiplayer.Communication;
 using System;
 using System.Collections.Generic;
 
-namespace InstantMultiplayer.Communication
+namespace Communication.Synchronization
 {
     [Serializable]
     public class SyncMessage: IMessage

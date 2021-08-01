@@ -22,7 +22,7 @@ MonoBehaviour:
     TypeName: UnityEngine.Material
     Path: Materials\Floor
   - Name: box
-    Id: 18046
+    Id: 17314
     TypeName: UnityEngine.GameObject
     Path: Models\box
   - Name: base

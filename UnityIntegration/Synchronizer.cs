@@ -1,4 +1,5 @@
-﻿using InstantMultiplayer.Synchronization;
+﻿using Communication.Synchronization;
+using InstantMultiplayer.Synchronization;
 using InstantMultiplayer.Synchronization.Delta;
 using InstantMultiplayer.Synchronization.Delta.Services;
 using InstantMultiplayer.Synchronization.Monitored;

@@ -1,5 +1,5 @@
-﻿using InstantMultiplayer;
-using InstantMultiplayer.Communication;
+﻿using Communication.Synchronization;
+using InstantMultiplayer;
 using InstantMultiplayer.Synchronization.Filtering;
 using System.Net.Sockets;
 
@@ -8,8 +8,6 @@ namespace Host.Controllers
     public class SyncMessageController : BaseMessageController<SyncMessage>
     {
         private PlayerConnectionsRepository _playerConnectionsRepository;
-
-
 
         public SyncMessageController(PlayerConnectionsRepository playerConnectionsRepository)
         {
@@ -24,12 +22,6 @@ namespace Host.Controllers
                         if (_playerConnectionsRepository.TryGetClient(i, out var client))
                             if (client != tcpClient)
                                 _playerConnectionsRepository.SendToClient(client, message);
-
-            //For now we do this instead
-            //foreach (var delta in message.Deltas)
-            //    foreach(var client in _playerConnectionsRepository.GetClients())
-            //        if (client != tcpClient)
-            //            _playerConnectionsRepository.SendToClient(client, message);
         }
     }
 }

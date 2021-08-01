@@ -5,7 +5,7 @@ using System.Text;
 
 namespace InstantMultiplayer.Synchronization.Objects
 {
-    public abstract class ABaseRepository<T>
+    public abstract class ARepository<T>: ARepositoryBase
     {
         protected Dictionary<string, Dictionary<int, T>> _map;
 
@@ -13,7 +13,5 @@ namespace InstantMultiplayer.Synchronization.Objects
         {
             return _map.ToDictionary(p => p.Key, p => p.Value.ToDictionary(pp => pp.Key, pp => pp.Value));
         }
-
-        public abstract bool TryGetObject(int id, Type type, out UnityEngine.Object obj);
     }
 }
