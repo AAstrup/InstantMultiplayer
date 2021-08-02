@@ -22,9 +22,17 @@ MonoBehaviour:
     TypeName: UnityEngine.Material
     Path: Materials\Floor
   - Name: box
-    Id: 17314
+    Id: 17202
     TypeName: UnityEngine.GameObject
     Path: Models\box
+  - Name: Tank
+    Id: 17200
+    TypeName: UnityEngine.GameObject
+    Path: Tanks\Tank
+  - Name: TankProjectile
+    Id: 17194
+    TypeName: UnityEngine.GameObject
+    Path: Tanks\TankProjectile
   - Name: base
     Id: 2009431679
     TypeName: UnityEngine.Texture2D
