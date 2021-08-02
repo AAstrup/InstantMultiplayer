@@ -20,6 +20,7 @@ namespace InstantMultiplayer.UnityIntegration
 
         public float SyncTime => Time.time + (float)_client.NTPOffset.TotalSeconds;
         public int LocalId => _client.localId;
+        public bool Ready => _client.connected && _client.identified;
 
         private Client _client;
         private static Dictionary<Type, IMessageController> _controllers;

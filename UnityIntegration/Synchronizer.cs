@@ -25,9 +25,8 @@ namespace InstantMultiplayer.UnityIntegration
 
         private void Start()
         {
-            if (_foreign)
-                return;
-            Initialize();
+            if (SynchronizerId == 0)
+                Initialize();
             LateInitialize();
         }
 

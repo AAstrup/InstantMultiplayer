@@ -1,7 +1,7 @@
 ﻿using Communication.Synchronization;
 using InstantMultiplayer.Communication;
-using InstantMultiplayer.Synchronization.Events;
 using InstantMultiplayer.Synchronization.Objects;
+using InstantMultiplayer.UnityIntegration.Events;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -18,6 +18,7 @@ namespace InstantMultiplayer.UnityIntegration.Controllers
         public SyncInstantiationEventMessageController()
         {
             _prefabInstantiationQueue = new Queue<InstantiationEvent>();
+            EventHandlerProvider.Instance.InstantiationEventHandler += (s, v) => _prefabInstantiationQueue.Enqueue(v);
         }
 
         public override void HandleMessage(SyncInstantiationEventMessage syncMessage)
@@ -38,17 +39,16 @@ namespace InstantMultiplayer.UnityIntegration.Controllers
             synchronizer.ClientFilter.ClientFilter = syncMessage.ClientFilter;
             synchronizer._foreign = true;
             synchronizer.Initialize();
-            synchronizer.LateInitialize();
         }
 
         public override bool TryGetMessage(out IMessage message)
         {
-            if(_prefabInstantiationQueue.TryDequeue(out var prefab))
+            if(_prefabInstantiationQueue.TryDequeue(out var eventMessage))
             {
-                throw new NotImplementedException();
                 message = new SyncInstantiationEventMessage()
                 {
-                    
+                    SynchronizerId = eventMessage.SynchronizerId,
+                    PrefabId = eventMessage.PrefabId
                 };
                 return true;
             }

@@ -1,4 +1,5 @@
-﻿using InstantMultiplayer.Synchronization.Extensions;
+﻿using InstantMultiplayer.Synchronization.Attributes;
+using InstantMultiplayer.Synchronization.Extensions;
 using InstantMultiplayer.Synchronization.Monitored.ComponentMonitors;
 using InstantMultiplayer.Synchronization.Monitored.ComponentMonitors.Providers;
 using InstantMultiplayer.Synchronization.Monitored.MemberMonitors;
@@ -103,13 +104,21 @@ namespace InstantMultiplayer.Synchronization.Monitored
 
         private bool FieldIncluded(FieldInfo fieldInfo)
         {
-            return fieldInfo.IsPublic || fieldInfo.CustomAttributes.Any(
-                data => data.AttributeType == typeof(SerializeField));
+            if (fieldInfo.IsPublic)
+                return true;
+            var included = false;
+            foreach (var data in fieldInfo.CustomAttributes)
+                if (data.AttributeType == typeof(SerializeField))
+                    included = true;
+                else if(data.AttributeType == typeof(ExcludeSync))
+                        return false;
+            return included;
         }
 
         private bool PropertyIncluded(PropertyInfo propertyInfo)
         {
-            return propertyInfo.CanRead && propertyInfo.CanWrite && propertyInfo.GetSetMethod(true).IsPublic;
+            return propertyInfo.CanRead && propertyInfo.CanWrite && propertyInfo.GetSetMethod(true).IsPublic
+                && (!propertyInfo.CustomAttributes.Any(data => data.AttributeType == typeof(ExcludeSync)));
         }
 
         private AMemberMonitorBase[] GenericMembers(object componentInstance)

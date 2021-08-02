@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace InstantMultiplayer.Synchronization.Identification.Implementations
 {
-    class GameObjectIdProvider: IIdProvider
+    public class GameObjectIdProvider: IIdProvider
     {
         public Type Type => typeof(GameObject);
 

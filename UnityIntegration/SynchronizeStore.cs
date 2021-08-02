@@ -14,11 +14,12 @@ namespace InstantMultiplayer.UnityIntegration
         public Dictionary<int, Synchronizer> synchronizers;
         public int LocalId { get; private set; }
 
-        private int idCounter;
+        private int _idCounter;
 
         public SynchronizeStore()
         {
             synchronizers = new Dictionary<int, Synchronizer>();
+            _idCounter = 1;
         }
 
         internal void Register(Synchronizer synchronizer, bool foreign)
@@ -26,8 +27,8 @@ namespace InstantMultiplayer.UnityIntegration
             if (!foreign)
             {
                 //The first 5 bits are reserved for player id
-                synchronizer.SynchronizerId = (idCounter << 5) + LocalId;
-                idCounter++;
+                synchronizer.SynchronizerId = (_idCounter << 5) + LocalId;
+                _idCounter++;
             }
             synchronizers.Add(synchronizer.SynchronizerId, synchronizer);
         }
