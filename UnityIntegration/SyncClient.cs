@@ -19,8 +19,8 @@ namespace InstantMultiplayer.UnityIntegration
         public int SyncFrequency = 30;
 
         public float SyncTime => Time.time + (float)_client.NTPOffset.TotalSeconds;
-        public int LocalId => _client.localId;
-        public bool Ready => _client.connected && _client.identified;
+        public int LocalId => _client?.localId ?? 0;
+        public bool Ready => _client != null && _client.connected && _client.identified;
 
         private Client _client;
         private static Dictionary<Type, IMessageController> _controllers;
@@ -53,7 +53,7 @@ namespace InstantMultiplayer.UnityIntegration
                 _client.OnIdentified += (e, v) =>
                 {
                     Debug.Log("Recieved local id " + v.LocalId);
-                    SynchronizeStore.Instance.DigestLocalId(v.LocalId);
+                    SynchronizeStore.Instance.DigestLocalClientId(v.LocalId);
                 };
             }
             catch(Exception e)
@@ -62,6 +62,10 @@ namespace InstantMultiplayer.UnityIntegration
             }
             _controllers = new Dictionary<Type, IMessageController>();
             _controllers.Add(SyncMessageController.Instance.GetMessageType(), SyncMessageController.Instance);
+            _controllers.Add(SyncInstantiationEventMessageController.Instance.GetMessageType(), SyncInstantiationEventMessageController.Instance);
+            _controllers.Add(SyncDestroyEventMessageController.Instance.GetMessageType(), SyncDestroyEventMessageController.Instance);
+            _controllers.Add(ClientConnectedMessageController.Instance.GetMessageType(), ClientConnectedMessageController.Instance);
+            _controllers.Add(ClientDisconnectedMessageController.Instance.GetMessageType(), ClientDisconnectedMessageController.Instance);
             _controllers.Add(TextMessageController.Instance.GetMessageType(), TextMessageController.Instance);
             _messageTypeOrder = new List<Type>
             {

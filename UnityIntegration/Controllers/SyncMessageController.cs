@@ -31,10 +31,12 @@ namespace InstantMultiplayer.UnityIntegration.Controllers
 
         public override void HandleMessage(SyncMessage syncMessage)
         {
-            Debug.Log("RECIEVED DELTAS COUNT: " + syncMessage.Deltas.Count);
-            var synchronizers = SynchronizeStore.Instance.synchronizers;
             foreach (var delta in syncMessage.Deltas)
-                if (synchronizers.TryGetValue(delta.SynchronizerId, out var synchronizer))
+            {
+                if (SynchronizeStore.Instance.IsIdExhausted(delta.SynchronizerId))
+                    continue;
+
+                if (SynchronizeStore.Instance.TryGet(delta.SynchronizerId, out var synchronizer))
                 {
                     //Update
                     synchronizer.ConsumeDeltaContainer(_deltaConsumer, delta);
@@ -62,13 +64,13 @@ namespace InstantMultiplayer.UnityIntegration.Controllers
                     synchronizer.Initialize();
                     synchronizer.ConsumeDeltaContainer(_deltaConsumer, delta);
                 }
+            }
         }
 
         public override bool TryGetMessage(out IMessage message)
         {
             var deltas = new List<DeltaContainer>();
-            var synchronizers = SynchronizeStore.Instance.synchronizers;
-            foreach (var synchronizer in synchronizers.Values)
+            foreach (var synchronizer in SynchronizeStore.Instance.Synchronizers)
                 if (synchronizer.TryGetDeltaContainer(_deltaProvider, out var delta))
                     deltas.Add(delta);
             if (deltas.Count > 0)

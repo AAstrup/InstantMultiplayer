@@ -4,6 +4,7 @@ using InstantMultiplayer.Synchronization.Monitored.ComponentMonitors;
 using InstantMultiplayer.Synchronization.Monitored.MemberMonitors;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using UnityEngine;
 
@@ -28,7 +29,7 @@ namespace InstantMultiplayer.UnityIntegration.Interpolation
         {
             return componentMonitors.FirstOrDefault(m => m.MonitoredInstance == Component);
         }
-        public AMemberMonitorBase MemberMonitorSelector(AMemberMonitorBase[] memberMonitorBases)
+        public AMemberMonitorBase MemberMonitorSelector(ReadOnlyCollection<AMemberMonitorBase> memberMonitorBases)
         {
             _memberMonitorBase = memberMonitorBases[SelectedIndex];
             return _memberMonitorBase;

@@ -1,7 +1,9 @@
 ﻿using Autofac;
+using Communication.Match;
 using Host.Controllers;
 using InstantMultiplayer.Communication;
 using InstantMultiplayer.Communication.Serialization;
+using InstantMultiplayer.UnityIntegration.Controllers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,7 +17,6 @@ namespace InstantMultiplayer
     {
         private static TcpListener listener;
         private static int port = 61001;
-        private static int listenPing = 100;
         private static IContainer container;
         private static Dictionary<Type, KeyValuePair<string, Action<object, TcpClient>>> controllers;
         
@@ -57,6 +58,10 @@ namespace InstantMultiplayer
             builder.RegisterType<MatchLoginController>().SingleInstance();
             builder.RegisterType<TextMessageController>().SingleInstance();
             builder.RegisterType<SyncMessageController>().SingleInstance();
+            builder.RegisterType<SyncInstantiationEventMessageController>().SingleInstance();
+            builder.RegisterType<SyncDestroyEventMessageController>().SingleInstance();
+            builder.RegisterType<ClientConnectedMessage>().SingleInstance();
+            builder.RegisterType<ClientDisconnectedMessage>().SingleInstance();
             builder.RegisterType<HistoryController>().SingleInstance();
 
             container = builder.Build();

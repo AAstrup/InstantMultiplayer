@@ -123,6 +123,7 @@ namespace InstantMultiplayer.Synchronization.Monitored
 
         private AMemberMonitorBase[] GenericMembers(object componentInstance)
         {
+            Debug.Log("GenericMembers");
             var members = new List<AMemberMonitorBase>();
             var type = componentInstance.GetType();
             var fields = type.GetRuntimeFields().Where(FieldIncluded);

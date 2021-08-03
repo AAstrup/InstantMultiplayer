@@ -4,7 +4,7 @@ using InstantMultiplayer.Synchronization.Delta;
 using InstantMultiplayer.Synchronization.Delta.Services;
 using InstantMultiplayer.Synchronization.Monitored;
 using InstantMultiplayer.Synchronization.Monitored.ComponentMonitors;
-using InstantMultiplayer.UnityIntegration.Interpolation;
+using InstantMultiplayer.UnityIntegration.Events;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,6 +19,8 @@ namespace InstantMultiplayer.UnityIntegration
         public List<Component> Components;
 
         public int SynchronizerId { get; internal set; }
+        public int OwnerId => SynchronizerId & 32;
+        public IEnumerable<ComponentMonitor> ComponentMonitors => _monitoredComponents.Values;
 
         internal bool _foreign;
         private Dictionary<int, ComponentMonitor> _monitoredComponents = new Dictionary<int, ComponentMonitor>();
@@ -76,8 +78,8 @@ namespace InstantMultiplayer.UnityIntegration
 
         private void OnDestroy()
         {
+            EventHandlerProvider.Instance.SynchronizerDestroyed(this);
             SynchronizeStore.Instance?.Unregister(this);
-            //GameObjectDestroyMessageController.senddestroy TODO: Delete GameObject Controller
         }
 
         public bool TryGetDeltaContainer(DeltaProvider deltaProvider, out DeltaContainer deltaContainer)

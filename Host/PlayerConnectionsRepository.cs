@@ -1,4 +1,5 @@
 ﻿using Communication;
+using Communication.Match;
 using InstantMultiplayer.Communication.Serialization;
 using System;
 using System.Collections.Generic;
@@ -36,7 +37,15 @@ namespace InstantMultiplayer
                 _playeridToConnection.Add(tempId, client);
                 _connectionToId.Add(client, tempId);
             }
-            SendToClient(client, new ConnectionMessage { LocalId = tempId });
+            SendToClient(client, new GreetMessage { LocalId = tempId });
+            var connectedMessage = new ClientConnectedMessage
+            {
+                ClientId = tempId
+            };
+            foreach (var recipient in GetClients())
+            {
+                SendToClient(recipient, connectedMessage);
+            }
         }
 
         private int TEMPGetNextId()
@@ -71,6 +80,10 @@ namespace InstantMultiplayer
             var id = _connectionToId[player];
             _connectionToId.Remove(player);
             _playeridToConnection.Remove(id);
+            SendToAllClients(new ClientDisconnectedMessage
+            {
+                ClientId = id
+            });
         }
 
         public bool TryGetClient(int playerId, out TcpClient player)

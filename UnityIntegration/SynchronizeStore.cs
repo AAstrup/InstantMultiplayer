@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using UnityEngine;
 
 namespace InstantMultiplayer.UnityIntegration
 {
@@ -11,15 +8,23 @@ namespace InstantMultiplayer.UnityIntegration
         public static SynchronizeStore Instance => _instance ?? (_instance = new SynchronizeStore());
         private static SynchronizeStore _instance;
 
-        public Dictionary<int, Synchronizer> synchronizers;
-        public int LocalId { get; private set; }
-
+        private Dictionary<int, Synchronizer> _synchronizers;
+        private int _localClientId;
         private int _idCounter;
+        private HashSet<int> _exhaustedIds;
 
         public SynchronizeStore()
         {
-            synchronizers = new Dictionary<int, Synchronizer>();
+            _synchronizers = new Dictionary<int, Synchronizer>();
             _idCounter = 1;
+            _exhaustedIds = new HashSet<int>();
+        }
+
+        public IEnumerable<Synchronizer> Synchronizers => _synchronizers.Values;
+
+        public bool TryGet(int synchronizerId, out Synchronizer synchronizer)
+        {
+            return _synchronizers.TryGetValue(synchronizerId, out synchronizer);
         }
 
         internal void Register(Synchronizer synchronizer, bool foreign)
@@ -27,19 +32,30 @@ namespace InstantMultiplayer.UnityIntegration
             if (!foreign)
             {
                 //The first 5 bits are reserved for player id
-                synchronizer.SynchronizerId = (_idCounter << 5) + LocalId;
+                synchronizer.SynchronizerId = (_idCounter << 5) + _localClientId;
                 _idCounter++;
             }
-            synchronizers.Add(synchronizer.SynchronizerId, synchronizer);
+            _synchronizers.Add(synchronizer.SynchronizerId, synchronizer);
         }
-        internal void Unregister(Synchronizer synchronizer) { synchronizers.Remove(synchronizer.SynchronizerId); }
-        internal void DigestLocalId(int localId)
+        internal void Unregister(Synchronizer synchronizer) { 
+            _synchronizers.Remove(synchronizer.SynchronizerId);
+            _exhaustedIds.Add(synchronizer.SynchronizerId);
+        }
+        internal void DigestLocalClientId(int localId)
         {
-            LocalId = localId;
-            var syncs = synchronizers.Values.ToList();
+            _localClientId = localId;
+            var syncs = _synchronizers.Values.ToList();
             foreach (var sync in syncs)
-                sync.SynchronizerId = (sync.SynchronizerId & (-1 << 5)) + LocalId;
-            synchronizers = syncs.ToDictionary(s => s.SynchronizerId, s => s);
+                sync.SynchronizerId = (sync.SynchronizerId & (-1 << 5)) + _localClientId;
+            _synchronizers = syncs.ToDictionary(s => s.SynchronizerId, s => s);
+        }
+        internal void ExhaustId(int synchronizerId)
+        {
+            _exhaustedIds.Add(synchronizerId);
+        }
+        internal bool IsIdExhausted(int synchronizerId)
+        {
+            return _exhaustedIds.Contains(synchronizerId);
         }
     }
 }

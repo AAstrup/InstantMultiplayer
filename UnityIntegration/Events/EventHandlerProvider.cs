@@ -1,5 +1,4 @@
-﻿using InstantMultiplayer.Synchronization.Identification;
-using InstantMultiplayer.Synchronization.Identification.Implementations;
+﻿using InstantMultiplayer.Synchronization.Identification.Implementations;
 using System;
 using UnityEngine;
 
@@ -11,6 +10,7 @@ namespace InstantMultiplayer.UnityIntegration.Events
         private static EventHandlerProvider _instance;
 
         public EventHandler<InstantiationEvent> InstantiationEventHandler;
+        public EventHandler<DestroyEvent> DestroyEventHandler;
 
         private GameObjectIdProvider _gameObjectIdProvider;
 
@@ -25,6 +25,16 @@ namespace InstantMultiplayer.UnityIntegration.Events
             {
                 PrefabId = _gameObjectIdProvider.GetHashCode(prefab),
                 SynchronizerId = instanceSynchronizer.SynchronizerId
+            });
+        }
+
+        internal void SynchronizerDestroyed(Synchronizer synchronizer)
+        {
+            if (SynchronizeStore.Instance.IsIdExhausted(synchronizer.SynchronizerId))
+                return;
+            DestroyEventHandler?.Invoke(this, new DestroyEvent
+            {
+                SynchronizerId = synchronizer.SynchronizerId
             });
         }
     }

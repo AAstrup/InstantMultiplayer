@@ -4,7 +4,8 @@ using System;
 namespace Communication.Match
 {
     [Serializable]
-    public class GetHistoryMessage : IMessage
+    public class ClientDisconnectedMessage: IMessage
     {
+        public int ClientId;
     }
 }

@@ -41,7 +41,7 @@ namespace InstantMultiplayer.UnityIntegrationEditor
                 var prevTypedMemberIndex = Array.IndexOf(memberNames, prevTargetMemberName);
                 var newTypedMemberIndex = EditorGUILayout.Popup("Member", prevTypedMemberIndex, memberNames);
                 var newTargetMemberName = memberNames[newTypedMemberIndex];
-                for(int i=0; i<comp.Members.Length; i++)
+                for(int i=0; i<comp.Members.Count; i++)
                 {
                     if(comp.Members[i].Name == newTargetMemberName)
                     {

@@ -5,16 +5,16 @@ using System.Net.Sockets;
 
 namespace InstantMultiplayer.UnityIntegration.Controllers
 {
-    public class SyncInstantiationEventMessageController : BaseMessageController<SyncInstantiationEventMessage>
+    public class SyncDestroyEventMessageController : BaseMessageController<SyncDestroyEventMessage>
     {
         private PlayerConnectionsRepository _playerConnectionsRepository;
 
-        public SyncInstantiationEventMessageController(PlayerConnectionsRepository playerConnectionsRepository)
+        public SyncDestroyEventMessageController(PlayerConnectionsRepository playerConnectionsRepository)
         {
             _playerConnectionsRepository = playerConnectionsRepository;
         }
 
-        public override void HandleMessage(SyncInstantiationEventMessage message, TcpClient tcpClient)
+        public override void HandleMessage(SyncDestroyEventMessage message, TcpClient tcpClient)
         {
             for (int i = 0; i < 32; i++)
                 if (ClientFilterHelper.ClientIncluded(message.ClientFilter, i))

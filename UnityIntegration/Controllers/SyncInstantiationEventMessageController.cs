@@ -1,8 +1,7 @@
-﻿using Communication.Synchronization;
+﻿using Communication.Synchronization.Events;
 using InstantMultiplayer.Communication;
 using InstantMultiplayer.Synchronization.Objects;
 using InstantMultiplayer.UnityIntegration.Events;
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -23,11 +22,16 @@ namespace InstantMultiplayer.UnityIntegration.Controllers
 
         public override void HandleMessage(SyncInstantiationEventMessage syncMessage)
         {
+            if (SynchronizeStore.Instance.IsIdExhausted(syncMessage.SynchronizerId))
+                return;
+
             if (!MacroRepository.Instance.TryGetObject(syncMessage.PrefabId, typeof(GameObject), out var prefab))
                 throw new System.Exception("Failed to identify prefab with id " + syncMessage.PrefabId);
+
             var gb = UnityEngine.Object.Instantiate<GameObject>(prefab as GameObject);
             if (gb == null)
                 throw new System.Exception("Failed to instantiate prefab retrieved from id " + syncMessage.PrefabId);
+
             var synchronizer = gb.GetComponent<Synchronizer>();
             if(synchronizer == null)
             {

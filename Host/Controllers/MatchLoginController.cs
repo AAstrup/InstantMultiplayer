@@ -1,5 +1,5 @@
-﻿using InstantMultiplayer;
-using InstantMultiplayer.Communication.Match;
+﻿using Communication.Match;
+using InstantMultiplayer;
 using System;
 using System.Net.Sockets;
 

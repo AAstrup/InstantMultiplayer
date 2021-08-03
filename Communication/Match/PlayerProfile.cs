@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace InstantMultiplayer.Communication.Match
+namespace Communication.Match
 {
     public class PlayerProfile
     {

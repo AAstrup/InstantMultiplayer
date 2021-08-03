@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using InstantMultiplayer.Communication;
+using System;
 
-namespace InstantMultiplayer.Communication.Match
+namespace Communication.Match
 {
     [Serializable]
     public class MessageMatchLogin : IMessage

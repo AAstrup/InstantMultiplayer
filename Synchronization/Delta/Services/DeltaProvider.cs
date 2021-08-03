@@ -36,7 +36,7 @@ namespace InstantMultiplayer.Synchronization.Delta.Services
         public IEnumerable<DeltaMember> GetDeltaMembers(ComponentMonitor monitoredComponent, int timeStamp)
         {
             var deltaMembers = new List<DeltaMember>();
-            for(int i=0; i<monitoredComponent.Members.Length; i++)
+            for(int i=0; i<monitoredComponent.Members.Count; i++)
             {
                 var member = monitoredComponent.Members[i];
                 object val;

@@ -3,7 +3,7 @@
 namespace Communication
 {
     [Serializable]
-    public class ConnectionMessage
+    public class GreetMessage
     {
         public int LocalId;
     }

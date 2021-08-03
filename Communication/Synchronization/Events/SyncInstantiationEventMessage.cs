@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Communication.Synchronization
+namespace Communication.Synchronization.Events
 {
     [Serializable]
     public class SyncInstantiationEventMessage: ASyncEventMessage

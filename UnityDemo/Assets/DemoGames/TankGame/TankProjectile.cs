@@ -8,16 +8,14 @@ namespace Assets.DemoGames.TankGame
         [HideInInspector]
         public float Duration;
         [HideInInspector]
-        public Vector2 Start;
+        public Vector3 Start;
         [HideInInspector]
-        public Vector2 End;
+        public Vector3 End;
         [HideInInspector]
         public float CreatedTimestamp;
         [HideInInspector]
         public int OwnerId;
 
-        [HideInInspector]
-        [ExcludeSync]
-        public Tank Tank;
+        internal Tank Tank;
     }
 }

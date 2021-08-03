@@ -1,6 +1,6 @@
 ﻿using Communication;
+using Communication.Match;
 using GuerrillaNtp;
-using InstantMultiplayer.Communication.Match;
 using InstantMultiplayer.Communication.Serialization;
 using System;
 using System.Collections.Generic;
@@ -23,7 +23,7 @@ namespace InstantMultiplayer.Communication
         public Queue<IMessage> incomingMessageQueue;
         public TimeSpan NTPOffset;
 
-        public EventHandler<ConnectionMessage> OnIdentified;
+        public EventHandler<GreetMessage> OnIdentified;
 
         public Client(string ip, int port)
         {
@@ -62,7 +62,7 @@ namespace InstantMultiplayer.Communication
                 if (networkStream.DataAvailable)
                 {
                     var data = _binarySerializer.Deserialize(networkStream);
-                    if(data is ConnectionMessage connectionMessage)
+                    if(data is GreetMessage connectionMessage)
                     {
                         localId = connectionMessage.LocalId;
                         identified = true;

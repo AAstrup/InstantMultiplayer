@@ -9,7 +9,7 @@ namespace InstantMultiplayer.Synchronization.Delta.Services
         public void ConsumeDelta(DeltaComponent deltaComponent, ComponentMonitor monitoredComponent)
         {
             var e = 0;
-            for(int i=0; i < monitoredComponent.Members.Length && i < deltaComponent.Members.Length; i++)
+            for(int i=0; i < monitoredComponent.Members.Count && i < deltaComponent.Members.Length; i++)
             {
                 var monitoredMember = monitoredComponent.Members[i];
                 var deltaMember = deltaComponent.Members[e];

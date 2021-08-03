@@ -22,9 +22,9 @@ namespace Assets
      
         void Update()
         {
-            if (SynchronizeStore.Instance.LocalId != 0)
+            if (SyncClient.Instance.LocalId != 0)
             {
-                Text.text = "ClientId: " + SynchronizeStore.Instance.LocalId.ToString() + "\n"
+                Text.text = "ClientId: " + SyncClient.Instance.LocalId.ToString() + "\n"
                     + "SynchronizerId: " + Synchronizer.SynchronizerId + "\n" +
                     MeshFilter.sharedMesh.name + "\n" +
                     UnityObjectHelper.FindObjectFromInstanceID(MeshFilter.sharedMesh.GetInstanceID()).name;
