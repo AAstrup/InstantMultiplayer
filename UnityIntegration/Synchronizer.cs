@@ -19,7 +19,7 @@ namespace InstantMultiplayer.UnityIntegration
         public List<Component> Components;
 
         public int SynchronizerId { get; internal set; }
-        public int OwnerId => SynchronizerId & 32;
+        public int OwnerId => SynchronizerId & 31;
         public IEnumerable<ComponentMonitor> ComponentMonitors => _monitoredComponents.Values;
 
         internal bool _foreign;

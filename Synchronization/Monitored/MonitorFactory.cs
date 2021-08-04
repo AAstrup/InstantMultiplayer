@@ -20,12 +20,21 @@ namespace InstantMultiplayer.Synchronization.Monitored
         private readonly Dictionary<Type, IComponentMonitorProvider> _componentProviders;
         private IMemberMonitorProvider[] _memberProviders;
 
+        private readonly HashSet<Type> _genericDeclaringTypeMemberBlacklist;
+
         private MonitorFactory() {
             _componentProviders = new Dictionary<Type, IComponentMonitorProvider>();
             _memberProviders = new IMemberMonitorProvider[0];
             foreach (var componentMonitor in MonitorDefaults.ComponentMonitors())
                 InternalComponentRegisterProvider(componentMonitor);
             InternalMemberRegisterProvider(MonitorDefaults.MemberMonitors());
+            _genericDeclaringTypeMemberBlacklist = new Type[]
+            {
+                typeof(MonoBehaviour),
+                typeof(Behaviour),
+                typeof(Component),
+                typeof(UnityEngine.Object)
+            }.ToHashSet();
         }
 
         public static ComponentMonitor CreateComponentMonitor(int id, Component componentInstance)
@@ -104,9 +113,11 @@ namespace InstantMultiplayer.Synchronization.Monitored
 
         private bool FieldIncluded(FieldInfo fieldInfo)
         {
-            if (fieldInfo.IsPublic)
-                return true;
             var included = false;
+            if (_genericDeclaringTypeMemberBlacklist.Contains(fieldInfo.DeclaringType))
+                return false;
+            if (fieldInfo.IsPublic)
+                included = true;
             foreach (var data in fieldInfo.CustomAttributes)
                 if (data.AttributeType == typeof(SerializeField))
                     included = true;
@@ -117,6 +128,8 @@ namespace InstantMultiplayer.Synchronization.Monitored
 
         private bool PropertyIncluded(PropertyInfo propertyInfo)
         {
+            if (_genericDeclaringTypeMemberBlacklist.Contains(propertyInfo.DeclaringType))
+                return false;
             return propertyInfo.CanRead && propertyInfo.CanWrite && propertyInfo.GetSetMethod(true).IsPublic
                 && (!propertyInfo.CustomAttributes.Any(data => data.AttributeType == typeof(ExcludeSync)));
         }
@@ -140,22 +153,40 @@ namespace InstantMultiplayer.Synchronization.Monitored
         public IEnumerable<FieldInfo> MonitorableFieldInfos(object componentInstance)
         {
             var type = componentInstance.GetType();
-            var fields = type.GetRuntimeFields().Where(FieldIncluded);
+            var fields = MonitorableFieldInfos(type);
+            return fields;
+        }
+
+        public IEnumerable<FieldInfo> MonitorableFieldInfos(Type componentType)
+        {
+            var fields = componentType.GetRuntimeFields().Where(FieldIncluded);
             return fields;
         }
 
         public IEnumerable<PropertyInfo> MonitorablePropertyInfos(object componentInstance)
         {
             var type = componentInstance.GetType();
-            var properties = type.GetRuntimeProperties().Where(PropertyIncluded);
+            var properties = MonitorablePropertyInfos(type);
+            return properties;
+        }
+
+        public IEnumerable<PropertyInfo> MonitorablePropertyInfos(Type componentType)
+        {
+            var properties = componentType.GetRuntimeProperties().Where(PropertyIncluded);
             return properties;
         }
 
         public IEnumerable<MemberInfo> MonitorableMemberInfos(object componentInstance)
         {
             var type = componentInstance.GetType();
-            var fields = type.GetRuntimeFields().Where(FieldIncluded);
-            var properties = type.GetRuntimeProperties().Where(PropertyIncluded);
+            var members = MonitorableMemberInfos(type);
+            return members;
+        }
+
+        public IEnumerable<MemberInfo> MonitorableMemberInfos(Type componentType)
+        {
+            var fields = componentType.GetRuntimeFields().Where(FieldIncluded);
+            var properties = componentType.GetRuntimeProperties().Where(PropertyIncluded);
             return (fields as IEnumerable<MemberInfo>)?.Concat(properties) ?? Enumerable.Empty<MemberInfo>();
         }
     }

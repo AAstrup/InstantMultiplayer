@@ -3,6 +3,7 @@ using Communication.Match;
 using Host.Controllers;
 using InstantMultiplayer.Communication;
 using InstantMultiplayer.Communication.Serialization;
+using InstantMultiplayer.Synchronization.Monitored;
 using InstantMultiplayer.UnityIntegration.Controllers;
 using System;
 using System.Collections.Generic;
@@ -85,7 +86,7 @@ namespace InstantMultiplayer
                     Console.WriteLine($"listener.AcceptTcpClientAsync");
                     if (client.Connected)
                     {
-                        Task.Run(() => ListenToConnectedClient(client));
+                        _ = Task.Run(() => ListenToConnectedClient(client));
                         Console.WriteLine($"ListenToConnectedClient");
                     }
                 }
@@ -96,7 +97,7 @@ namespace InstantMultiplayer
             }
         }
 
-        private static async Task ListenToConnectedClient(TcpClient client)
+        private static void ListenToConnectedClient(TcpClient client)
         {
             Console.WriteLine("ListenToConnectedClient: {0}", client.Client.RemoteEndPoint);
             var events = container.Resolve<Events>();

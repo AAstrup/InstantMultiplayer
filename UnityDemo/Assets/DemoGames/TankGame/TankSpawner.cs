@@ -21,7 +21,11 @@ namespace Assets.DemoGames.TankGame
             if(_tankInstance == null && Input.GetKeyDown(KeyCode.Space))
             {
                 var spawn = Arena.Spawns.OrderBy(s => Guid.NewGuid()).First();
+                if (spawn == null)
+                    return;
                 _tankInstance = UnityEngine.Object.Instantiate(TankPrefab);
+                if (_tankInstance == null)
+                    return;
                 _tankInstance.transform.position = spawn.transform.position.Y(0);
             }
         }

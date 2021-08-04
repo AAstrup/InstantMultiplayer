@@ -20,7 +20,7 @@ namespace Assets.DemoGames.TankGame
 
             if(Tank.ShotsLeft > 0 && Input.GetMouseButtonDown(0))
             {
-                if(Physics.Raycast(new Ray(transform.position, Vector3.forward), out var info))
+                if(Physics.Raycast(new Ray(transform.position, Vector3.forward), out var info, 100, 1<<LayerMask.NameToLayer("Wall")))
                 {
                     Tank.ShotsLeft -= 1;
                     var projectile = Object.Instantiate<GameObject>(ProjectilePrefab).GetComponent<TankProjectile>();
@@ -30,6 +30,7 @@ namespace Assets.DemoGames.TankGame
                     projectile.OwnerId = SyncClient.Instance.LocalId;
                     projectile.Tank = Tank;
                     projectile.Duration = Vector3.Distance(info.point, transform.position) / 7;
+                    projectile.transform.position = projectile.Start;
                 }
             }
         }

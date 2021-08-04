@@ -69,7 +69,7 @@ namespace InstantMultiplayer
                 var bytes = new BinarySerializer().Serialize(serilizableObjectToSend);
                 writer.Write(bytes);
             }
-            catch(Exception e)
+            catch(Exception)
             {
                 RemoveClient(player);
             }
