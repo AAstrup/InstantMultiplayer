@@ -17,7 +17,7 @@ namespace InstantMultiplayer.Synchronization.Identification.Implementations
                 h += 23 * gameObject.tag.GetHashCode();
                 foreach (var comp in gameObject.GetComponents(typeof(Component)))
                 {
-                    h += ComponentIdProvider.GetHashCode(comp);
+                    h += 23 * ComponentIdProvider.GetHashCode(comp);
                 }
                 return h;
             }

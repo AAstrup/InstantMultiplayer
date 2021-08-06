@@ -1,48 +1,29 @@
 ﻿using InstantMultiplayer.Synchronization.Identification;
 using InstantMultiplayer.Synchronization.Objects;
 using Synchronization.Objects.Resources;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
-namespace InstantMultiplayer.UnityIntegrationEditor
+namespace InstantMultiplayer.UnityIntegrationEditor.ResourceOutlines
 {
-    public class ResourceAssetModificationProcessor: UnityEditor.AssetModificationProcessor
+    internal static class ResourceOutlineHelper
     {
-        //assetName is entire path, e.g: Assets/Resources/Textures/Dummy.png.meta
-        private static void OnWillCreateAsset(string assetName) 
+        internal static void MarkResourceOutlineAsOutdated()
         {
-            try
-            {
-                if (!ShouldUpdate(assetName, false)) return;
-                UpdateResourceOutline();
-            }
-            catch (Exception e) { Debug.LogWarning("ResourceOutline failed to be created or updated: " + e.ToString()); }
-        }
-        private static AssetDeleteResult OnWillDeleteAsset(string assetName, RemoveAssetOptions options)
-        {
-            try
-            {
-                if (ShouldUpdate(assetName))
-                    UpdateResourceOutline();
-            }
-            catch(Exception e) { Debug.LogWarning("ResourceOutline failed to be created or updated: " + e.ToString()); }
-            return AssetDeleteResult.DidNotDelete;
-        }
-        private static AssetMoveResult OnWillMoveAsset(string sourcePath, string destinationPath)
-        {
-            try
-            {
-                UpdateResourceOutline();
-            }
-            catch (Exception e) { Debug.LogWarning("ResourceOutline failed to be created or updated: " + e.ToString()); }
-            return AssetMoveResult.DidNotMove;
+            var resourceOutline = GetOrCreate(out var created);
+            if (resourceOutline.Outdated)
+                return;
+            resourceOutline.Outdated = true;
+            EditorUtility.SetDirty(resourceOutline);
+            //AssetDatabase.SaveAssets();
+            //if (created)
+            //    AssetDatabase.Refresh();
         }
 
-        private static bool ShouldUpdate(string assetName, bool checkMeta = true)
+        internal static bool ShouldUpdate(string assetName, bool checkMeta = true)
         {
             if (checkMeta && assetName.EndsWith(".meta"))
                 return false;
@@ -51,20 +32,33 @@ namespace InstantMultiplayer.UnityIntegrationEditor
             return string.Compare(assetPath, resourceOutlineAssetPath, System.StringComparison.InvariantCultureIgnoreCase) != 0;
         }
 
-        private static void UpdateResourceOutline()
+        internal static void UpdateResourceOutline()
         {
+            var resourceOutline = GetOrCreate(out var created);
+            //if (!resourceOutline.Outdated)
+            //    return;
             var entries = GetEntries();
+            resourceOutline.Entries = entries.ToArray();
+            resourceOutline.Outdated = false;
+            EditorUtility.SetDirty(resourceOutline);
+            AssetDatabase.SaveAssets();
+            if (created)
+                AssetDatabase.Refresh();
+        }
+
+        private static ResourceOutline GetOrCreate(out bool created)
+        {
             var path = ResourceOutline.AssetPath;
             var resourceOutline = AssetDatabase.LoadAssetAtPath<ResourceOutline>(path);
-            if(resourceOutline == null)
+            created = false;
+            if (resourceOutline == null)
             {
                 resourceOutline = ScriptableObject.CreateInstance<ResourceOutline>();
                 AssetDatabase.CreateAsset(resourceOutline, path);
                 Debug.Log("Created new ResourceOutline asset");
+                created = true;
             }
-            resourceOutline.Entries = entries.ToArray();
-            EditorUtility.SetDirty(resourceOutline);
-            AssetDatabase.SaveAssets();
+            return resourceOutline;
         }
 
         private static List<ResourceEntry> GetEntries()

@@ -1,4 +1,5 @@
 ﻿using InstantMultiplayer.Synchronization.Monitored.ComponentMonitors.Providers;
+using InstantMultiplayer.Synchronization.Monitored.ComponentMonitors.Providers.Collision;
 using InstantMultiplayer.Synchronization.Monitored.MemberMonitors.Providers;
 using System.Collections.Generic;
 
@@ -12,7 +13,8 @@ namespace InstantMultiplayer.Synchronization.Monitored
             {
                 new TransformMonitorProvider(),
                 new MeshFilterMonitorProvider(),
-                new MeshRendererMonitorProvider()
+                new MeshRendererMonitorProvider(),
+                new BoxColliderMonitorProvider()
             };
         }
 

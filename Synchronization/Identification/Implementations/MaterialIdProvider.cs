@@ -25,6 +25,11 @@ namespace InstantMultiplayer.Synchronization.Identification.Implementations
                     else
                         code += 23 * v.GetHashCode();
                 }
+                foreach(var textureName in material.GetTexturePropertyNames())
+                {
+                    code += 23 * IdFactory.Instance.GetId(material.GetTextureOffset(textureName));
+                    code += 23 * IdFactory.Instance.GetId(material.GetTextureScale(textureName));
+                }
                 return code;
             }
         }

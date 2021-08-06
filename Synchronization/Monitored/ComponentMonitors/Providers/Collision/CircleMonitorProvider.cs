@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace InstantMultiplayer.Synchronization.Monitored.ComponentMonitors.Providers.Collision
 {
-    public sealed class TransformMonitorProvider : IComponentMonitorProvider
+    public sealed class CircleMonitorProvider : IComponentMonitorProvider
     {
         public IEnumerable<Type> ComponentTypes()
         {

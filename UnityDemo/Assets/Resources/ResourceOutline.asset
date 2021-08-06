@@ -12,56 +12,53 @@ MonoBehaviour:
   m_Script: {fileID: 789499650, guid: 02a9362be3d867c41b9521fbd273aed4, type: 3}
   m_Name: ResourceOutline
   m_EditorClassIdentifier: 
+  Outdated: 0
   Entries:
   - Name: dummy
-    Id: -676219796
+    Id: -304590362
     TypeName: UnityEngine.Material
     Path: Materials\dummy
   - Name: Floor
-    Id: 95110041
+    Id: 2083210137
     TypeName: UnityEngine.Material
     Path: Materials\Floor
   - Name: box
-    Id: 17448
+    Id: -287905739
     TypeName: UnityEngine.GameObject
     Path: Models\box
   - Name: All
-    Id: 17346
+    Id: 1152074898
     TypeName: InstantMultiplayer.UnityIntegration.SyncClientFilter
     Path: Tanks\All
   - Name: Spawn
-    Id: 20034
+    Id: 1096742111
     TypeName: UnityEngine.GameObject
     Path: Tanks\Spawn
   - Name: SpawnerMaterial
-    Id: 1829711848
+    Id: -477155352
     TypeName: UnityEngine.Material
     Path: Tanks\SpawnerMaterial
   - Name: Tank
-    Id: 17328
+    Id: 502474279
     TypeName: UnityEngine.GameObject
     Path: Tanks\Tank
   - Name: TankMaterial
-    Id: 408441318
+    Id: -1898425882
     TypeName: UnityEngine.Material
     Path: Tanks\TankMaterial
   - Name: TankPhysicsMaterial
-    Id: -8276
+    Id: 0
     TypeName: UnityEngine.PhysicMaterial
     Path: Tanks\TankPhysicsMaterial
   - Name: TankProjectile
-    Id: 17342
+    Id: 2044959175
     TypeName: UnityEngine.GameObject
     Path: Tanks\TankProjectile
+  - Name: WallMaterial
+    Id: 929681080
+    TypeName: UnityEngine.Material
+    Path: Tanks\WallMaterial
   - Name: base
     Id: 2009431679
     TypeName: UnityEngine.Texture2D
     Path: Textures\base
-  - Name: dummy
-    Id: -1167585430
-    TypeName: UnityEngine.Texture2D
-    Path: Textures\dummy
-  - Name: Grass-1
-    Id: 645603330
-    TypeName: UnityEngine.Texture2D
-    Path: Textures\Grass-1

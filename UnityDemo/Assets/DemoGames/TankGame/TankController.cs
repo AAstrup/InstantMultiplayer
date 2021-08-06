@@ -13,8 +13,6 @@ namespace Assets.DemoGames.TankGame
 
         private void Update()
         {
-
-
             var dir = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical"));
             Rigidbody.velocity = dir * 6;
 
@@ -23,7 +21,7 @@ namespace Assets.DemoGames.TankGame
                 if(Physics.Raycast(new Ray(transform.position, Vector3.forward), out var info, 100, 1<<LayerMask.NameToLayer("Wall")))
                 {
                     Tank.ShotsLeft -= 1;
-                    var projectile = Object.Instantiate<GameObject>(ProjectilePrefab).GetComponent<TankProjectile>();
+                    var projectile = SyncObject.Instantiate(ProjectilePrefab).GetComponent<TankProjectile>();
                     projectile.CreatedTimestamp = SyncClient.Instance.SyncTime;
                     projectile.Start = transform.position;
                     projectile.End = info.point;

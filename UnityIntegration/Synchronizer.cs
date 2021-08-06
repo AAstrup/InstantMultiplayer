@@ -21,13 +21,15 @@ namespace InstantMultiplayer.UnityIntegration
         public int SynchronizerId { get; internal set; }
         public int OwnerId => SynchronizerId & 31;
         public IEnumerable<ComponentMonitor> ComponentMonitors => _monitoredComponents.Values;
+        public bool Initialized => SynchronizerId != 0;
 
         internal bool _foreign;
+        internal SynchronizerOrigin _origin;
         private Dictionary<int, ComponentMonitor> _monitoredComponents = new Dictionary<int, ComponentMonitor>();
 
         private void Start()
         {
-            if (SynchronizerId == 0)
+            if (!Initialized)
                 Initialize();
             LateInitialize();
         }

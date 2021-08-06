@@ -6,6 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Synchronization\Synchronization.csproj" />
     <ProjectReference Include="..\UnityIntegration\UnityIntegration.csproj" />
   </ItemGroup>
 

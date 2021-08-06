@@ -31,7 +31,10 @@ namespace InstantMultiplayer.Synchronization.Objects
                 if (_map.TryGetValue(entry.TypeName, out var map))
                 {
                     if (map.ContainsKey(entry.Id))
-                        throw new Exception("Duplicate objects of same type and name: " + entry);
+                    {
+                        var conflictEntry = map[entry.Id];
+                        throw new Exception($"Uniqueness conflict for type {entry.TypeName} and id {entry.Id} between {conflictEntry} and {entry.Path}. Please ensure that no identical objects exists.");
+                    }
                     else
                         map.Add(entry.Id, entry.Path);
                 }
@@ -53,7 +56,6 @@ namespace InstantMultiplayer.Synchronization.Objects
                 if (map.TryGetValue(id, out var path))
                 {
                     obj = Resources.Load(path, type);
-                    Debug.Log((obj == null));
                 }
             }
             return obj != null;

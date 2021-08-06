@@ -8,6 +8,7 @@ namespace Synchronization.Objects.Resources
     [Serializable]
     public class ResourceOutline: ScriptableObject
     {
+        public bool Outdated;
         public ResourceEntry[] Entries;
 
         public static string Name => "ResourceOutline";

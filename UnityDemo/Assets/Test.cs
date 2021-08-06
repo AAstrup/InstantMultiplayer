@@ -1,4 +1,5 @@
 ﻿using InstantMultiplayer.UnityIntegration;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -8,7 +9,7 @@ namespace Assets
     public class Test : MonoBehaviour
     {
         public Text Text;
-        public List<Object> Objects;
+        public List<UnityEngine.Object> Objects;
         public Synchronizer Synchronizer;
         public MeshFilter MeshFilter;
 

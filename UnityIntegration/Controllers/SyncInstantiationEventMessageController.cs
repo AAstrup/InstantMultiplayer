@@ -22,8 +22,19 @@ namespace InstantMultiplayer.UnityIntegration.Controllers
 
         public override void HandleMessage(SyncInstantiationEventMessage syncMessage)
         {
+            Debug.Log("Recieved InstantiationEventMessage for id " + syncMessage.SynchronizerId);
+
             if (SynchronizeStore.Instance.IsIdExhausted(syncMessage.SynchronizerId))
                 return;
+
+            if (SynchronizeStore.Instance.TryGet(syncMessage.SynchronizerId, out var existingSynchronizer))
+            {
+                if (existingSynchronizer != null && existingSynchronizer._origin != SynchronizerOrigin.Sync)
+                {
+                    //TODO: MERGE WITH EXISTING; FOR NOW IGNORE!
+                    return;
+                }
+            }
 
             if (!MacroRepository.Instance.TryGetObject(syncMessage.PrefabId, typeof(GameObject), out var prefab))
                 throw new System.Exception("Failed to identify prefab with id " + syncMessage.PrefabId);
@@ -42,6 +53,7 @@ namespace InstantMultiplayer.UnityIntegration.Controllers
             synchronizer.ClientFilter = ScriptableObject.CreateInstance<SyncClientFilter>();
             synchronizer.ClientFilter.ClientFilter = syncMessage.ClientFilter;
             synchronizer._foreign = true;
+            synchronizer._origin = SynchronizerOrigin.Instantiation;
             synchronizer.Initialize();
         }
 
@@ -52,7 +64,8 @@ namespace InstantMultiplayer.UnityIntegration.Controllers
                 message = new SyncInstantiationEventMessage()
                 {
                     SynchronizerId = eventMessage.SynchronizerId,
-                    PrefabId = eventMessage.PrefabId
+                    PrefabId = eventMessage.PrefabId,
+                    ClientFilter = eventMessage.ClientFilter
                 };
                 return true;
             }

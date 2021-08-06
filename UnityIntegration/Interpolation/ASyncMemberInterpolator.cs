@@ -18,7 +18,6 @@ namespace InstantMultiplayer.UnityIntegration.Interpolation
                 Value = (T)deltaMember.Value,
                 Timestamp = Time.time //deltaMember.TimeStamp
             };
-            Debug.Log("HandleDeltaMember");
         }
 
         internal void Update()

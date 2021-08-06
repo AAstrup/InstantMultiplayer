@@ -1,45 +1,49 @@
 ﻿using InstantMultiplayer.Synchronization.Extensions;
-using InstantMultiplayer.Synchronization.Monitored;
 using System;
 using System.Linq;
 using System.Reflection;
-using UnityEngine;
 
 namespace InstantMultiplayer.Synchronization.Identification
 {
-    public class ComponentIdProvider
+    public class GenericIdProvider
     {
-        public static int GetHashCode(Component component)
+        public static int GetHashCode(object obj)
         {
-            if (component == null) throw new ArgumentNullException(nameof(component));
-            var type = component.GetType();
-            unchecked
+            if (obj == null) throw new ArgumentNullException(nameof(obj));
+            if(obj is System.Collections.IEnumerable enumerable)
             {
-                var h = 0;
-
-                if (MonitorFactory.Instance.TryGetProviderMemberMonitors(component, out var members))
+                var enumerator = enumerable.GetEnumerator();
+                enumerator.Reset();
+                unchecked
                 {
-                    foreach(var member in members)
+                    var h = 0;
+                    while (enumerator.MoveNext())
                     {
-                        var val = member.GetValue();
+                        var val = enumerator.Current;
                         h += val == null ? 23 : 23 * IdFactory.Instance.GetId(val);
                     }
                     return h;
                 }
-
+            }
+            var type = obj.GetType();
+            if (type.IsEnum || type.IsSystemPrimitive() || type.IsUnityPrimitive())
+                return obj.GetHashCode();
+            unchecked
+            {
+                var h = 0;
                 foreach (var field in type.GetRuntimeFields().Where(f => !f.IsObsolete() && f.IsPublic))
                 {
-                    var val = field.GetValue(component);
+                    var val = field.GetValue(obj);
                     h += val == null ? 23 : 23 * IdFactory.Instance.GetId(val);
                 }
                 foreach (var property in type.GetRuntimeProperties().Where(p => !p.IsObsolete() && p.IsPublicGetSetProperty()))
                 {
                     try
                     {
-                        var val = property.GetValue(component);
+                        var val = property.GetValue(obj);
                         h += val == null ? 23 : 23 * IdFactory.Instance.GetId(val);
                     }
-                    catch (Exception)
+                    catch(Exception)
                     {
                         h += 23;
                     }

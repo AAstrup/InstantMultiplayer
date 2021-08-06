@@ -71,5 +71,10 @@ namespace InstantMultiplayer.Synchronization.Extensions
                     throw new ArgumentException();
             }
         }
+
+        public static bool IsObsolete(this MemberInfo memberInfo)
+        {
+            return memberInfo.GetCustomAttribute<ObsoleteAttribute>() != null;
+        }
     }
 }

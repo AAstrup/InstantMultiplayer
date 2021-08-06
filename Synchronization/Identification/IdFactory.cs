@@ -1,5 +1,4 @@
-﻿using InstantMultiplayer.Synchronization.Identification.Implementations;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -15,11 +14,8 @@ namespace InstantMultiplayer.Synchronization.Identification
         private IdFactory()
         {
             _providers = new Dictionary<Type, IIdProvider>();
-            Register(new MeshIdProvider());
-            Register(new ArrayIdProvider());
-            Register(new MaterialIdProvider());
-            Register(new Texture2DIdProvider());
-            Register(new TextureIdProvider());
+            foreach(var idProvider in IdHelper.GetAllProviders())
+                Register(idProvider);
         }
 
         public void Register(IIdProvider hashCodeProvider)
@@ -27,8 +23,13 @@ namespace InstantMultiplayer.Synchronization.Identification
             _providers.Add(hashCodeProvider.Type, hashCodeProvider);
         }
 
-        public bool TryGetId(object obj, out int hashCode)
+        public bool TryGetIdFromProvider(object obj, out int hashCode)
         {
+            if (obj == null)
+            {
+                hashCode = 0;
+                return false;
+            }
             if (_providers.TryGetValue(obj.GetType(), out var prov))
             {
                 hashCode = prov.GetHashCode(obj);
@@ -40,22 +41,29 @@ namespace InstantMultiplayer.Synchronization.Identification
 
         public int GetId(object obj)
         {
+            if (obj == null) throw new ArgumentNullException(nameof(obj));
             return GetId(obj, obj.GetType());
         }
 
         public int GetId(object obj, Type type)
         {
+            if (obj == null) throw new ArgumentNullException(nameof(obj));
             if (_providers.TryGetValue(type, out var prov))
             {
                 return prov.GetHashCode(obj);
             }
-            Debug.LogWarning("Failed to get id specific for " + type);
-            return obj.GetHashCode();
+            //Debug.LogWarning("Failed to get id specific for " + type);
+            return GenericIdProvider.GetHashCode(obj);
         }
 
         public bool RegisteredType(Type type)
         {
             return _providers.ContainsKey(type);
+        }
+
+        public IEnumerable<Type> RegisteredTypes()
+        {
+            return _providers.Keys;
         }
 
     }

@@ -27,6 +27,11 @@ namespace InstantMultiplayer.UnityIntegration
             return _synchronizers.TryGetValue(synchronizerId, out synchronizer);
         }
 
+        public bool Exists(int synchronizerId)
+        {
+            return _synchronizers.ContainsKey(synchronizerId);
+        }
+
         internal void Register(Synchronizer synchronizer, bool foreign)
         {
             if (!foreign)

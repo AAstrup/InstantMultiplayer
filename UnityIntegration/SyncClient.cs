@@ -24,7 +24,7 @@ namespace InstantMultiplayer.UnityIntegration
 
         private Client _client;
         private static Dictionary<Type, IMessageController> _controllers;
-        private static List<Type> _messageTypeOrder;
+        private Type[] _controllerMessageOrder;
         private string azureIp = "instantmultiplayercontainer.northeurope.azurecontainer.io";
         private int azurePort = 61001;
 
@@ -61,17 +61,24 @@ namespace InstantMultiplayer.UnityIntegration
                 Debug.LogError("SyncClient failed to connect: " + e.ToString());
             }
             _controllers = new Dictionary<Type, IMessageController>();
-            _controllers.Add(SyncMessageController.Instance.GetMessageType(), SyncMessageController.Instance);
-            _controllers.Add(SyncInstantiationEventMessageController.Instance.GetMessageType(), SyncInstantiationEventMessageController.Instance);
-            _controllers.Add(SyncDestroyEventMessageController.Instance.GetMessageType(), SyncDestroyEventMessageController.Instance);
+
             _controllers.Add(ClientConnectedMessageController.Instance.GetMessageType(), ClientConnectedMessageController.Instance);
             _controllers.Add(ClientDisconnectedMessageController.Instance.GetMessageType(), ClientDisconnectedMessageController.Instance);
+            
+            _controllers.Add(SyncInstantiationEventMessageController.Instance.GetMessageType(), SyncInstantiationEventMessageController.Instance);
+            _controllers.Add(SyncDestroyEventMessageController.Instance.GetMessageType(), SyncDestroyEventMessageController.Instance);
+            _controllers.Add(SyncMessageController.Instance.GetMessageType(), SyncMessageController.Instance);
+
             _controllers.Add(TextMessageController.Instance.GetMessageType(), TextMessageController.Instance);
-            _messageTypeOrder = new List<Type>
+
+            _controllerMessageOrder = new Type[]
             {
+                ClientConnectedMessageController.Instance.GetMessageType(),
+                ClientDisconnectedMessageController.Instance.GetMessageType(),
+                SyncInstantiationEventMessageController.Instance.GetMessageType(),
+                SyncDestroyEventMessageController.Instance.GetMessageType(),
                 SyncMessageController.Instance.GetMessageType(),
-                SyncMessageController.Instance.GetMessageType(),
-                TextMessageController.Instance.GetMessageType(),
+                TextMessageController.Instance.GetMessageType()
             };
         }
 
@@ -84,11 +91,12 @@ namespace InstantMultiplayer.UnityIntegration
                 {
                     if (Time.time - _lastSendTimestamp > _sendInterval)
                     {
-                        foreach (KeyValuePair<Type, IMessageController> controller in _controllers)
+                        foreach (var messageType in _controllerMessageOrder)
                         {
-                            if (controller.Value.TryGetMessage(out var msg))
+                            var controller = _controllers[messageType];
+                            if (controller.TryGetMessage(out var msg))
                             {
-                                Debug.Log("Sending msg of type " + controller.Key.ToString());
+                                Debug.Log("Sending msg of type " + messageType);
                                 _client.SendMessage(msg);
                             }
                         }

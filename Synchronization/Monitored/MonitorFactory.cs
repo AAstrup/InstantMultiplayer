@@ -116,6 +116,8 @@ namespace InstantMultiplayer.Synchronization.Monitored
             var included = false;
             if (_genericDeclaringTypeMemberBlacklist.Contains(fieldInfo.DeclaringType))
                 return false;
+            if (fieldInfo.IsObsolete())
+                return false;
             if (fieldInfo.IsPublic)
                 included = true;
             foreach (var data in fieldInfo.CustomAttributes)
@@ -130,13 +132,14 @@ namespace InstantMultiplayer.Synchronization.Monitored
         {
             if (_genericDeclaringTypeMemberBlacklist.Contains(propertyInfo.DeclaringType))
                 return false;
-            return propertyInfo.CanRead && propertyInfo.CanWrite && propertyInfo.GetSetMethod(true).IsPublic
+            if (propertyInfo.IsObsolete())
+                return false;
+            return propertyInfo.IsPublicGetSetProperty()
                 && (!propertyInfo.CustomAttributes.Any(data => data.AttributeType == typeof(ExcludeSync)));
         }
 
         private AMemberMonitorBase[] GenericMembers(object componentInstance)
         {
-            Debug.Log("GenericMembers");
             var members = new List<AMemberMonitorBase>();
             var type = componentInstance.GetType();
             var fields = type.GetRuntimeFields().Where(FieldIncluded);
@@ -188,6 +191,13 @@ namespace InstantMultiplayer.Synchronization.Monitored
             var fields = componentType.GetRuntimeFields().Where(FieldIncluded);
             var properties = componentType.GetRuntimeProperties().Where(PropertyIncluded);
             return (fields as IEnumerable<MemberInfo>)?.Concat(properties) ?? Enumerable.Empty<MemberInfo>();
+        }
+
+        internal bool TryGetProviderMemberMonitors(Component componentInstance, out IEnumerable<AMemberMonitorBase> memberMonitors)
+        {
+            memberMonitors = _componentProviders.TryGetValue(componentInstance.GetType(), out var provider) ?
+                provider.MonitoredMembers(componentInstance).ToArray() : null;
+            return memberMonitors != null;
         }
     }
 }

@@ -25,7 +25,10 @@ namespace InstantMultiplayer.Synchronization.Objects
                 {
                     var id = IdFactory.Instance.GetId(obj);
                     if (map.ContainsKey(id))
-                        throw new Exception($"Duplicate objects of same type and id: {id} of {obj.GetType().FullName}");
+                    {
+                        var conflictEntry = map[id];
+                        throw new Exception($"Uniqueness conflict for type {obj.GetType().FullName} and id {id} between {conflictEntry.name} and {obj.name}. Please ensure that no identical objects exists.");
+                    }
                     else
                     {
                         map.Add(id, obj);

@@ -21,10 +21,12 @@ namespace InstantMultiplayer.UnityIntegration.Events
 
         internal void PrefabInstantiated(GameObject prefab, Synchronizer instanceSynchronizer)
         {
+            var prefabHashCode = _gameObjectIdProvider.GetHashCode(prefab);
             InstantiationEventHandler?.Invoke(this, new InstantiationEvent
             {
-                PrefabId = _gameObjectIdProvider.GetHashCode(prefab),
-                SynchronizerId = instanceSynchronizer.SynchronizerId
+                PrefabId = prefabHashCode,
+                SynchronizerId = instanceSynchronizer.SynchronizerId,
+                ClientFilter = instanceSynchronizer.ClientFilter.ClientFilter
             });
         }
 

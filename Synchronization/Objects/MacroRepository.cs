@@ -6,8 +6,8 @@ namespace InstantMultiplayer.Synchronization.Objects
 {
     public class MacroRepository: ARepositoryBase
     {
-        public static ReferenceRepository Instance => _instance ?? (_instance = new ReferenceRepository());
-        private static ReferenceRepository _instance;
+        public static MacroRepository Instance => _instance ?? (_instance = new MacroRepository());
+        private static MacroRepository _instance;
 
         private readonly List<ARepositoryBase> _repositores;
 

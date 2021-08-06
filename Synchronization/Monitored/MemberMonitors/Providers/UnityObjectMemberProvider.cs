@@ -12,7 +12,7 @@ namespace InstantMultiplayer.Synchronization.Monitored.MemberMonitors.Providers
 
         public AMemberMonitorBase GetMonitor(object memberHolder, MemberInfo memberInfo)
         {
-            return new RichMemberMonitor<int, UnityEngine.Object>(
+            return new RichMemberMonitor<int?, UnityEngine.Object>(
                 memberInfo.Name,
                 () => GetIdFromObject(memberHolder, memberInfo),
                 () => (Object)memberInfo.GetValueFromMemberInfo(memberHolder),
@@ -25,16 +25,25 @@ namespace InstantMultiplayer.Synchronization.Monitored.MemberMonitors.Providers
             return memberInfo.GetValueTypeFromMemberInfo().IsAssignableFrom(typeof(UnityEngine.Object));
         }
 
-        private int GetIdFromObject(object memberHolder, MemberInfo memberInfo)
+        private int? GetIdFromObject(object memberHolder, MemberInfo memberInfo)
         {
             var obj = (Object)memberInfo.GetValueFromMemberInfo(memberHolder);
+            if (obj == null)
+                return null;
             var id = IdFactory.Instance.GetId(obj);
             Debug.Log($"Retrieved id {id} of obj {obj.name} of type {obj.GetType()}");
             return id;
         }
 
-        private void SetObjectFromId(object memberHolder, MemberInfo memberInfo, int id)
+        private void SetObjectFromId(object memberHolder, MemberInfo memberInfo, int? idOption)
         {
+            if(!idOption.HasValue)
+            {
+                memberInfo.SetValueFromMemberInfo(memberHolder, null);
+                return;
+            }
+
+            var id = idOption.Value;
             if (ResourceRepository.Instance.TryGetObject(id, memberInfo.GetValueTypeFromMemberInfo(), out var obj))
             {
                 memberInfo.SetValueFromMemberInfo(memberHolder, obj);
