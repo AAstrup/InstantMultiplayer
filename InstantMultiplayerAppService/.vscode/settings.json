@@ -1,0 +1,5 @@
+{
+  "appService.preDeployTask": "publish-release",
+  "appService.deploySubpath": "bin\\Release\\net5.0\\publish",
+  "appService.defaultWebAppToDeploy": "/subscriptions/0cc19271-46ad-4b48-b8b3-98878df5993a/resourceGroups/instant-multiplayer/providers/Microsoft.Web/sites/instant-multiplayer"
+}
