@@ -34,7 +34,8 @@ namespace InstantMultiplayer.UnityIntegration.Controllers
             {
                 message = new SyncDestroyEventMessage()
                 {
-                    SynchronizerId = eventMessage.SynchronizerId
+                    SynchronizerId = eventMessage.SynchronizerId,
+                    ClientFilter = eventMessage.ClientFilter
                 };
                 return true;
             }

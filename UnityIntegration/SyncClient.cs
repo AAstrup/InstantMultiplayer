@@ -1,4 +1,5 @@
-﻿using InstantMultiplayer.Communication;
+﻿using Communication;
+using InstantMultiplayer.Communication;
 using InstantMultiplayer.Synchronization.Objects;
 using InstantMultiplayer.UnityIntegration.Controllers;
 using Synchronization.Objects.Resources;
@@ -21,6 +22,11 @@ namespace InstantMultiplayer.UnityIntegration
         public float SyncTime => Time.time + (float)_client.NTPOffset.TotalSeconds;
         public int LocalId => _client?.localId ?? 0;
         public bool Ready => _client != null && _client.connected && _client.identified;
+        public event EventHandler<GreetMessage> OnIdentified
+        {
+            add { _client.OnIdentified += value; }
+            remove { _client.OnIdentified -= value; }
+        }
 
         private Client _client;
         private static Dictionary<Type, IMessageController> _controllers;

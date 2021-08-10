@@ -36,7 +36,8 @@ namespace InstantMultiplayer.UnityIntegration.Events
                 return;
             DestroyEventHandler?.Invoke(this, new DestroyEvent
             {
-                SynchronizerId = synchronizer.SynchronizerId
+                SynchronizerId = synchronizer.SynchronizerId,
+                ClientFilter = synchronizer.ClientFilter.ClientFilter
             });
         }
     }
