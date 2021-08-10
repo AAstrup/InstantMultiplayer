@@ -3,6 +3,7 @@ using InstantMultiplayer.UnityIntegration.Interpolation;
 using System;
 using System.Linq;
 using UnityEditor;
+using UnityEngine;
 
 namespace InstantMultiplayer.UnityIntegrationEditor
 {
@@ -28,31 +29,45 @@ namespace InstantMultiplayer.UnityIntegrationEditor
 
             EditorGUILayout.PropertyField(_component);
 
-            if (_component.objectReferenceValue != null)
+            var interpolator = (ASyncMemberInterpolatorBase)target;
+            var generic = interpolator.GenericType;
+            if (interpolator.Component != null)
             {
-                var interpolator = (ASyncMemberInterpolatorBase)target;
-                var generic = interpolator.GenericType;
                 var comp = MonitorFactory.CreateComponentMonitor(0, interpolator.Component);
-                var memberNames = comp.Members
+                var memberNames = comp?.Members
                     .Where(m => m.MemberType.IsAssignableFrom(generic))
                     .Select(m => m.Name)
                     .ToArray();
-                var prevTargetMemberName = comp.Members[_index.intValue].Name;
-                var prevTypedMemberIndex = Array.IndexOf(memberNames, prevTargetMemberName);
-                var newTypedMemberIndex = EditorGUILayout.Popup("Member", prevTypedMemberIndex, memberNames);
-                var newTargetMemberName = memberNames[newTypedMemberIndex];
-                for(int i=0; i<comp.Members.Count; i++)
+                if (memberNames != null)
                 {
-                    if(comp.Members[i].Name == newTargetMemberName)
+                    var prevTargetMemberName = comp.Members[_index.intValue].Name;
+                    var prevTypedMemberIndex = Array.IndexOf(memberNames, prevTargetMemberName);
+                    var newTypedMemberIndex = EditorGUILayout.Popup("Member", prevTypedMemberIndex, memberNames);
+                    var newTargetMemberName = memberNames[newTypedMemberIndex];
+                    for (int i = 0; i < comp.Members.Count; i++)
                     {
-                        _index.intValue = i;
-                        break;
+                        if (comp.Members[i].Name == newTargetMemberName)
+                        {
+                            _index.intValue = i;
+                            break;
+                        }
                     }
                 }
-            }
+                else
+                {
+                    Debug.LogWarning($"Failed to infer component or component member monitors.");
+                }
 
-            EditorGUILayout.PropertyField(_localLerping);
-            EditorGUILayout.PropertyField(_localLerpScale);
+                EditorGUILayout.PropertyField(_localLerping);
+                if (_localLerping.boolValue)
+                {
+                    EditorGUILayout.PropertyField(_localLerpScale);
+                }
+            }
+            else
+            {
+                EditorGUILayout.HelpBox($"Add a component with a {generic} member", MessageType.Info);
+            }
 
             serializedObject.ApplyModifiedProperties();
         }
