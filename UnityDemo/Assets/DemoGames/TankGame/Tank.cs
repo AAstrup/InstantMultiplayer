@@ -10,11 +10,13 @@ namespace Assets.DemoGames.TankGame
     public class Tank: MonoBehaviour
     {
         public int ShotsLeft;
+        public int ShotsTotal;
         public bool Invincible;
 
         private void Start()
         {
             ShotsLeft = 3;
+            ShotsTotal = 3;
         }
     }
 }

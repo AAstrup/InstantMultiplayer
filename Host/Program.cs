@@ -1,5 +1,6 @@
 ﻿using Autofac;
 using Communication.Match;
+using GuerrillaNtp;
 using Host.Controllers;
 using InstantMultiplayer.Communication;
 using InstantMultiplayer.Communication.Serialization;
@@ -16,6 +17,8 @@ namespace InstantMultiplayer
 {
     class Program
     {
+        public static DateTime InitialSyncedTimestamp;
+
         private static TcpListener listener;
         private static int port = 61001;
         private static IContainer container;
@@ -26,6 +29,9 @@ namespace InstantMultiplayer
 
         static void Main(string[] args)
         {
+            using (var ntp = new NtpClient(Dns.GetHostAddresses("pool.ntp.org")[0]))
+                InitialSyncedTimestamp = DateTime.Now + ntp.GetCorrectionOffset();
+
             RegisterDependencies();
             CreateControllers();
 

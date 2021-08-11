@@ -22,10 +22,6 @@ MonoBehaviour:
     Id: 2083210137
     TypeName: UnityEngine.Material
     Path: Materials\Floor
-  - Name: box
-    Id: -287905739
-    TypeName: UnityEngine.GameObject
-    Path: Models\box
   - Name: All
     Id: 1152074898
     TypeName: InstantMultiplayer.UnityIntegration.SyncClientFilter
@@ -39,7 +35,7 @@ MonoBehaviour:
     TypeName: UnityEngine.Material
     Path: Tanks\SpawnerMaterial
   - Name: Tank
-    Id: -1504047322
+    Id: -1543793111
     TypeName: UnityEngine.GameObject
     Path: Tanks\Tank
   - Name: TankMaterial
@@ -51,7 +47,7 @@ MonoBehaviour:
     TypeName: UnityEngine.PhysicMaterial
     Path: Tanks\TankPhysicsMaterial
   - Name: TankProjectile
-    Id: 2044959175
+    Id: 2044958646
     TypeName: UnityEngine.GameObject
     Path: Tanks\TankProjectile
   - Name: WallMaterial

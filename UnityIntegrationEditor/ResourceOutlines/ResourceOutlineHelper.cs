@@ -18,9 +18,9 @@ namespace InstantMultiplayer.UnityIntegrationEditor.ResourceOutlines
                 return;
             resourceOutline.Outdated = true;
             EditorUtility.SetDirty(resourceOutline);
-            //AssetDatabase.SaveAssets();
-            //if (created)
-            //    AssetDatabase.Refresh();
+            AssetDatabase.SaveAssets();
+            if (created)
+                AssetDatabase.Refresh();
         }
 
         internal static bool ShouldUpdate(string assetName, bool checkMeta = true)
@@ -35,8 +35,8 @@ namespace InstantMultiplayer.UnityIntegrationEditor.ResourceOutlines
         internal static void UpdateResourceOutline()
         {
             var resourceOutline = GetOrCreate(out var created);
-            //if (!resourceOutline.Outdated)
-            //    return;
+            if (!resourceOutline.Outdated)
+                return;
             var entries = GetEntries();
             resourceOutline.Entries = entries.ToArray();
             resourceOutline.Outdated = false;

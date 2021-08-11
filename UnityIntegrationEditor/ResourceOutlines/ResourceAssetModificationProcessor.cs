@@ -8,7 +8,7 @@ namespace InstantMultiplayer.UnityIntegrationEditor.ResourceOutlines
     public class ResourceAssetModificationProcessor: UnityEditor.AssetModificationProcessor
     {
         //assetName is entire path, e.g: Assets/Resources/Textures/Dummy.png.meta
-        /*private static void OnWillCreateAsset(string assetName) 
+        private static void OnWillCreateAsset(string assetName) 
         {
             try
             {
@@ -45,7 +45,7 @@ namespace InstantMultiplayer.UnityIntegrationEditor.ResourceOutlines
             }
             catch (Exception e) { Debug.LogWarning("ResourceOutline failed to be created or updated: " + e.ToString()); }
             return AssetMoveResult.DidNotMove;
-        }*/
+        }
 
         
     }

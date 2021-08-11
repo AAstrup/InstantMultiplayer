@@ -18,7 +18,7 @@ namespace InstantMultiplayer.Synchronization.Monitored.ComponentMonitors.Provide
             var meshFilter = (MeshFilter)componentInstance;
             return new AMemberMonitorBase[]
             {
-                new UnityObjectMemberProvider().GetMonitor(meshFilter, typeof(MeshFilter).GetProperty(nameof(MeshFilter.mesh)))
+                new UnityObjectMemberProvider().GetMonitor(meshFilter, typeof(MeshFilter).GetProperty(nameof(MeshFilter.sharedMesh)))
                 //new MemberMonitor(() => MeshRepository.GetMeshHashCode(meshFilter.sharedMesh), (hashCode) => meshFilter.mesh = MeshRepository.GetMeshFromHashCode((int)hashCode))
             };
         }

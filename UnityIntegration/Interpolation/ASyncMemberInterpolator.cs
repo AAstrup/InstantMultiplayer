@@ -22,6 +22,8 @@ namespace InstantMultiplayer.UnityIntegration.Interpolation
 
         internal void Update()
         {
+            if (_memberMonitorBase == null)
+                return;
             _memberMonitorBase.SetValue(Interpolate((T)_memberMonitorBase.GetValue()));
         }
 

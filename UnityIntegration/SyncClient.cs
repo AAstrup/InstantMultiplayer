@@ -19,7 +19,7 @@ namespace InstantMultiplayer.UnityIntegration
         public bool useAzureServer = false;
         public int SyncFrequency = 30;
 
-        public float SyncTime => Time.time + (float)_client.NTPOffset.TotalSeconds;
+        public float SyncTime => _client.SyncTime;
         public int LocalId => _client?.localId ?? 0;
         public bool Ready => _client != null && _client.connected && _client.identified;
         public event EventHandler<GreetMessage> OnIdentified;

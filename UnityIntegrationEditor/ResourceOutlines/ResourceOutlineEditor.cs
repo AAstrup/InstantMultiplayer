@@ -20,7 +20,7 @@ namespace InstantMultiplayer.UnityIntegrationEditor.ResourceOutlines
             serializedObject.Update();
             
             var resourceOutline = (ResourceOutline)target;
-            if (true)//resourceOutline.Outdated)
+            if (resourceOutline.Outdated)
             {
                 EditorGUILayout.HelpBox($"{nameof(ResourceOutline)} is outdated. It will automatically be updated upon entering play mode or starting a build. You can also manually update it:"
                     , MessageType.Info);

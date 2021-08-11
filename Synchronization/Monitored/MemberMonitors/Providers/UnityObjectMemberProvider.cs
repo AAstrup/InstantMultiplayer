@@ -14,7 +14,7 @@ namespace InstantMultiplayer.Synchronization.Monitored.MemberMonitors.Providers
         {
             return new RichMemberMonitor<int?, UnityEngine.Object>(
                 memberInfo.Name,
-                () => GetIdFromObject(memberHolder, memberInfo),
+                () => GetIdFromObject(memberHolder, memberInfo), 
                 () => (Object)memberInfo.GetValueFromMemberInfo(memberHolder),
                 (id) => SetObjectFromId(memberHolder, memberInfo, id)
             );

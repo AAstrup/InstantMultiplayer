@@ -37,7 +37,7 @@ namespace InstantMultiplayer
                 _playeridToConnection.Add(tempId, client);
                 _connectionToId.Add(client, tempId);
             }
-            SendToClient(client, new GreetMessage { LocalId = tempId });
+            SendToClient(client, new GreetMessage { LocalId = tempId, InitialSyncTimestamp = Program.InitialSyncedTimestamp });
             var connectedMessage = new ClientConnectedMessage
             {
                 ClientId = tempId

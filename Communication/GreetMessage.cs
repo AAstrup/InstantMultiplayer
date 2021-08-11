@@ -6,5 +6,6 @@ namespace Communication
     public class GreetMessage
     {
         public int LocalId;
+        public DateTime InitialSyncTimestamp;
     }
 }

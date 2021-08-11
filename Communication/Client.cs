@@ -22,8 +22,11 @@ namespace InstantMultiplayer.Communication
         public int localId;
         public Queue<IMessage> incomingMessageQueue;
         public TimeSpan NTPOffset;
+        public DateTime InitialSyncedTimestamp;
 
         public EventHandler<GreetMessage> OnIdentified;
+
+        public float SyncTime => (float)(DateTime.Now + NTPOffset - InitialSyncedTimestamp).TotalSeconds;
 
         public Client(string ip, int port)
         {
@@ -65,6 +68,7 @@ namespace InstantMultiplayer.Communication
                     if(data is GreetMessage connectionMessage)
                     {
                         localId = connectionMessage.LocalId;
+                        InitialSyncedTimestamp = connectionMessage.InitialSyncTimestamp;
                         identified = true;
                         SendMessage(new GetHistoryMessage());
                         OnIdentified.Invoke(this, connectionMessage);
