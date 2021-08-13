@@ -16,15 +16,16 @@ namespace InstantMultiplayer.UnityIntegration.Interpolation
             TimedValue = new TimedValue<T>
             {
                 Value = (T)deltaMember.Value,
-                Timestamp = Time.time //deltaMember.TimeStamp
+                LocalTimeStamp = Time.time,
+                ForeignSyncTimestamp = deltaMember.TimeStamp
             };
         }
 
-        internal void Update()
+        internal void LateUpdate()
         {
             if (_memberMonitorBase == null)
                 return;
-            _memberMonitorBase.SetValue(Interpolate((T)_memberMonitorBase.GetValue()));
+            _memberMonitorBase.SetUpdatedValue(Interpolate((T)_memberMonitorBase.GetValue()), SyncClient.Instance.SyncTime);
         }
 
         public abstract T Interpolate(T localValue);

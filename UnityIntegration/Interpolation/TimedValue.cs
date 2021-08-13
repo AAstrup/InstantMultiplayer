@@ -3,6 +3,7 @@
     public struct TimedValue<T>
     {
         public T Value;
-        public float Timestamp;
+        public float LocalTimeStamp;
+        public float ForeignSyncTimestamp;
     }
 }

@@ -18,9 +18,7 @@ namespace InstantMultiplayer.Synchronization.Delta.Services
                 e++;
                 if (monitoredMember.LastUpdateTimestamp > deltaMember.TimeStamp)
                     continue;
-                monitoredMember.SetValue(deltaMember.Value);
-                monitoredMember.LastValue = deltaMember.Value;
-                monitoredMember.LastUpdateTimestamp = deltaMember.TimeStamp;
+                monitoredMember.SetUpdatedValue(deltaMember.Value, deltaMember.TimeStamp);
                 if (monitoredMember is ARichMemberMonitorBase richMemberMonitor)
                     richMemberMonitor.LastLocalCompareValue = richMemberMonitor.GetLocalCompareValue();
                 if (monitoredMember.OnDeltaConsumed != null)

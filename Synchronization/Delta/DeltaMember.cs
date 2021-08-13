@@ -7,6 +7,6 @@ namespace InstantMultiplayer.Synchronization.Delta
     {
         public int Index;
         public object Value;
-        public int TimeStamp;
+        public float TimeStamp;
     }
 }

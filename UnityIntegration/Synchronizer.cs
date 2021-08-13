@@ -116,9 +116,9 @@ namespace InstantMultiplayer.UnityIntegration
 
         private IEnumerable<DeltaComponent> GetDeltaComponents(DeltaProvider deltaProvider)
         {
-            if (_foreign) return null; //For now...
+            //if (_foreign) return null; //For now...
             if (deltaProvider == null) return null;
-            var timeStamp = 0; //Demo for now
+            var timeStamp = SyncClient.Instance.SyncTime; //Demo for now
             var deltaComps = new List<DeltaComponent>();
             foreach (var monitorComp in _monitoredComponents.Values)
             {

@@ -8,7 +8,7 @@ namespace InstantMultiplayer.Synchronization.Delta.Services
 {
     public sealed class DeltaProvider
     {
-        public bool TryGetDeltaComponent(ComponentMonitor monitoredComponent, int timeStamp, out DeltaComponent deltaComponent)
+        public bool TryGetDeltaComponent(ComponentMonitor monitoredComponent, float timeStamp, out DeltaComponent deltaComponent)
         {
             try
             {
@@ -33,7 +33,7 @@ namespace InstantMultiplayer.Synchronization.Delta.Services
             }
         }
 
-        public IEnumerable<DeltaMember> GetDeltaMembers(ComponentMonitor monitoredComponent, int timeStamp)
+        public IEnumerable<DeltaMember> GetDeltaMembers(ComponentMonitor monitoredComponent, float timeStamp)
         {
             var deltaMembers = new List<DeltaMember>();
             for(int i=0; i<monitoredComponent.Members.Count; i++)
