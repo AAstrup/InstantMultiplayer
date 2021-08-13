@@ -1008,7 +1008,7 @@ MonoBehaviour:
   m_Script: {fileID: 2124930896, guid: 02a9362be3d867c41b9521fbd273aed4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ip: localhost
+  ip: 87.50.95.215
   port: 61001
   useAzureServer: 0
   SyncFrequency: 30

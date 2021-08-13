@@ -27,7 +27,7 @@ namespace Assets.DemoGames.TankGame
             text.text = SyncClient.Instance.SyncTime.ToString();
 
             var dir = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical"));
-            Rigidbody.velocity = dir * 6;
+            Rigidbody.velocity = dir * 3.5f;
 
             var targetPosition = _camera.ScreenToWorldPoint(Input.mousePosition.Z(_camera.transform.position.y));
             var targetDir = (targetPosition - transform.position).Y(0).normalized;

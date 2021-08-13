@@ -19,7 +19,11 @@ namespace Assets.DemoGames.TankGame
         }
         private void Update()
         {
-            transform.position = CalculatePosition();
+            try
+            {
+                transform.position = CalculatePosition();
+            }
+            catch (Exception) { }
             var timeDelta = SyncClient.Instance.SyncTime - _data.CreatedTimestamp;
             if (timeDelta >= _data.Duration && _data.OwnerId == SyncClient.Instance.LocalId)
             {

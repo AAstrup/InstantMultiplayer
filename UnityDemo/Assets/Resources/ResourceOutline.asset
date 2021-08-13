@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 789499650, guid: 02a9362be3d867c41b9521fbd273aed4, type: 3}
   m_Name: ResourceOutline
   m_EditorClassIdentifier: 
-  Outdated: 0
+  Outdated: 1
   Entries:
   - Name: dummy
     Id: -304590362

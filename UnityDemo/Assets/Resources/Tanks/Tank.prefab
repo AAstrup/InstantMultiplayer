@@ -70,6 +70,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShotsLeft: 3
+  ShotsTotal: 0
   Invincible: 0
 --- !u!54 &1116173520995207453
 Rigidbody:
@@ -123,7 +124,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1427454220657365271}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: -345336148, guid: 02a9362be3d867c41b9521fbd273aed4, type: 3}
   m_Name: 
