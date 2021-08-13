@@ -15,7 +15,6 @@ COPY Synchronization/*.csproj ./Synchronization/
 COPY Communication/*.csproj ./Communication/
 COPY UnityIntegrationEditor/*.csproj ./UnityIntegrationEditor/
 COPY Synchronization.Test/*.csproj ./Synchronization.Test/
-COPY InstantMultiplayerAppService/*.csproj ./InstantMultiplayerAppService/
 
 RUN dotnet restore
 COPY . .
@@ -36,9 +35,6 @@ WORKDIR /src/Communication
 RUN dotnet build -c Release -o /app
 
 WORKDIR /src/Synchronization.Test
-RUN dotnet build -c Release -o /app
-
-WORKDIR /src/InstantMultiplayerAppService
 RUN dotnet build -c Release -o /app
 
 FROM build AS publish
