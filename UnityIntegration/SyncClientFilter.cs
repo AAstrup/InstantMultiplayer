@@ -10,7 +10,6 @@ namespace InstantMultiplayer.UnityIntegration
     {
         public int ClientFilter;
 
-
         public SyncClientFilter() { }
 
         public SyncClientFilter(int clientFilter)
