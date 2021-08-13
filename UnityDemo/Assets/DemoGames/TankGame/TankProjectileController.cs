@@ -21,7 +21,11 @@ namespace Assets.DemoGames.TankGame
         {
             try
             {
-                transform.position = CalculatePosition();
+                var pos = CalculatePosition();
+                if (!float.IsNaN(pos.x) && !float.IsNaN(pos.y) && !float.IsNaN(pos.z))
+                {
+                    transform.position = pos;
+                }
             }
             catch (Exception) { }
             var timeDelta = SyncClient.Instance.SyncTime - _data.CreatedTimestamp;
