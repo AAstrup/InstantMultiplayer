@@ -9,7 +9,6 @@ namespace InstantMultiplayer.UnityIntegration
     public sealed class SyncClientFilter: ScriptableObject
     {
         public int ClientFilter;
-
         public SyncClientFilter() { }
 
         public SyncClientFilter(int clientFilter)
