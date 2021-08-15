@@ -46,6 +46,12 @@ namespace InstantMultiplayer.UnityIntegrationEditor.ResourceOutlines
                 AssetDatabase.Refresh();
         }
 
+        internal static List<ResourceEntry> GetOrderedEntries()
+        {
+            var resourceOutline = GetOrCreate(out var created);
+            return resourceOutline.Entries.OrderBy(e => e.Id).ToList();
+        }
+
         private static ResourceOutline GetOrCreate(out bool created)
         {
             var path = ResourceOutline.AssetPath;

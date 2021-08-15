@@ -52,7 +52,6 @@ namespace InstantMultiplayer.Synchronization.Identification
             {
                 return prov.GetHashCode(obj);
             }
-            //Debug.LogWarning("Failed to get id specific for " + type);
             return GenericIdProvider.GetHashCode(obj);
         }
 
