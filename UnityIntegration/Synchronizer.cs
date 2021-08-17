@@ -41,6 +41,8 @@ namespace InstantMultiplayer.UnityIntegration
                 var counter = 0;
                 foreach(var comp in Components ?? Enumerable.Empty<Component>())
                 {
+                    if (comp == null) continue;
+
                     var compMonitor = MonitorFactory.CreateComponentMonitor(counter++, comp);
                     if (!_foreign && comp is IForeignComponent && comp is Behaviour behaviour)
                     {
@@ -78,11 +80,11 @@ namespace InstantMultiplayer.UnityIntegration
             }
         }
 
-        internal void SetComponentMembersUpToDate()
+        internal void SetComponentMembersUpdated(float timestamp)
         {
             foreach (var comp in _monitoredComponents)
                 foreach (var member in comp.Value.Members)
-                    member.SetUpdated(member.GetValue(), SyncClient.Instance.SyncTime);
+                    member.SetUpdated(member.GetValue(), timestamp);
         }
 
         private void OnDestroy()

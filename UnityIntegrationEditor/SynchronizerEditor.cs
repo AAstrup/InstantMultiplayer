@@ -1,5 +1,6 @@
 ﻿using InstantMultiplayer.UnityIntegration;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
@@ -9,13 +10,13 @@ namespace InstantMultiplayer.UnityIntegrationEditor
     public class SynchronizerEditor : Editor
     {
         private SerializedProperty _clientFilter;
-        private SerializedProperty _behaviours;
+        private SerializedProperty _components;
         private HashSet<int> _expandedComponents;
 
         void OnEnable()
         {
             _clientFilter = serializedObject.FindProperty(nameof(Synchronizer.ClientFilter));
-            _behaviours = serializedObject.FindProperty(nameof(Synchronizer.Components));
+            _components = serializedObject.FindProperty(nameof(Synchronizer.Components));
             _expandedComponents = new HashSet<int>();
         }
 
@@ -75,7 +76,27 @@ namespace InstantMultiplayer.UnityIntegrationEditor
             }
             else
             {
-                EditorGUILayout.PropertyField(_behaviours);
+                EditorGUILayout.PropertyField(_components);
+                var oldComponents = synchronizer.Components.ToList();
+                synchronizer.Components = synchronizer.Components
+                    .Where(c => c.gameObject == synchronizer.gameObject)
+                    .Distinct()
+                    .Where(c => !SynchronizationConstants.NonSynchronizeableComponentTypes.Any(t => t.IsAssignableFrom(c.GetType())))
+                    .ToList();
+                if(synchronizer.Components.Count < oldComponents.Count)
+                {
+                    foreach(var removedComponent in oldComponents.Except(synchronizer.Components))
+                    {
+                        if(removedComponent.gameObject != synchronizer.gameObject)
+                        {
+                            Debug.LogWarning("Synchronizer Components: Cannot add components from foreign GameObjects.");
+                        }
+                        if (SynchronizationConstants.NonSynchronizeableComponentTypes.Any(t => t.IsAssignableFrom(removedComponent.GetType())))
+                        {
+                            Debug.LogWarning($"Synchronizer Components: Cannot add components of type {removedComponent.GetType()}.");
+                        }
+                    }
+                }
             }
 
             serializedObject.ApplyModifiedProperties();

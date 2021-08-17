@@ -49,9 +49,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ClientFilter: {fileID: 11400000, guid: 707cc41085a53c34aa487338c99a37ae, type: 2}
   Components:
-  - {fileID: 2439706068882285230}
   - {fileID: 6735521558969460135}
-  - {fileID: 3387849767123016428}
 --- !u!114 &6735521558969460135
 MonoBehaviour:
   m_ObjectHideFlags: 0

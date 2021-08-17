@@ -53,7 +53,7 @@ namespace InstantMultiplayer.UnityIntegration.Controllers
             synchronizer._foreign = true;
             synchronizer._origin = SynchronizerOrigin.Instantiation;
             synchronizer.Initialize();
-            synchronizer.SetComponentMembersUpToDate();
+            synchronizer.SetComponentMembersUpdated(syncMessage.Timestamp);
         }
 
         public override bool TryGetMessage(out IMessage message)
@@ -64,7 +64,9 @@ namespace InstantMultiplayer.UnityIntegration.Controllers
                 {
                     SynchronizerId = eventMessage.SynchronizerId,
                     PrefabId = eventMessage.PrefabId,
-                    ClientFilter = eventMessage.ClientFilter
+                    ClientFilter = eventMessage.ClientFilter,
+                    Timestamp = eventMessage.Timestamp
+
                 };
                 return true;
             }

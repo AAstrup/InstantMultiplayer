@@ -15,8 +15,9 @@ namespace InstantMultiplayer.UnityIntegration
             }
             var synchronizer = gb.GetComponent<Synchronizer>();
             synchronizer.Initialize();
-            synchronizer.SetComponentMembersUpToDate();
-            EventHandlerProvider.Instance.PrefabInstantiated(prefab, synchronizer);
+            var timestamp = SyncClient.Instance.SyncTime;
+            synchronizer.SetComponentMembersUpdated(timestamp);
+            EventHandlerProvider.Instance.PrefabInstantiated(prefab, synchronizer, timestamp);
             return gb;
         }
     }

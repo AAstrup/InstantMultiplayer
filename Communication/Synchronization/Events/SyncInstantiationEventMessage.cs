@@ -9,5 +9,6 @@ namespace Communication.Synchronization.Events
     {
         public int PrefabId;
         public int SynchronizerId;
+        public float Timestamp;
     }
 }
