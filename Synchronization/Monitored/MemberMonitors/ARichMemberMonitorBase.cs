@@ -9,5 +9,10 @@ namespace InstantMultiplayer.Synchronization.Monitored.MemberMonitors
         public ARichMemberMonitorBase(string name) : base(name)
         {
         }
+        public override void SetUpdated(object obj, float timeStamp)
+        {
+            base.SetUpdated(obj, timeStamp);
+            LastLocalCompareValue = GetLocalCompareValue();
+        }
     }
 }

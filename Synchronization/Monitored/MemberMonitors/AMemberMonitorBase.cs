@@ -23,6 +23,11 @@ namespace InstantMultiplayer.Synchronization.Monitored.MemberMonitors
         public void SetUpdatedValue(object obj, float timeStamp)
         {
             SetValue(obj);
+            SetUpdated(obj, timeStamp);
+        }
+
+        public virtual void SetUpdated(object obj, float timeStamp)
+        {
             LastValue = obj;
             LastUpdateTimestamp = timeStamp;
         }

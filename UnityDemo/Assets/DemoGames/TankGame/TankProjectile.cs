@@ -13,8 +13,6 @@ namespace Assets.DemoGames.TankGame
         public Vector3 End;
         [HideInInspector]
         public float CreatedTimestamp;
-        [HideInInspector]
-        public int OwnerId;
 
         internal Tank Tank;
     }

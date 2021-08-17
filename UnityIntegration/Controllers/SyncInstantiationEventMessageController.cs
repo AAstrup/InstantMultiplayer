@@ -22,8 +22,6 @@ namespace InstantMultiplayer.UnityIntegration.Controllers
 
         public override void HandleMessage(SyncInstantiationEventMessage syncMessage)
         {
-            Debug.Log("Recieved InstantiationEventMessage for id " + syncMessage.SynchronizerId);
-
             if (SynchronizeStore.Instance.IsIdExhausted(syncMessage.SynchronizerId))
                 return;
 
@@ -55,6 +53,7 @@ namespace InstantMultiplayer.UnityIntegration.Controllers
             synchronizer._foreign = true;
             synchronizer._origin = SynchronizerOrigin.Instantiation;
             synchronizer.Initialize();
+            synchronizer.SetComponentMembersUpToDate();
         }
 
         public override bool TryGetMessage(out IMessage message)

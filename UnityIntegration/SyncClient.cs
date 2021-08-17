@@ -107,8 +107,17 @@ namespace InstantMultiplayer.UnityIntegration
                     }
                     while (_client.incomingMessageQueue.TryDequeue(out var message))
                     {
-                        if (_controllers.TryGetValue(message.GetType(), out var controller))
-                            controller.HandleMessage(message);
+                        if (message == null)
+                            continue;
+                        try
+                        {
+                            if (_controllers.TryGetValue(message.GetType(), out var controller))
+                                controller.HandleMessage(message);
+                        }
+                        catch(Exception e)
+                        {
+                            Debug.LogException(new Exception($"Failed to process {message.GetType()} message: ", e));
+                        }
                     }
                 }
             }

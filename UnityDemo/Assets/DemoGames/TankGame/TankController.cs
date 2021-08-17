@@ -46,9 +46,12 @@ namespace Assets.DemoGames.TankGame
                     projectile.CreatedTimestamp = SyncClient.Instance.SyncTime;
                     projectile.Start = originPosition;
                     projectile.End = info.point;
-                    projectile.OwnerId = SyncClient.Instance.LocalId;
                     projectile.Tank = Tank;
-                    projectile.Duration = Vector3.Distance(info.point, originPosition) / 7;
+                    projectile.Duration = Vector3.Distance(info.point, originPosition) / 7f;
+                    if(projectile.Duration == 0)
+                    {
+                        Debug.Log("!");
+                    }
                     projectile.transform.position = projectile.Start + targetDir;
                 }
             }
@@ -56,10 +59,10 @@ namespace Assets.DemoGames.TankGame
 
         private void OnCollisionEnter(Collision collision)
         {
-            if (!collision.gameObject.TryGetComponent<TankProjectile>(out var projectile))
+            if (!collision.gameObject.TryGetComponent<TankProjectileController>(out var projectile))
                 return;
-            if (projectile.OwnerId == SyncClient.Instance.LocalId)
-                return;
+            //if (projectile.Synchronizer.OwnerId == SyncClient.Instance.LocalId)
+            //    return;
             Destroy(gameObject);
         }
     }

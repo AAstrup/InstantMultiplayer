@@ -68,7 +68,6 @@ MonoBehaviour:
   Start: {x: 0, y: 0, z: 0}
   End: {x: 0, y: 0, z: 0}
   CreatedTimestamp: 0
-  OwnerId: 0
 --- !u!114 &3387849767123016428
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -81,6 +80,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b52cd5acb501a34cbffa6f1ae4108f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Data: {fileID: 6735521558969460135}
+  Synchronizer: {fileID: -8630049680650793435}
 --- !u!65 &7869874495651788967
 BoxCollider:
   m_ObjectHideFlags: 0

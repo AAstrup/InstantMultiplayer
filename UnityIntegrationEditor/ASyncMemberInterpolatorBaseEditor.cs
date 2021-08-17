@@ -27,6 +27,12 @@ namespace InstantMultiplayer.UnityIntegrationEditor
         {
             serializedObject.Update();
 
+            if (targets.Length > 1)
+            {
+                EditorGUILayout.HelpBox("Multiselect not supported", MessageType.Warning);
+                return;
+            }
+
             EditorGUILayout.PropertyField(_component);
 
             var interpolator = (ASyncMemberInterpolatorBase)target;

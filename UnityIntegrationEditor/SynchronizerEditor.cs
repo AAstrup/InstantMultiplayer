@@ -23,16 +23,17 @@ namespace InstantMultiplayer.UnityIntegrationEditor
         {
             serializedObject.Update();
 
+            if (targets.Length > 1)
+            {
+                EditorGUILayout.HelpBox("Multiselect not supported", MessageType.Warning);
+                return;
+            }
+
             EditorGUILayout.PropertyField(_clientFilter);
 
-            if(!Application.isPlaying)
+            var synchronizer = (Synchronizer)target;
+            if (Application.isPlaying && synchronizer.Initialized)
             {
-                EditorGUILayout.PropertyField(_behaviours);
-            }
-            else
-            {
-                var synchronizer = (Synchronizer)target;
-
                 EditorGUILayout.LabelField("Id:", synchronizer.SynchronizerId.ToString());
                 EditorGUILayout.LabelField("Owner:", synchronizer.OwnerId.ToString());
                 //_expandComponents = EditorGUILayout.BeginFoldoutHeaderGroup(_expandComponents, "Components");
@@ -71,6 +72,10 @@ namespace InstantMultiplayer.UnityIntegrationEditor
                     }
                 }
                 //EditorGUILayout.EndFoldoutHeaderGroup();
+            }
+            else
+            {
+                EditorGUILayout.PropertyField(_behaviours);
             }
 
             serializedObject.ApplyModifiedProperties();

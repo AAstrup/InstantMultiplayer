@@ -78,6 +78,13 @@ namespace InstantMultiplayer.UnityIntegration
             }
         }
 
+        internal void SetComponentMembersUpToDate()
+        {
+            foreach (var comp in _monitoredComponents)
+                foreach (var member in comp.Value.Members)
+                    member.SetUpdated(member.GetValue(), SyncClient.Instance.SyncTime);
+        }
+
         private void OnDestroy()
         {
             EventHandlerProvider.Instance.SynchronizerDestroyed(this);

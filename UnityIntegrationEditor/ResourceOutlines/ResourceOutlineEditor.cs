@@ -19,7 +19,13 @@ namespace InstantMultiplayer.UnityIntegrationEditor.ResourceOutlines
         public override void OnInspectorGUI()
         {
             serializedObject.Update();
-            
+
+            if (targets.Length > 1)
+            {
+                EditorGUILayout.HelpBox("Multiselect not supported", MessageType.Warning);
+                return;
+            }
+
             var resourceOutline = (ResourceOutline)target;
 
             EditorGUILayout.HelpBox(resourceOutline.Outdated ?
