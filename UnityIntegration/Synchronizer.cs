@@ -107,7 +107,7 @@ namespace InstantMultiplayer.UnityIntegration
             deltaContainer = new DeltaContainer
             {
                 SynchronizerId = SynchronizerId,
-                ClientFilter = ClientFilter.ClientFilter,
+                ClientFilter = ClientFilter?.ClientFilter ?? SyncClientFilterConstants.All,
                 Components = deltaComps
             };
             return true;

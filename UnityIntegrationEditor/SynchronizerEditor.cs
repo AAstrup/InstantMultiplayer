@@ -45,7 +45,7 @@ namespace InstantMultiplayer.UnityIntegrationEditor
                     EditorGUILayout.BeginHorizontal();
                     GUILayout.Space(20);
                     EditorGUILayout.BeginVertical();
-                    var shouldExpand = EditorGUILayout.BeginFoldoutHeaderGroup(expanded, component.MonitoredInstance.ToString());
+                    var shouldExpand = EditorGUILayout.BeginFoldoutHeaderGroup(expanded, component.MonitoredInstance?.ToString() ?? "null");
                     if (expanded)
                     {
                         EditorGUILayout.BeginHorizontal();
@@ -53,7 +53,7 @@ namespace InstantMultiplayer.UnityIntegrationEditor
                         EditorGUILayout.BeginVertical();
                         foreach (var member in component.Members)
                         {
-                            EditorGUILayout.LabelField($"{member.Name} [{member.MemberType}]:", member.LastValue.ToString());
+                            EditorGUILayout.LabelField($"{member.Name} [{member.MemberType}]:", member.LastValue?.ToString() ?? "null");
                         }
                         EditorGUILayout.EndVertical();
                         EditorGUILayout.EndHorizontal();
