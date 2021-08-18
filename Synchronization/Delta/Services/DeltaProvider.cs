@@ -12,7 +12,7 @@ namespace InstantMultiplayer.Synchronization.Delta.Services
         {
             try
             {
-                var members = GetDeltaMembers(monitoredComponent, timeStamp)?.ToArray();
+                var members = GetDeltaMembers(monitoredComponent.Members, timeStamp)?.ToArray();
                 if (members == null || members.Length == 0)
                 {
                     deltaComponent = null;
@@ -33,12 +33,12 @@ namespace InstantMultiplayer.Synchronization.Delta.Services
             }
         }
 
-        public IEnumerable<DeltaMember> GetDeltaMembers(ComponentMonitor monitoredComponent, float timeStamp)
+        public IEnumerable<DeltaMember> GetDeltaMembers(IList<AMemberMonitorBase> members, float timeStamp)
         {
             var deltaMembers = new List<DeltaMember>();
-            for(int i=0; i<monitoredComponent.Members.Count; i++)
+            for(int i=0; i< members.Count; i++)
             {
-                var member = monitoredComponent.Members[i];
+                var member = members[i];
                 object val;
                 if (member is ARichMemberMonitorBase richMemberMonitor)
                 {

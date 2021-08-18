@@ -9,5 +9,6 @@ namespace Communication.Synchronization
         public int SynchronizerId;
         public int ClientFilter;
         public DeltaComponent[] Components;
+        public DeltaMember[] GameObjectMembers;
     }
 }
