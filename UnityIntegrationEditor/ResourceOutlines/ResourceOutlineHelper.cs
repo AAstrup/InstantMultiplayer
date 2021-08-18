@@ -82,6 +82,7 @@ namespace InstantMultiplayer.UnityIntegrationEditor.ResourceOutlines
                     var finalSegment = resourcePath.Split('/', '\\').Last();
                     var suffixLength = finalSegment.Contains(".") ? finalSegment.Split('.', '.').Last().Length + 1 : 0;
                     resourcePath = resourcePath.Substring(0, resourcePath.Length - suffixLength);
+
                     entries.Add(new ResourceEntry
                     {
                         Name = assetObject.name,

@@ -14,7 +14,8 @@ namespace InstantMultiplayer.Synchronization.Monitored
                 new TransformMonitorProvider(),
                 new MeshFilterMonitorProvider(),
                 new MeshRendererMonitorProvider(),
-                new BoxColliderMonitorProvider()
+                new BoxColliderMonitorProvider(),
+                new SpriteRendererMonitorProvider()
             };
         }
 
