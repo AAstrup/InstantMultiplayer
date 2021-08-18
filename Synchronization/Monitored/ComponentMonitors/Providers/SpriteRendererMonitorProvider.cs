@@ -19,7 +19,7 @@ namespace InstantMultiplayer.Synchronization.Monitored.ComponentMonitors.Provide
             return new AMemberMonitorBase[]
             {
                 new UnityObjectMemberProvider().GetMonitor(spriteRenderer, typeof(SpriteRenderer).GetProperty(nameof(SpriteRenderer.sprite))),
-                //new UnityObjectMemberProvider().GetMonitor(spriteRenderer, typeof(SpriteRenderer).GetProperty(nameof(SpriteRenderer.color)))
+                new MemberMonitor<Color>(nameof(spriteRenderer.color), () => spriteRenderer.color, (val) => spriteRenderer.color = val)
             };
         }
     }
