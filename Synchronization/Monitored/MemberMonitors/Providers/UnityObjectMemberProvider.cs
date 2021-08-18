@@ -1,6 +1,7 @@
 ﻿using InstantMultiplayer.Synchronization.Extensions;
 using InstantMultiplayer.Synchronization.Identification;
 using InstantMultiplayer.Synchronization.Objects;
+using System;
 using System.Reflection;
 using UnityEngine;
 
@@ -8,6 +9,16 @@ namespace InstantMultiplayer.Synchronization.Monitored.MemberMonitors.Providers
 {
     public class UnityObjectMemberProvider : IMemberMonitorProvider
     {
+        private readonly Type _memberInfoType;
+
+        // Used by monitor default
+        public UnityObjectMemberProvider() { }
+
+        public UnityObjectMemberProvider(Type memberInfoType)
+        {
+            _memberInfoType = memberInfoType;
+        }
+
         public int Precedence => int.MaxValue;
 
         public AMemberMonitorBase GetMonitor(object memberHolder, MemberInfo memberInfo)
@@ -15,7 +26,7 @@ namespace InstantMultiplayer.Synchronization.Monitored.MemberMonitors.Providers
             return new RichMemberMonitor<int?, UnityEngine.Object>(
                 memberInfo.Name,
                 () => GetIdFromObject(memberHolder, memberInfo), 
-                () => (Object)memberInfo.GetValueFromMemberInfo(memberHolder),
+                () => (UnityEngine.Object)memberInfo.GetValueFromMemberInfo(memberHolder),
                 (id) => SetObjectFromId(memberHolder, memberInfo, id)
             );
         }
@@ -27,7 +38,7 @@ namespace InstantMultiplayer.Synchronization.Monitored.MemberMonitors.Providers
 
         private int? GetIdFromObject(object memberHolder, MemberInfo memberInfo)
         {
-            var obj = (Object)memberInfo.GetValueFromMemberInfo(memberHolder);
+            var obj = (UnityEngine.Object)memberInfo.GetValueFromMemberInfo(memberHolder);
             if (obj == null)
                 return null;
             var id = IdFactory.Instance.GetId(obj);
@@ -44,12 +55,13 @@ namespace InstantMultiplayer.Synchronization.Monitored.MemberMonitors.Providers
             }
 
             var id = idOption.Value;
-            if (ResourceRepository.Instance.TryGetObject(id, memberInfo.GetValueTypeFromMemberInfo(), out var obj))
+            var memberInfoType = _memberInfoType ?? memberInfo.GetValueTypeFromMemberInfo();
+            if (ResourceRepository.Instance.TryGetObject(id, memberInfoType, out var obj))
             {
                 memberInfo.SetValueFromMemberInfo(memberHolder, obj);
                 Debug.Log($"Sat object from id {id} to {obj.name} using {nameof(ResourceRepository)}");
             }
-            else if (ReferenceRepository.Instance.TryGetObject(id, memberInfo.GetValueTypeFromMemberInfo(), out obj))
+            else if (ReferenceRepository.Instance.TryGetObject(id, memberInfoType, out obj))
             {
                 memberInfo.SetValueFromMemberInfo(memberHolder, obj);
                 Debug.Log($"Sat object from id {id} to {obj.name} using {nameof(ReferenceRepository)}");

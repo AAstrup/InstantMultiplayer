@@ -83,11 +83,14 @@ namespace InstantMultiplayer.UnityIntegrationEditor.ResourceOutlines
                     var assetObject = AssetDatabase.LoadMainAssetAtPath(assetPath);
                     if (assetObject == null)
                         continue;
+                    if (ResourceSpecifier.SpecificationRequired(assetObject))
+                        assetObject = ResourceSpecifier.ReloadSpecificResource(assetObject, assetPath);
                     var id = IdFactory.Instance.GetId(assetObject);
                     var resourcePath = f.Substring(index + assetResourcesIndexOffset);
                     var finalSegment = resourcePath.Split('/', '\\').Last();
                     var suffixLength = finalSegment.Contains(".") ? finalSegment.Split('.', '.').Last().Length + 1 : 0;
                     resourcePath = resourcePath.Substring(0, resourcePath.Length - suffixLength);
+
                     entries.Add(new ResourceEntry
                     {
                         Name = assetObject.name,
