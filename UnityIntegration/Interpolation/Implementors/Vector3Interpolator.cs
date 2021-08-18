@@ -10,14 +10,15 @@ namespace InstantMultiplayer.UnityIntegration.Interpolation.Implementors
         {
             var timeSince = Time.time - TimedValue.LocalTimeStamp;
             var timeDelta = TimedValue.LocalTimeStamp - LastTimedValue.LocalTimeStamp;
+            Debug.Log(timeSince);
             if (timeSince > timeDelta * 1.5f)
                 return TimedValue.Value;
+            var target = LastTimedValue.Value + (timeSince / timeDelta) * (TimedValue.Value - LastTimedValue.Value);
             if (!LocalLerping)
-                return LastTimedValue.Value + (timeSince / timeDelta) * (TimedValue.Value - LastTimedValue.Value);
+                return target;
             else
             {
-                _lerpingValue += (LastTimedValue.Value + (timeSince / timeDelta) * (TimedValue.Value - LastTimedValue.Value)
-                    - _lerpingValue) * Time.deltaTime * LocalLerpScale;
+                _lerpingValue += (target - _lerpingValue) * Time.deltaTime * LocalLerpScale;
                 return _lerpingValue;
             }
                 

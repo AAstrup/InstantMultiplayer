@@ -9,6 +9,7 @@ namespace InstantMultiplayer.UnityIntegration
         private static SynchronizeStore _instance;
 
         private Dictionary<int, Synchronizer> _synchronizers;
+        private Dictionary<int, Synchronizer> _localIIDToSynchronizer;
         private int _localClientId;
         private int _idCounter;
         private HashSet<int> _exhaustedIds;
@@ -16,6 +17,7 @@ namespace InstantMultiplayer.UnityIntegration
         public SynchronizeStore()
         {
             _synchronizers = new Dictionary<int, Synchronizer>();
+            _localIIDToSynchronizer = new Dictionary<int, Synchronizer>();
             _idCounter = 1;
             _exhaustedIds = new HashSet<int>();
         }
@@ -32,6 +34,11 @@ namespace InstantMultiplayer.UnityIntegration
             return _synchronizers.ContainsKey(synchronizerId);
         }
 
+        public bool TryGetFromIID(int iid, out Synchronizer synchronizer)
+        {
+            return _localIIDToSynchronizer.TryGetValue(iid, out synchronizer);
+        }
+
         internal void Register(Synchronizer synchronizer, bool foreign)
         {
             if (!foreign)
@@ -41,9 +48,11 @@ namespace InstantMultiplayer.UnityIntegration
                 _idCounter++;
             }
             _synchronizers.Add(synchronizer.SynchronizerId, synchronizer);
+            _localIIDToSynchronizer.Add(synchronizer.GetInstanceID(), synchronizer);
         }
         internal void Unregister(Synchronizer synchronizer) { 
             _synchronizers.Remove(synchronizer.SynchronizerId);
+            _localIIDToSynchronizer.Remove(synchronizer.GetInstanceID());
             _exhaustedIds.Add(synchronizer.SynchronizerId);
         }
         internal void DigestLocalClientId(int localId)

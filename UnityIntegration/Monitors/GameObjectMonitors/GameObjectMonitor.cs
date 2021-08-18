@@ -1,28 +1,28 @@
 ﻿using InstantMultiplayer.Synchronization.Monitored.MemberMonitors;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Text;
 using UnityEngine;
 
-namespace InstantMultiplayer.Synchronization.Monitored.ComponentMonitors
+namespace InstantMultiplayer.UnityIntegration.Monitors.GameObjectMonitors
 {
-    public sealed class ComponentMonitor
+    public sealed class GameObjectMonitor
     {
-        public readonly int Id;
-        public readonly Component MonitoredInstance;
+        public readonly GameObject GameObject;
         public ReadOnlyCollection<AMemberMonitorBase> Members => Array.AsReadOnly(_members);
 
         private readonly AMemberMonitorBase[] _members;
 
-        internal ComponentMonitor(int id, Component instance, AMemberMonitorBase[] fields)
+        internal GameObjectMonitor(GameObject gameObject, AMemberMonitorBase[] fields)
         {
-            Id = id;
-            MonitoredInstance = instance ?? throw new ArgumentNullException(nameof(instance));
+            GameObject = gameObject;
             _members = fields ?? throw new ArgumentNullException(nameof(fields));
         }
 
         public override string ToString()
         {
-            return "Monitored: " + MonitoredInstance.ToString();
+            return "Monitored: " + GameObject.name;
         }
     }
 }
