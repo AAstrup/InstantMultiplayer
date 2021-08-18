@@ -18,8 +18,8 @@ namespace InstantMultiplayer.Synchronization.Monitored.ComponentMonitors.Provide
             var spriteRenderer = (SpriteRenderer)componentInstance;
             return new AMemberMonitorBase[]
             {
-                new UnityObjectMemberProvider().GetMonitor(spriteRenderer, typeof(SpriteRenderer).GetProperty(nameof(SpriteRenderer.sprite)))
-                //new UnityObjectMemberProvider(typeof(Texture2D)).GetMonitor(spriteRenderer, typeof(SpriteRenderer).GetProperty(nameof(SpriteRenderer.sprite)))
+                new UnityObjectMemberProvider().GetMonitor(spriteRenderer, typeof(SpriteRenderer).GetProperty(nameof(SpriteRenderer.sprite))),
+                //new UnityObjectMemberProvider().GetMonitor(spriteRenderer, typeof(SpriteRenderer).GetProperty(nameof(SpriteRenderer.color)))
             };
         }
     }
