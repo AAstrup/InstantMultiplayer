@@ -1,4 +1,5 @@
 ﻿using InstantMultiplayer.Synchronization.Objects;
+using InstantMultiplayer.UnityIntegration;
 using System;
 using System.IO;
 using UnityEngine;
@@ -6,6 +7,7 @@ using UnityEngine;
 namespace Synchronization.Objects.Resources
 {
     [Serializable]
+    [CreateAssetMenu(fileName = nameof(ResourceOutline), menuName = EditorConstants.AssetMenuName + "/" + nameof(ResourceOutline), order = 2)]
     public class ResourceOutline: ScriptableObject
     {
         public bool Outdated;

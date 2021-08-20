@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 789499650, guid: 02a9362be3d867c41b9521fbd273aed4, type: 3}
+  m_Name: ResourceOutline
+  m_EditorClassIdentifier: 
+  Outdated: 0
+  Entries:
+  - Name: Circles2
+    Id: -1034722811
+    TypeName: UnityEngine.Sprite
+    Path: Sprites\Circles2
+  - Name: Textures
+    Id: -427088658
+    TypeName: UnityEngine.Texture2D
+    Path: Sprites\Textures

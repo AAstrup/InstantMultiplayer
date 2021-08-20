@@ -50,7 +50,8 @@ namespace InstantMultiplayer.Communication.Serialization
             return new ISurrogateDefinition[]{
                 new Vector2Surrogate(),
                 new Vector3Surrogate(),
-                new QuaternionSurrogate()
+                new QuaternionSurrogate(),
+                new ColorSurrogate()
             };
         }
     }

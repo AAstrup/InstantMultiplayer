@@ -53,7 +53,7 @@ namespace InstantMultiplayer.UnityIntegration
                 var usedPort = useAzureServer ? azurePort : azurePort;
                 _client = new Client(usedIp, usedPort);
                 _client.OnIdentified += (e, v) =>
-                {
+                {  
                     Debug.Log("Recieved local id " + v.LocalId);
                     SynchronizeStore.Instance.DigestLocalClientId(v.LocalId);
                     OnIdentified?.Invoke(this, v);
