@@ -66,19 +66,35 @@ namespace InstantMultiplayer.UnityIntegration
         {
             foreach (var compMonitor in _monitoredComponents.Values)
             {
-                if (compMonitor.MonitoredInstance is IDeltaMemberHandler deltaMemberHandler)
                 {
-                    if (deltaMemberHandler.ForeignOnly && !_foreign)
-                        continue;
-
-                    var targetComp = deltaMemberHandler.ComponentMonitorSelect(_monitoredComponents.Values);
-                    var member = targetComp == null ? null : deltaMemberHandler.MemberMonitorSelector(targetComp.Members);
-                    if (member != null)
+                    if (compMonitor.MonitoredInstance is IDeltaMemberHandler deltaMemberHandler)
                     {
-                        member.OnDeltaConsumed += (s, v) =>
+                        if (deltaMemberHandler.ForeignOnly && !_foreign)
+                            continue;
+
+                        var targetComp = deltaMemberHandler.HandledComponentMonitor(_monitoredComponents.Values);
+                        var member = targetComp == null ? null : deltaMemberHandler.HandledMemberMonitor(targetComp.Members);
+                        if (member != null)
                         {
-                            deltaMemberHandler.HandleDeltaMember(v);
-                        };
+                            member.OnDeltaConsumed += (s, v) =>
+                            {
+                                deltaMemberHandler.HandleDeltaMember(v);
+                            };
+                        }
+                    }
+                }
+                {
+                    if (compMonitor.MonitoredInstance is IDeltaMemberSuppressor deltaMemberSuppressor)
+                    {
+                        if (deltaMemberSuppressor.ForeignOnly && !_foreign)
+                            continue;
+
+                        var targetComp = deltaMemberSuppressor.SuppressedComponentMonitor(_monitoredComponents.Values);
+                        var member = targetComp == null ? null : deltaMemberSuppressor.SuppressedMemberMonitor(targetComp.Members);
+                        if (member != null)
+                        {
+                            member.AddSuppressor(deltaMemberSuppressor);
+                        }
                     }
                 }
             }

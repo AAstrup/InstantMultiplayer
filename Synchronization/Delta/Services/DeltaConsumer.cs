@@ -1,6 +1,7 @@
 ﻿using InstantMultiplayer.Synchronization.Monitored.ComponentMonitors;
 using InstantMultiplayer.Synchronization.Monitored.MemberMonitors;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace InstantMultiplayer.Synchronization.Delta.Services
 {
@@ -21,6 +22,8 @@ namespace InstantMultiplayer.Synchronization.Delta.Services
                 if (deltaMember.Index != i)
                     continue;
                 e++;
+                if (monitoredMember._suppressors != null && monitoredMember._suppressors.Any(s => s.ShouldSuppress(deltaMember)))
+                    continue;
                 if (monitoredMember.LastUpdateTimestamp > deltaMember.TimeStamp)
                     continue;
                 monitoredMember.SetUpdatedValue(deltaMember.Value, deltaMember.TimeStamp);

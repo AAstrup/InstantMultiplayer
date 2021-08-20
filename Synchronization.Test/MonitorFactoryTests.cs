@@ -1,5 +1,7 @@
+using InstantMultiplayer.Communication.Serialization;
 using InstantMultiplayer.Synchronization.Attributes;
 using InstantMultiplayer.Synchronization.Monitored;
+using System;
 using System.Linq;
 using UnityEngine;
 using Xunit;
@@ -16,6 +18,28 @@ namespace Synchronization.Test
             Assert.True(members.Exists(m => m.Name == nameof(MonoTestClass.TestField)));
             Assert.True(members.Exists(m => m.Name == nameof(MonoTestClass.TestProperty)));
             Assert.True(members.Exists(m => m.Name == nameof(MonoTestClass.ExposedField)));
+        }
+
+        [Fact]
+        public void Sandbox()
+        {
+            var t = typeof(UnityEngine.Component).IsAssignableFrom(typeof(MonoBehaviour));
+
+            var ind = new PairDummy { I1 = 5, I2 = 4 };
+            var pair = (5, 4);
+            var serializer = new BinarySerializer();
+            var pairSer = serializer.Serialize(pair);
+            var indSer = serializer.Serialize(ind);
+            var o1 = serializer.Deserialize(indSer);
+            var o2 = serializer.Deserialize(pairSer);
+
+        }
+
+        [Serializable]
+        private class PairDummy
+        {
+            public int I1;
+            public int I2;
         }
 
         private class MonoTestClass : MonoBehaviour

@@ -33,7 +33,7 @@ namespace InstantMultiplayer.UnityIntegration.Monitors.GameObjectMonitors
         {
             if(syncId.HasValue && SynchronizeStore.Instance.TryGet(syncId.Value, out var synchronizer))
             {
-                gameObject.transform.SetParent(synchronizer.transform);
+                gameObject.transform.SetParent(synchronizer.transform, false);
                 return;
             }
             gameObject.transform.SetParent(null);
