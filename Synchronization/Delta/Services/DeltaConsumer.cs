@@ -22,11 +22,12 @@ namespace InstantMultiplayer.Synchronization.Delta.Services
                 if (deltaMember.Index != i)
                     continue;
                 e++;
-                if (monitoredMember._suppressors != null && monitoredMember._suppressors.Any(s => s.ShouldSuppress(deltaMember)))
-                    continue;
                 if (monitoredMember.LastUpdateTimestamp > deltaMember.TimeStamp)
                     continue;
-                monitoredMember.SetUpdatedValue(deltaMember.Value, deltaMember.TimeStamp);
+                if (monitoredMember._suppressors == null || !monitoredMember._suppressors.Any(s => s.ShouldSuppress(deltaMember)))
+                {
+                    monitoredMember.SetUpdatedValue(deltaMember.Value, deltaMember.TimeStamp);
+                }
                 if (monitoredMember.OnDeltaConsumed != null)
                     monitoredMember.OnDeltaConsumed.Invoke(this, deltaMember);
             }

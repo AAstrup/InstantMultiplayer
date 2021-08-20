@@ -6,7 +6,7 @@ namespace InstantMultiplayer.UnityIntegration.Interpolation.Implementors
     {
         private Vector3 _lerpingValue;
 
-        public override bool IsMemberSuppressed => true;
+        public override bool IsMemberSuppressed => enabled;
 
         public override Vector3 Interpolate(Vector3 localValue)
         {

@@ -98,7 +98,7 @@ namespace InstantMultiplayer.Synchronization.Objects
 
         private static string[] DefaultMaterialPaths = new string[]
         {
-            "Default-Diffuse.mat",
+            /*"Default-Diffuse.mat",
             "Default-Line.mat",
             "Default-Material.mat",
             "Default-Particle.mat",
@@ -110,7 +110,7 @@ namespace InstantMultiplayer.Synchronization.Objects
             "Sprites-Default.mat",
             "Sprites-Mask.mat",
             "SpatialMappingOcclusion.mat",
-            "SpatialMappingWireframe.mat",
+            "SpatialMappingWireframe.mat",*/
         };
     }
 }

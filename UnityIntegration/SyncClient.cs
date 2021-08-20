@@ -105,8 +105,9 @@ namespace InstantMultiplayer.UnityIntegration
                         }
                         _lastSendTimestamp = Time.time;
                     }
-                    while (_client.incomingMessageQueue.TryDequeue(out var message))
+                    while (_client.incomingMessageQueue.Count > 0)
                     {
+                        var message = _client.incomingMessageQueue.Dequeue();
                         if (message == null)
                             continue;
                         try

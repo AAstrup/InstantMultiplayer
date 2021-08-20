@@ -35,7 +35,7 @@ MonoBehaviour:
     TypeName: UnityEngine.Material
     Path: Tanks\SpawnerMaterial
   - Name: Tank
-    Id: 762366206
+    Id: -2108982480
     TypeName: UnityEngine.GameObject
     Path: Tanks\Tank
   - Name: TankMaterial

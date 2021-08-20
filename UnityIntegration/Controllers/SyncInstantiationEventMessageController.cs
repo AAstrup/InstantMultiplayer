@@ -2,6 +2,7 @@
 using InstantMultiplayer.Communication;
 using InstantMultiplayer.Synchronization.Objects;
 using InstantMultiplayer.UnityIntegration.Events;
+using InstantMultiplayer.UnityIntegration.Extensions;
 using System.Collections.Generic;
 using UnityEngine;
 
