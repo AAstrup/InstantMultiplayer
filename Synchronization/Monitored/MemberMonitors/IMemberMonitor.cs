@@ -1,21 +1,10 @@
-﻿using InstantMultiplayer.Synchronization.Delta;
-using System;
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
 
 namespace InstantMultiplayer.Synchronization.Monitored.MemberMonitors
 {
-    public interface IMemberMonitor : IMonitor
+    public interface IMemberMonitor<T>: IMemberMonitorBase
     {
-        string Name { get; }
-        float LastUpdateTimestamp { get; }
-        EventHandler<DeltaMember> OnDeltaConsumed { get; set; }
-
-        object GetValue();
-        void SetValue(object obj);
-        object LastValue { get; set; }
-
-        Type MemberType { get; }
-
-        void SetUpdatedValue(object obj, float timeStamp);
-        void SetUpdated(object obj, float timeStamp);
     }
 }

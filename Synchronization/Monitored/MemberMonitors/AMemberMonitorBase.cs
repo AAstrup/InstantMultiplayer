@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace InstantMultiplayer.Synchronization.Monitored.MemberMonitors
 {
-    public abstract class AMemberMonitorBase: IMemberMonitor
+    public abstract class AMemberMonitorBase: IMemberMonitorBase
     {
         public string Name { get; protected set; }
         public float LastUpdateTimestamp { get; internal set; }
