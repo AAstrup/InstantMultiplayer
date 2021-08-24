@@ -18,6 +18,10 @@ MonoBehaviour:
     Id: -1034722811
     TypeName: UnityEngine.Sprite
     Path: Sprites\Circles2
+  - Name: square
+    Id: 1276883055
+    TypeName: UnityEngine.Sprite
+    Path: Sprites\square
   - Name: Textures
     Id: -427088658
     TypeName: UnityEngine.Texture2D
