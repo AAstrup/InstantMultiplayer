@@ -25,9 +25,11 @@ namespace InstantMultiplayer.Synchronization.Monitored
         private MonitorFactory() {
             _componentProviders = new Dictionary<Type, IComponentMonitorProvider>();
             _memberProviders = new IMemberMonitorProvider[0];
-            foreach (var componentMonitor in MonitorDefaults.ComponentMonitors())
+
+            var monitorContainer = MonitorHelper.GetAllProviders();
+            foreach (var componentMonitor in monitorContainer._componentMonitorProviders)
                 InternalComponentRegisterProvider(componentMonitor);
-            InternalMemberRegisterProvider(MonitorDefaults.MemberMonitors());
+            InternalMemberRegisterProvider(monitorContainer._memberMonitorProviders);
             _genericDeclaringTypeMemberBlacklist = new Type[]
             {
                 typeof(MonoBehaviour),

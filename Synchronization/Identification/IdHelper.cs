@@ -5,9 +5,9 @@ using UnityEngine;
 
 namespace InstantMultiplayer.Synchronization.Identification
 {
-    public static class IdHelper
+    internal static class IdHelper
     {
-        public static IEnumerable<IIdProvider> GetAllProviders()
+        internal static IEnumerable<IIdProvider> GetAllProviders()
         {
             var idProviderType = typeof(IIdProvider);
             var types = AppDomain.CurrentDomain.GetAssemblies()

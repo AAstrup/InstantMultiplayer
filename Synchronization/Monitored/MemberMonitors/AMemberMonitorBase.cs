@@ -1,19 +1,22 @@
 ﻿using InstantMultiplayer.Synchronization.Delta;
 using System;
+using System.Collections.Generic;
 
 namespace InstantMultiplayer.Synchronization.Monitored.MemberMonitors
 {
-    public abstract class AMemberMonitorBase
+    public abstract class AMemberMonitorBase: IMemberMonitorBase
     {
         public string Name { get; protected set; }
         public float LastUpdateTimestamp { get; internal set; }
-        public EventHandler<DeltaMember> OnDeltaConsumed;
+        public EventHandler<DeltaMember> OnDeltaConsumed { get; set; }
 
         public abstract object GetValue();
         public abstract void SetValue(object obj);
         public abstract object LastValue { get; set; }
 
         public abstract Type MemberType { get; }
+
+        internal List<IDeltaMemberSuppressor> _suppressors;
 
         public AMemberMonitorBase(string name)
         {
@@ -30,6 +33,13 @@ namespace InstantMultiplayer.Synchronization.Monitored.MemberMonitors
         {
             LastValue = obj;
             LastUpdateTimestamp = timeStamp;
+        }
+
+        public void AddSuppressor(IDeltaMemberSuppressor suppressor)
+        {
+            if (_suppressors == null)
+                _suppressors = new List<IDeltaMemberSuppressor>();
+            _suppressors.Add(suppressor);
         }
 
         public override string ToString()

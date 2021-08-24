@@ -10,7 +10,7 @@ using UnityEngine;
 
 namespace InstantMultiplayer.UnityIntegration.Interpolation
 {
-    public abstract class ASyncMemberInterpolatorBase : MonoBehaviour, IDeltaMemberHandler, IForeignComponent
+    public abstract class ASyncMemberInterpolatorBase : MonoBehaviour, IDeltaMemberHandler, IDeltaMemberSuppressor, IForeignComponent
     {
         public Component Component;
         [HideInInspector]
@@ -21,20 +21,38 @@ namespace InstantMultiplayer.UnityIntegration.Interpolation
 
         public abstract Type GenericType { get; }
 
+        public abstract bool IsMemberSuppressed { get; }
+
         public bool ForeignOnly => true;
 
         protected AMemberMonitorBase _memberMonitorBase;
 
-        public ComponentMonitor ComponentMonitorSelect(IEnumerable<ComponentMonitor> componentMonitors)
+        public ComponentMonitor HandledComponentMonitor(IEnumerable<ComponentMonitor> componentMonitors)
         {
             return componentMonitors.FirstOrDefault(m => m.MonitoredInstance == Component);
         }
-        public AMemberMonitorBase MemberMonitorSelector(ReadOnlyCollection<AMemberMonitorBase> memberMonitorBases)
+        public AMemberMonitorBase HandledMemberMonitor(ReadOnlyCollection<AMemberMonitorBase> memberMonitorBases)
         {
             _memberMonitorBase = memberMonitorBases[SelectedIndex];
             return _memberMonitorBase;
         }
 
         public abstract void HandleDeltaMember(DeltaMember deltaMember);
+
+        public ComponentMonitor SuppressedComponentMonitor(IEnumerable<ComponentMonitor> componentMonitors)
+        {
+            return componentMonitors.FirstOrDefault(m => m.MonitoredInstance == Component);
+        }
+
+        public AMemberMonitorBase SuppressedMemberMonitor(ReadOnlyCollection<AMemberMonitorBase> memberMonitorBases)
+        {
+            _memberMonitorBase = memberMonitorBases[SelectedIndex];
+            return _memberMonitorBase;
+        }
+
+        public bool ShouldSuppress(DeltaMember deltaMember)
+        {
+            return IsMemberSuppressed;
+        }
     }
 }

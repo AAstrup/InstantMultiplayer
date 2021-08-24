@@ -33,7 +33,7 @@ namespace InstantMultiplayer.Synchronization.Monitored.MemberMonitors.Providers
 
         public bool IsApplicable(object memberHolder, MemberInfo memberInfo)
         {
-            return memberInfo.GetValueTypeFromMemberInfo().IsAssignableFrom(typeof(UnityEngine.Object));
+            return typeof(UnityEngine.Object).IsAssignableFrom(memberInfo.GetValueTypeFromMemberInfo());
         }
 
         private int? GetIdFromObject(object memberHolder, MemberInfo memberInfo)

@@ -5,11 +5,11 @@ using System.Collections.ObjectModel;
 
 namespace InstantMultiplayer.Synchronization.Delta
 {
-    public interface IDeltaMemberHandler
+    public interface IDeltaMemberSuppressor
     {
         bool ForeignOnly { get; }
-        ComponentMonitor HandledComponentMonitor(IEnumerable<ComponentMonitor> componentMonitors);
-        AMemberMonitorBase HandledMemberMonitor(ReadOnlyCollection<AMemberMonitorBase> memberMonitorBases);
-        void HandleDeltaMember(DeltaMember deltaMember);
+        ComponentMonitor SuppressedComponentMonitor(IEnumerable<ComponentMonitor> componentMonitors);
+        AMemberMonitorBase SuppressedMemberMonitor(ReadOnlyCollection<AMemberMonitorBase> memberMonitorBases);
+        bool ShouldSuppress(DeltaMember deltaMember);
     }
 }

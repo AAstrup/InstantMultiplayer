@@ -5,10 +5,10 @@ using UnityEngine;
 
 namespace InstantMultiplayer.Synchronization.Monitored.ComponentMonitors
 {
-    public sealed class ComponentMonitor
+    public sealed class ComponentMonitor: IComponentMonitor
     {
-        public readonly int Id;
-        public readonly Component MonitoredInstance;
+        public int Id { get; private set; }
+        public Component MonitoredInstance { get; private set; }
         public ReadOnlyCollection<AMemberMonitorBase> Members => Array.AsReadOnly(_members);
 
         private readonly AMemberMonitorBase[] _members;

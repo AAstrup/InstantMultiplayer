@@ -13,48 +13,4 @@ MonoBehaviour:
   m_Name: ResourceOutline
   m_EditorClassIdentifier: 
   Outdated: 0
-  Entries:
-  - Name: dummy
-    Id: -304590362
-    TypeName: UnityEngine.Material
-    Path: Materials\dummy
-  - Name: Floor
-    Id: 2083210137
-    TypeName: UnityEngine.Material
-    Path: Materials\Floor
-  - Name: All
-    Id: 1152074898
-    TypeName: InstantMultiplayer.UnityIntegration.SyncClientFilter
-    Path: Tanks\All
-  - Name: Spawn
-    Id: 1096742111
-    TypeName: UnityEngine.GameObject
-    Path: Tanks\Spawn
-  - Name: SpawnerMaterial
-    Id: -477155352
-    TypeName: UnityEngine.Material
-    Path: Tanks\SpawnerMaterial
-  - Name: Tank
-    Id: 762366206
-    TypeName: UnityEngine.GameObject
-    Path: Tanks\Tank
-  - Name: TankMaterial
-    Id: -1898425882
-    TypeName: UnityEngine.Material
-    Path: Tanks\TankMaterial
-  - Name: TankPhysicsMaterial
-    Id: 0
-    TypeName: UnityEngine.PhysicMaterial
-    Path: Tanks\TankPhysicsMaterial
-  - Name: TankProjectile
-    Id: -1290095476
-    TypeName: UnityEngine.GameObject
-    Path: Tanks\TankProjectile
-  - Name: WallMaterial
-    Id: 929681080
-    TypeName: UnityEngine.Material
-    Path: Tanks\WallMaterial
-  - Name: base
-    Id: 2009431679
-    TypeName: UnityEngine.Texture2D
-    Path: Textures\base
+  Entries: []
