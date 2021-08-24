@@ -14,7 +14,8 @@ namespace InstantMultiplayer.Synchronization.Monitored.MemberMonitors.Providers
                 () => (Vector3)memberInfo.GetValueFromMemberInfo(memberHolder),
                 (v) => memberInfo.SetValueFromMemberInfo(memberHolder, v),
                 (x, y) => x + y,
-                (x, y) => x - y);
+                (x, y) => x - y,
+                (x, y) => (x - y).magnitude < 0.1f);
         }
 
         public bool IsApplicable(object memberHolder, MemberInfo memberInfo)

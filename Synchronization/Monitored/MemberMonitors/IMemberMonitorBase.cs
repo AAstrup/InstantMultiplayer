@@ -15,7 +15,8 @@ namespace InstantMultiplayer.Synchronization.Monitored.MemberMonitors
 
         Type MemberType { get; }
 
-        void SetUpdatedValue(object obj, float timeStamp);
+        bool TryGetDelta(out object delta);
         void SetUpdated(object obj, float timeStamp);
+        void ConsumeDelta(object delta, float timeStamp);
     }
 }

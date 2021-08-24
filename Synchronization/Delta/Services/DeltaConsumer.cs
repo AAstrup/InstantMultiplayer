@@ -26,7 +26,7 @@ namespace InstantMultiplayer.Synchronization.Delta.Services
                     continue;
                 if (monitoredMember._suppressors == null || !monitoredMember._suppressors.Any(s => s.ShouldSuppress(deltaMember)))
                 {
-                    monitoredMember.SetUpdatedValue(deltaMember.Value, deltaMember.TimeStamp);
+                    monitoredMember.ConsumeDelta(deltaMember.Value, deltaMember.TimeStamp);
                 }
                 if (monitoredMember.OnDeltaConsumed != null)
                     monitoredMember.OnDeltaConsumed.Invoke(this, deltaMember);

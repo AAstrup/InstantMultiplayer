@@ -1,4 +1,5 @@
 ﻿using InstantMultiplayer.Synchronization.Delta;
+using InstantMultiplayer.Synchronization.Extensions;
 using System;
 using UnityEngine;
 
