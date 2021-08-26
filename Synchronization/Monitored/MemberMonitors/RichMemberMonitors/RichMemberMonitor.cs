@@ -6,8 +6,6 @@ namespace InstantMultiplayer.Synchronization.Monitored.MemberMonitors
     {
         public override object LastLocalCompareValue { get { return TypedLastLocalCompareValue; } set { TypedLastLocalCompareValue = (E)value; } }
         public E TypedLastLocalCompareValue { get; internal set; }
-        public override object LastValue { get { return TypedLastValue; } set { TypedLastValue = (T)value; } }
-        public T TypedLastValue { get; private set; }
         public readonly Func<T> GetValueFunc;
         public readonly Func<E> GetLocalCompareValueFunc;
         public readonly Action<T> SetValueFunc;

@@ -1,5 +1,6 @@
 ﻿using InstantMultiplayer.Synchronization.Monitored.ComponentMonitors;
 using InstantMultiplayer.Synchronization.Monitored.MemberMonitors;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -26,7 +27,14 @@ namespace InstantMultiplayer.Synchronization.Delta.Services
                     continue;
                 if (monitoredMember._suppressors == null || !monitoredMember._suppressors.Any(s => s.ShouldSuppress(deltaMember)))
                 {
-                    monitoredMember.ConsumeDelta(deltaMember.Value, deltaMember.TimeStamp);
+                    try
+                    {
+                        monitoredMember.ConsumeDelta(deltaMember.Value, deltaMember.TimeStamp);
+                    }
+                    catch(Exception ex)
+                    {
+                        throw new Exception($"MonitorMember {monitoredMember.GetType()} monitoring {monitoredMember.MemberType} failed to process DeltaMember {deltaMember.Value} with timestamp {deltaMember.TimeStamp}: ", ex);
+                    }
                 }
                 if (monitoredMember.OnDeltaConsumed != null)
                     monitoredMember.OnDeltaConsumed.Invoke(this, deltaMember);

@@ -17,10 +17,6 @@
     </Reference>
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Monitored\MemberMonitors\DiffMemberMonitors\" />
-  </ItemGroup>
-
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
     <Exec Command="copy /B /Y &quot;$(TargetDir)\$(ProjectName).dll&quot; &quot;$(SolutionDir)UnityDemo\Assets\Plugins\InstantMultiplayer&quot;&#xD;&#xA;copy /B /Y &quot;$(TargetDir)\$(ProjectName).pdb&quot; &quot;$(SolutionDir)UnityDemo\Assets\Plugins\InstantMultiplayer&quot;" />
   </Target>

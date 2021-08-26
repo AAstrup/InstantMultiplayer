@@ -2,11 +2,8 @@
 
 namespace InstantMultiplayer.Synchronization.Monitored.MemberMonitors
 {
-    public class MemberMonitor<T>: AMemberMonitorBase
+    public class MemberMonitor<T>: AMemberMonitorBase, IMemberMonitor<T>
     {
-        public override object LastValue { get { return TypedLastValue; } set { TypedLastValue = (T)value;  } }
-        public T TypedLastValue { get; private set; }
-
         protected readonly Func<T> _getValueFunc;
         protected readonly Action<T> _setValueFunc;
 

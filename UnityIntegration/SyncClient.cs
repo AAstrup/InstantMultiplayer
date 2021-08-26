@@ -92,19 +92,6 @@ namespace InstantMultiplayer.UnityIntegration
                 _client.Poll();
                 if (_client.identified)
                 {
-                    if (Time.time - _lastSendTimestamp > _sendInterval)
-                    {
-                        foreach (var messageType in _controllerMessageOrder)
-                        {
-                            var controller = _controllers[messageType];
-                            if (controller.TryGetMessage(out var msg))
-                            {
-                                Debug.Log("Sending msg of type " + messageType);
-                                _client.SendMessage(msg);
-                            }
-                        }
-                        _lastSendTimestamp = Time.time;
-                    }
                     while (_client.incomingMessageQueue.Count > 0)
                     {
                         var message = _client.incomingMessageQueue.Dequeue();
@@ -115,10 +102,30 @@ namespace InstantMultiplayer.UnityIntegration
                             if (_controllers.TryGetValue(message.GetType(), out var controller))
                                 controller.HandleMessage(message);
                         }
-                        catch(Exception e)
+                        catch (Exception e)
                         {
                             Debug.LogException(new Exception($"Failed to process {message.GetType()} message: ", e));
                         }
+                    }
+                    if (Time.time - _lastSendTimestamp > _sendInterval)
+                    {
+                        foreach (var messageType in _controllerMessageOrder)
+                        {
+                            try
+                            {
+                                var controller = _controllers[messageType];
+                                if (controller.TryGetMessage(out var msg))
+                                {
+                                    Debug.Log("Sending msg of type " + messageType);
+                                    _client.SendMessage(msg);
+                                }
+                            }
+                            catch(Exception e)
+                            {
+                                Debug.LogException(new Exception($"Failed to get message of {messageType}: ", e));
+                            }
+                        }
+                        _lastSendTimestamp = Time.time;
                     }
                 }
             }

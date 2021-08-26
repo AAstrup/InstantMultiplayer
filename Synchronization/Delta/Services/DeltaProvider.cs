@@ -26,10 +26,9 @@ namespace InstantMultiplayer.Synchronization.Delta.Services
                 };
                 return true;
             }
-            catch(Exception)
+            catch(Exception e)
             {
-                deltaComponent = null;
-                return false;
+                throw new Exception($"Failed to get delta for {nameof(ComponentMonitor)} of {monitoredComponent.MonitoredInstance.GetType()}", e);
             }
         }
 
@@ -39,16 +38,23 @@ namespace InstantMultiplayer.Synchronization.Delta.Services
             for(int i=0; i< members.Count; i++)
             {
                 var member = members[i];
-                if (!member.TryGetDelta(out var val))
-                    continue;
-                member.LastValue = val;
-                member.LastUpdateTimestamp = timeStamp;
-                deltaMembers.Add(new DeltaMember
+                try
                 {
-                    Index = i,
-                    Value = val,
-                    TimeStamp = timeStamp
-                });
+                    if (!member.TryGetDelta(out var val))
+                        continue;
+                    member.LastValue = val;
+                    member.LastUpdateTimestamp = timeStamp;
+                    deltaMembers.Add(new DeltaMember
+                    {
+                        Index = i,
+                        Value = val,
+                        TimeStamp = timeStamp
+                    });
+                }
+                catch(Exception e)
+                {
+                    throw new Exception($"Failed to get delta for {nameof(AMemberMonitorBase)} of {member.MemberType}", e);
+                }
             }
             return deltaMembers;
         }

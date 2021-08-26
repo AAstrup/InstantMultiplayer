@@ -4,7 +4,6 @@ namespace InstantMultiplayer.Synchronization.Monitored.MemberMonitors
 {
     public class GenericMemberMonitor: AMemberMonitorBase
     {
-        public override object LastValue { get; set; }
         public readonly Type Type;
         public readonly Func<object> GetValueFunc;
         public readonly Action<object> SetValueFunc;

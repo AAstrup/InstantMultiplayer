@@ -13,7 +13,7 @@ namespace InstantMultiplayer.Synchronization.Monitored.MemberMonitors
 
         public abstract object GetValue();
         public abstract void SetValue(object obj);
-        public abstract object LastValue { get; set; }
+        public object LastValue { get; set; }
 
         public abstract Type MemberType { get; }
 

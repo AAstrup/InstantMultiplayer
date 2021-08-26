@@ -141,12 +141,30 @@ namespace InstantMultiplayer.UnityIntegration
         {
             if (deltaContainer == null) return;
 
-            if (deltaContainer.GameObjectMembers != null && deltaContainer.GameObjectMembers.Length > 0)
-                deltaConsumer.ConsumeDelta(deltaContainer.GameObjectMembers, _gameObjectMemberMonitors);
+            try
+            {
+                if (deltaContainer.GameObjectMembers != null && deltaContainer.GameObjectMembers.Length > 0)
+                    deltaConsumer.ConsumeDelta(deltaContainer.GameObjectMembers, _gameObjectMemberMonitors);
+            }
+            catch(Exception e)
+            {
+                throw new Exception($"Failed to process delta GameObjectMembers for GameObjectMemberMonitors: ", e);
+            }
 
             foreach (var compDelta in deltaContainer.Components)
+            {
                 if (_monitoredComponents.TryGetValue(compDelta.Id, out var monitComp))
-                    deltaConsumer.ConsumeDelta(compDelta, monitComp);
+                {
+                    try
+                    {
+                        deltaConsumer.ConsumeDelta(compDelta, monitComp);
+                    }
+                    catch (Exception e)
+                    {
+                        throw new Exception($"Failed to process delta DeltaComponent for {nameof(ComponentMonitor)} monitoring {monitComp.MonitoredInstance?.GetType()}: ", e);
+                    }
+                }
+            }
         }
 
         private IEnumerable<DeltaComponent> GetDeltaComponents(DeltaProvider deltaProvider)
