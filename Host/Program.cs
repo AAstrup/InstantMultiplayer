@@ -68,6 +68,7 @@ namespace InstantMultiplayer
             builder.RegisterType<TextMessageController>().SingleInstance();
             builder.RegisterType<SyncMessageController>().SingleInstance();
             builder.RegisterType<SyncInstantiationEventMessageController>().SingleInstance();
+            builder.RegisterType<SyncInvocationEventMessageController>().SingleInstance();
             builder.RegisterType<SyncDestroyEventMessageController>().SingleInstance();
             builder.RegisterType<ClientConnectedMessage>().SingleInstance();
             builder.RegisterType<ClientDisconnectedMessage>().SingleInstance();

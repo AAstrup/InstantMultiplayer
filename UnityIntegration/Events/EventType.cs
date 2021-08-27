@@ -7,6 +7,7 @@ namespace InstantMultiplayer.UnityIntegration.Events
     public enum EventType
     {
         Instantiation = 1,
-        Destroy = 2
+        Destroy = 2,
+        Invocation = 3
     }
 }

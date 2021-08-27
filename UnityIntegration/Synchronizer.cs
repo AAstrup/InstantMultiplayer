@@ -2,6 +2,7 @@
 using InstantMultiplayer.Synchronization;
 using InstantMultiplayer.Synchronization.Delta;
 using InstantMultiplayer.Synchronization.Delta.Services;
+using InstantMultiplayer.Synchronization.Filtering;
 using InstantMultiplayer.Synchronization.Monitored;
 using InstantMultiplayer.Synchronization.Monitored.ComponentMonitors;
 using InstantMultiplayer.Synchronization.Monitored.MemberMonitors;
@@ -106,6 +107,43 @@ namespace InstantMultiplayer.UnityIntegration
         {
             EventHandlerProvider.Instance.SynchronizerDestroyed(this);
             SynchronizeStore.Instance?.Unregister(this);
+        }
+
+        public void InvokeForAll(Component synchronizedComponent, string methodName, params object[] arguments)
+        {
+            InvokeForFilter(synchronizedComponent, SyncClientFilterConstants.All, methodName, arguments);
+        }
+
+        public void InvokeForOwner(Component synchronizedComponent, string methodName, params object[] arguments)
+        {
+            InvokeForClient(synchronizedComponent, OwnerId, methodName, arguments);
+        }
+
+        public void InvokeForClients(Component synchronizedComponent, int[] clientIds, string methodName, params object[] arguments)
+        {
+            InvokeForFilter(synchronizedComponent, ClientFilterHelper.FilterFromClientIds(clientIds), methodName, arguments);
+        }
+
+        public void InvokeForClient(Component synchronizedComponent, int clientId, string methodName, params object[] arguments)
+        {
+            InvokeForFilter(synchronizedComponent, ClientFilterHelper.FilterFromClientId(clientId), methodName, arguments);
+        }
+
+        public void InvokeForFilter(Component synchronizedComponent, int clientFilter, string methodName, params object[] arguments)
+        {
+            if(!Components.Contains(synchronizedComponent))
+            {
+                Debug.LogError($"You need to add the {nameof(Component)} {synchronizedComponent.name} to the list of synchronized components for {nameof(Synchronizer)} {name} before you can invoke methods!");
+                return;
+            }
+            EventHandlerProvider.Instance.InvocationEventHandler.Invoke(this, new InvocationEvent
+            {
+                ClientFilter = clientFilter,
+                SynchronizerId = SynchronizerId,
+                Component = synchronizedComponent,
+                MethodName = methodName,
+                Arguments = arguments
+            });
         }
 
         public bool TryGetDeltaContainer(DeltaProvider deltaProvider, out DeltaContainer deltaContainer)

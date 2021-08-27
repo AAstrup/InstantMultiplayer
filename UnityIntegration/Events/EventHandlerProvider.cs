@@ -11,6 +11,7 @@ namespace InstantMultiplayer.UnityIntegration.Events
 
         public EventHandler<InstantiationEvent> InstantiationEventHandler;
         public EventHandler<DestroyEvent> DestroyEventHandler;
+        public EventHandler<InvocationEvent> InvocationEventHandler;
 
         private GameObjectIdProvider _gameObjectIdProvider;
 
