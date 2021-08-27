@@ -69,16 +69,14 @@ namespace InstantMultiplayer.UnityIntegration
                 {
                     if (compMonitor.MonitoredInstance is IDeltaMemberHandler deltaMemberHandler)
                     {
-                        if (deltaMemberHandler.ForeignOnly && !_foreign)
-                            continue;
-
                         var targetComp = deltaMemberHandler.HandledComponentMonitor(_monitoredComponents.Values);
                         var member = targetComp == null ? null : deltaMemberHandler.HandledMemberMonitor(targetComp.Members);
                         if (member != null)
                         {
                             member.OnDeltaConsumed += (s, v) =>
                             {
-                                deltaMemberHandler.HandleDeltaMember(v);
+                                if(deltaMemberHandler.ShouldHandle(v)) 
+                                    deltaMemberHandler.HandleDeltaMember(v);
                             };
                         }
                     }
@@ -86,9 +84,6 @@ namespace InstantMultiplayer.UnityIntegration
                 {
                     if (compMonitor.MonitoredInstance is IDeltaMemberSuppressor deltaMemberSuppressor)
                     {
-                        if (deltaMemberSuppressor.ForeignOnly && !_foreign)
-                            continue;
-
                         var targetComp = deltaMemberSuppressor.SuppressedComponentMonitor(_monitoredComponents.Values);
                         var member = targetComp == null ? null : deltaMemberSuppressor.SuppressedMemberMonitor(targetComp.Members);
                         if (member != null)

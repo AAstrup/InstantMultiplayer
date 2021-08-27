@@ -1,4 +1,4 @@
-﻿using InstantMultiplayer.Synchronization;
+﻿using InstantMultiplayer.Synchronization.ComponentMapping;
 using InstantMultiplayer.Synchronization.Monitored.ComponentMonitors.Providers;
 using InstantMultiplayer.Synchronization.Monitored.MemberMonitors;
 using InstantMultiplayer.UnityIntegration.Interpolation;

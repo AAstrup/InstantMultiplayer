@@ -26,10 +26,10 @@ namespace InstantMultiplayer.Synchronization.Monitored
             _componentProviders = new Dictionary<Type, IComponentMonitorProvider>();
             _memberProviders = new IMemberMonitorProvider[0];
 
-            var monitorContainer = MonitorHelper.GetAllProviders();
-            foreach (var componentMonitor in monitorContainer._componentMonitorProviders)
-                InternalComponentRegisterProvider(componentMonitor);
-            InternalMemberRegisterProvider(monitorContainer._memberMonitorProviders);
+            //var monitorContainer = MonitorHelper.GetAllProviders();
+            //foreach (var componentMonitor in monitorContainer._componentMonitorProviders)
+            //    InternalComponentRegisterProvider(componentMonitor);
+            //InternalMemberRegisterProvider(monitorContainer._memberMonitorProviders);
             _genericDeclaringTypeMemberBlacklist = new Type[]
             {
                 typeof(MonoBehaviour),
@@ -64,7 +64,7 @@ namespace InstantMultiplayer.Synchronization.Monitored
             Instance.InternalMemberRegisterProvider(memberProvider);
         }
 
-        private ComponentMonitor InternalCreateComponentMonitor(int id, Component componentInstance)
+        internal ComponentMonitor InternalCreateComponentMonitor(int id, Component componentInstance)
         {
             var fields = _componentProviders.TryGetValue(componentInstance.GetType(), out var provider) ?
                 provider.MonitoredMembers(componentInstance).ToArray() :
@@ -72,7 +72,7 @@ namespace InstantMultiplayer.Synchronization.Monitored
             return new ComponentMonitor(id, componentInstance, fields);
         }
 
-        private AMemberMonitorBase InternalCreateMemberMonitor(object memberHolder, MemberInfo memberInfo)
+        internal AMemberMonitorBase InternalCreateMemberMonitor(object memberHolder, MemberInfo memberInfo)
         {
             //var value = GetValueFromMemberInfo(memberHolder, memberInfo);
             foreach (var provider in _memberProviders)
@@ -81,24 +81,24 @@ namespace InstantMultiplayer.Synchronization.Monitored
             return CreateGenericMemberMonitor(memberHolder, memberInfo);
         }
 
-        private void InternalComponentRegisterProvider(IComponentMonitorProvider monitorProvider)
+        internal void InternalComponentRegisterProvider(IComponentMonitorProvider monitorProvider)
         {
             foreach (var type in monitorProvider.ComponentTypes())
                 if(!_componentProviders.ContainsKey(type))
                     _componentProviders.Add(type, monitorProvider);
         }
 
-        private void InternalMemberRegisterProvider(IMemberMonitorProvider memberProvider)
+        internal void InternalMemberRegisterProvider(IMemberMonitorProvider memberProvider)
         {
             _memberProviders = _memberProviders.Append(memberProvider).OrderBy(p => p.Precedence).ToArray();
         }
 
-        private void InternalMemberRegisterProvider(IEnumerable<IMemberMonitorProvider> memberProviders)
+        internal void InternalMemberRegisterProvider(IEnumerable<IMemberMonitorProvider> memberProviders)
         {
             _memberProviders = _memberProviders.Concat(memberProviders).OrderBy(p => p.Precedence).ToArray();
         }
 
-        private AMemberMonitorBase InternalCreateGenericMemberMonitor(object memberHolder, MemberInfo memberInfo)
+        internal AMemberMonitorBase InternalCreateGenericMemberMonitor(object memberHolder, MemberInfo memberInfo)
         {
             switch (memberInfo.MemberType)
             {
@@ -116,7 +116,7 @@ namespace InstantMultiplayer.Synchronization.Monitored
         private bool FieldIncluded(FieldInfo fieldInfo)
         {
             var included = false;
-            if (_genericDeclaringTypeMemberBlacklist.Contains(fieldInfo.DeclaringType))
+            if (_genericDeclaringTypeMemberBlacklist.Contains(fieldInfo.FieldType))
                 return false;
             if (fieldInfo.IsObsolete())
                 return false;
@@ -132,7 +132,7 @@ namespace InstantMultiplayer.Synchronization.Monitored
 
         private bool PropertyIncluded(PropertyInfo propertyInfo)
         {
-            if (_genericDeclaringTypeMemberBlacklist.Contains(propertyInfo.DeclaringType))
+            if (_genericDeclaringTypeMemberBlacklist.Contains(propertyInfo.PropertyType))
                 return false;
             if (propertyInfo.IsObsolete())
                 return false;

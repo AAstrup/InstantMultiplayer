@@ -7,6 +7,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Communication\Communication.csproj" />
+    <ProjectReference Include="..\Initialization\Initialization.csproj" />
     <ProjectReference Include="..\Synchronization\Synchronization.csproj" />
   </ItemGroup>
 

@@ -17,6 +17,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Communication", "Communicat
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Synchronization.Test", "Synchronization.Test\Synchronization.Test.csproj", "{2163C46A-8865-4EA4-9998-456C4371DC2A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Initialization", "Initialization\Initialization.csproj", "{D39C29B0-52A9-418F-A185-380506890DC7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +53,10 @@ Global
 		{2163C46A-8865-4EA4-9998-456C4371DC2A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2163C46A-8865-4EA4-9998-456C4371DC2A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2163C46A-8865-4EA4-9998-456C4371DC2A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D39C29B0-52A9-418F-A185-380506890DC7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D39C29B0-52A9-418F-A185-380506890DC7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D39C29B0-52A9-418F-A185-380506890DC7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D39C29B0-52A9-418F-A185-380506890DC7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

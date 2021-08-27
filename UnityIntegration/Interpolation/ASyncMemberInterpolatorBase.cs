@@ -23,7 +23,6 @@ namespace InstantMultiplayer.UnityIntegration.Interpolation
 
         public abstract bool IsMemberSuppressed { get; }
 
-        public bool ForeignOnly => true;
 
         protected AMemberMonitorBase _memberMonitorBase;
 
@@ -52,7 +51,12 @@ namespace InstantMultiplayer.UnityIntegration.Interpolation
 
         public bool ShouldSuppress(DeltaMember deltaMember)
         {
-            return IsMemberSuppressed;
+            return isActiveAndEnabled && IsMemberSuppressed;
+        }
+
+        public bool ShouldHandle(DeltaMember deltaMember)
+        {
+            return isActiveAndEnabled;
         }
     }
 }

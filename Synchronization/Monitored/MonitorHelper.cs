@@ -9,7 +9,7 @@ namespace InstantMultiplayer.Synchronization.Monitored
 {
     internal static class MonitorHelper
     {
-        internal static MonitorProviderContainer GetAllProviders()
+        /*internal static MonitorProviderContainer GetAllProviders()
         {
             var componentMonitorProviderType = typeof(IComponentMonitorProvider);
             var memberMonitorProviderType = typeof(IMemberMonitorProvider);
@@ -51,18 +51,18 @@ namespace InstantMultiplayer.Synchronization.Monitored
                 }
             }
             return new MonitorProviderContainer(componentMonitors, memberMonitorProvider);
-        }
+        }*/
     }
 
-    internal class MonitorProviderContainer
-    {
-        internal readonly IEnumerable<IComponentMonitorProvider> _componentMonitorProviders;
-        internal readonly IEnumerable<IMemberMonitorProvider> _memberMonitorProviders;
+    //internal class MonitorProviderContainer
+    //{
+    //    internal readonly IEnumerable<IComponentMonitorProvider> _componentMonitorProviders;
+    //    internal readonly IEnumerable<IMemberMonitorProvider> _memberMonitorProviders;
 
-        public MonitorProviderContainer(IEnumerable<IComponentMonitorProvider> componentMonitorProviders, IEnumerable<IMemberMonitorProvider> memberMonitorBases)
-        {
-            _componentMonitorProviders = componentMonitorProviders ?? throw new ArgumentNullException(nameof(componentMonitorProviders));
-            _memberMonitorProviders = memberMonitorBases ?? throw new ArgumentNullException(nameof(memberMonitorBases));
-        }
-    }
+    //    public MonitorProviderContainer(IEnumerable<IComponentMonitorProvider> componentMonitorProviders, IEnumerable<IMemberMonitorProvider> memberMonitorBases)
+    //    {
+    //        _componentMonitorProviders = componentMonitorProviders ?? throw new ArgumentNullException(nameof(componentMonitorProviders));
+    //        _memberMonitorProviders = memberMonitorBases ?? throw new ArgumentNullException(nameof(memberMonitorBases));
+    //    }
+    //}
 }

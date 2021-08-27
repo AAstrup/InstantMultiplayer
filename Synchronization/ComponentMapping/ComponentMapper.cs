@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-namespace InstantMultiplayer.Synchronization
+namespace InstantMultiplayer.Synchronization.ComponentMapping
 {
     public class ComponentMapper
     {
@@ -38,12 +38,19 @@ namespace InstantMultiplayer.Synchronization
             return _typeToCID.Keys.ToArray();
         }
 
+        internal void RegisterType(Type componentType)
+        {
+            var id = componentType.FullName.GetHashCode();
+            _cidToType.Add(id, componentType);
+            _typeToCID.Add(componentType, id);
+        }
+
         private ComponentMapper()
         {
             _cidToType = new Dictionary<int, Type>();
             _typeToCID = new Dictionary<Type, int>();
             //var idCounter = 1;
-            var comp = typeof(Component);
+            /*var comp = typeof(Component);
             foreach (var asm in AppDomain.CurrentDomain.GetAssemblies().Where(a => a.CustomAttributes.All(att => !att.AttributeType.Equals(typeof(AssemblyIsEditorAssembly)))))
             {
                 try
@@ -60,7 +67,7 @@ namespace InstantMultiplayer.Synchronization
                 {
                     Debug.LogError(e);
                 }
-            }
+            }*/
         }
     }
 }

@@ -14,8 +14,8 @@ namespace InstantMultiplayer.Synchronization.Identification
         private IdFactory()
         {
             _providers = new Dictionary<Type, IIdProvider>();
-            foreach(var idProvider in IdHelper.GetAllProviders())
-                Register(idProvider);
+            //foreach(var idProvider in IdHelper.GetAllProviders())
+            //    Register(idProvider);
         }
 
         public void Register(IIdProvider hashCodeProvider)

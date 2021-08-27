@@ -7,6 +7,7 @@ namespace InstantMultiplayer.Synchronization.Identification
 {
     internal static class IdHelper
     {
+        /*
         internal static IEnumerable<IIdProvider> GetAllProviders()
         {
             var idProviderType = typeof(IIdProvider);
@@ -30,6 +31,6 @@ namespace InstantMultiplayer.Synchronization.Identification
             }
             return providers;
         }
-        
+        */
     }
 }

@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
 using UnityEngine;
 
-namespace InstantMultiplayer.Synchronization.Monitored.MemberMonitors.DiffMemberMonitors
+namespace InstantMultiplayer.Synchronization.Monitored.MemberMonitors.DiffMemberMonitors.Implementations
 {
     public class Vector3DiffMemberMonitor : DiffMemberMonitorBase<Vector3>
     {

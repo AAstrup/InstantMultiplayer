@@ -1,4 +1,5 @@
-﻿using InstantMultiplayer.Synchronization.Monitored.ComponentMonitors;
+﻿using InstantMultiplayer.Synchronization.ComponentMapping;
+using InstantMultiplayer.Synchronization.Monitored.ComponentMonitors;
 using InstantMultiplayer.Synchronization.Monitored.MemberMonitors;
 using System;
 using System.Collections.Generic;

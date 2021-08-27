@@ -4,6 +4,7 @@ using GuerrillaNtp;
 using Host.Controllers;
 using InstantMultiplayer.Communication;
 using InstantMultiplayer.Communication.Serialization;
+using InstantMultiplayer.Initialization;
 using InstantMultiplayer.Synchronization.Monitored;
 using InstantMultiplayer.UnityIntegration.Controllers;
 using System;
@@ -34,6 +35,7 @@ namespace InstantMultiplayer
 
             RegisterDependencies();
             CreateControllers();
+            TypeInitializer.Instance.Initialize();
 
             //Blocks forever
             ListenForNewClients().Wait();

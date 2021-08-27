@@ -1,9 +1,8 @@
 ﻿using InstantMultiplayer.Synchronization.Extensions;
-using InstantMultiplayer.Synchronization.Monitored.MemberMonitors.DiffMemberMonitors;
+using InstantMultiplayer.Synchronization.Monitored.MemberMonitors.DiffMemberMonitors.Implementations;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-using System.Text;
 using UnityEngine;
 
 namespace InstantMultiplayer.Synchronization.Monitored.MemberMonitors.Providers

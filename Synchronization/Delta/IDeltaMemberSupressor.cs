@@ -7,7 +7,6 @@ namespace InstantMultiplayer.Synchronization.Delta
 {
     public interface IDeltaMemberSuppressor
     {
-        bool ForeignOnly { get; }
         ComponentMonitor SuppressedComponentMonitor(IEnumerable<ComponentMonitor> componentMonitors);
         AMemberMonitorBase SuppressedMemberMonitor(ReadOnlyCollection<AMemberMonitorBase> memberMonitorBases);
         bool ShouldSuppress(DeltaMember deltaMember);

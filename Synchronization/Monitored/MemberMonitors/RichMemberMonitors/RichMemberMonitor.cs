@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace InstantMultiplayer.Synchronization.Monitored.MemberMonitors
+namespace InstantMultiplayer.Synchronization.Monitored.MemberMonitors.RichMemberMonitors
 {
     public class RichMemberMonitor<T, E>: ARichMemberMonitorBase
     {

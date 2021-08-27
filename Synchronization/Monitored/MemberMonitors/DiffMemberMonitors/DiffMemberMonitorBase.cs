@@ -2,12 +2,12 @@
 using System;
 using System.Reflection;
 
-namespace InstantMultiplayer.Synchronization.Monitored.MemberMonitors
+namespace InstantMultiplayer.Synchronization.Monitored.MemberMonitors.DiffMemberMonitors
 {
     public abstract class DiffMemberMonitorBase<T>: AMemberMonitorBase, IMemberMonitor<T>
     {
         private int _accDeltas;
-        private DiffDelta<T> _firstDelta;
+        private (DiffDelta<T>, float) _firstDelta;
         private T _accumulatedLocalValue;
         private T _monitoredValue;
 
@@ -30,7 +30,7 @@ namespace InstantMultiplayer.Synchronization.Monitored.MemberMonitors
 
             if(_accDeltas == 0)
             {
-                _firstDelta = deltaValue;
+                _firstDelta = (deltaValue, timeStamp);
             }
             _accDeltas++;
 
@@ -42,7 +42,7 @@ namespace InstantMultiplayer.Synchronization.Monitored.MemberMonitors
             }
             _monitoredValue = TypedAddition(val, deltaValue.Diff);
             //Debug.Log($"diff: {localDiff}, acc: {_accumulatedLocalValue} - newval {_monitoredValue}");
-            SetValue(_monitoredValue);
+            this.SetUpdatedValue(_monitoredValue, timeStamp);
         }
 
         public override bool TryGetDelta(out object delta)
@@ -55,11 +55,11 @@ namespace InstantMultiplayer.Synchronization.Monitored.MemberMonitors
             }
             if (_accumulatedLocalValue.Equals(default(T)))
             {
-                if(_accDeltas == 1 && _firstDelta != null)
+                if(_accDeltas == 1 && _firstDelta.Item1 != null)
                 {
                     //Debug.Log($"Sat direct firstDelta value of {_firstDelta}");
-                    SetValue(_firstDelta.Direct);
-                    _monitoredValue = _firstDelta.Direct;
+                    this.SetUpdatedValue(_firstDelta.Item1.Direct, _firstDelta.Item2);
+                    _monitoredValue = _firstDelta.Item1.Direct;
                 }
                 delta = null;
             }
@@ -75,7 +75,7 @@ namespace InstantMultiplayer.Synchronization.Monitored.MemberMonitors
                 _accumulatedLocalValue = default(T);
             }
             _accDeltas = 0;
-            _firstDelta = default(DiffDelta<T>);
+            _firstDelta = (default(DiffDelta<T>), 0);
             return delta != null;
         }
 

@@ -1,5 +1,6 @@
 ﻿using InstantMultiplayer.Synchronization.Extensions;
 using InstantMultiplayer.Synchronization.Identification;
+using InstantMultiplayer.Synchronization.Monitored.MemberMonitors.RichMemberMonitors;
 using InstantMultiplayer.Synchronization.Objects;
 using System;
 using System.Reflection;

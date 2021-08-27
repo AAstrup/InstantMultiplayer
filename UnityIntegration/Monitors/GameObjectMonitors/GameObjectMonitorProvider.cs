@@ -1,4 +1,5 @@
 ﻿using InstantMultiplayer.Synchronization.Monitored.MemberMonitors;
+using InstantMultiplayer.Synchronization.Monitored.MemberMonitors.RichMemberMonitors;
 using System.Collections.Generic;
 using UnityEngine;
 

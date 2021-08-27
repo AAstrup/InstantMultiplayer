@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 
-namespace InstantMultiplayer.Synchronization.Monitored.MemberMonitors.DiffMemberMonitors
+namespace InstantMultiplayer.Synchronization.Monitored.MemberMonitors.DiffMemberMonitors.Implementations
 {
     public class IntDiffMemberMonitor : DiffMemberMonitorBase<int>
     {
