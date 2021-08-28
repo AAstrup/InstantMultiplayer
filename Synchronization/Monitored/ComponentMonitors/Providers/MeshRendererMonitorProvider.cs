@@ -1,26 +1,12 @@
-﻿using InstantMultiplayer.Synchronization.Monitored.MemberMonitors;
-using InstantMultiplayer.Synchronization.Monitored.MemberMonitors.Providers;
-using System;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace InstantMultiplayer.Synchronization.Monitored.ComponentMonitors.Providers
 {
-    public sealed class MeshRendererMonitorProvider : IComponentMonitorProvider
+    public sealed class MeshRendererMonitorProvider : AGenericComponentMonitorProvider<MeshRenderer>
     {
-        public IEnumerable<Type> ComponentTypes()
+        public override string[] MemberInfoNames { get; } = new string[]
         {
-            return new Type[] { typeof(MeshRenderer) };
-        }
-
-        public IEnumerable<AMemberMonitorBase> MonitoredMembers(Component componentInstance)
-        {
-            var meshRenderer = (MeshRenderer)componentInstance;
-            return new AMemberMonitorBase[]
-            {
-                //new MemberMonitor(() => MaterialRepository.GetMaterialId(meshRenderer.sharedMaterial), (id) => meshRenderer.material = MaterialRepository.GetMaterialFromId((int)id))
-                new UnityObjectMemberProvider().GetMonitor(meshRenderer, typeof(MeshRenderer).GetProperty(nameof(MeshRenderer.sharedMaterial)))
-            };
-        }
+            nameof(MeshRenderer.sharedMaterial)
+        };
     }
 }

@@ -3,24 +3,21 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
+using System.Linq;
 
 namespace InstantMultiplayer.Synchronization.Monitored.ComponentMonitors.Providers
 {
-    public abstract class AGenericComponentMonitorProvider<T>: IComponentMonitorProvider where T : Component
+    public abstract class AGenericComponentMonitorProvider<T> : AComponentMonitorProvider<T> where T : Component
     {
-        public IEnumerable<Type> ComponentTypes()
-        {
-            return new[] { typeof(T) };
+        public override MemberInfo[] MemberInfos { 
+            get { 
+                return _memberInfo ?? (_memberInfo = MemberInfoNames
+                    .Select(m => typeof(T).GetProperty(m))
+                    .ToArray());
+            } 
         }
+        private MemberInfo[] _memberInfo;
 
-        public IEnumerable<AMemberMonitorBase> MonitoredMembers(Component componentInstance)
-        {
-            var monitors = new AMemberMonitorBase[MemberInfos.Length];
-            for (var i = 0; i < MemberInfos.Length; i++)
-                monitors[i] = MonitorFactory.CreateMemberMonitor(componentInstance, MemberInfos[i]);
-            return monitors;
-        }
-
-        public abstract MemberInfo[] MemberInfos { get; }
+        public abstract string[] MemberInfoNames { get; }
     }
 }
